@@ -1,0 +1,74 @@
+// Mixin for defining breakpoints for responsiveness.
+//
+// Usage:
+//     div {
+//       @include break--sm {
+//         // Properties mobile
+//       }
+//
+//       @include break--md {
+//         // Properties tablet
+//       }
+//
+//       @include break--lg {
+//         // Properties desktop
+//       }
+//
+//       @include retina {
+//         // Properties retina displays
+//       }
+//
+//       @include orientation(landscape) {
+//         // Properties landcape orientation
+//       }
+//
+//       @include orientation(portrait) {
+//         // Properties portrait orientation
+//       }
+//     }
+
+// Devices
+@mixin break--sm {
+  @media (max-width: $break--md) {
+    @content;
+  }
+}
+
+@mixin break--md {
+  @media (min-width: $break--md) and (max-width: $break--lg) {
+    @content;
+  }
+}
+
+@mixin break--lg {
+  @media (min-width: $break--lg) {
+    @content;
+  }
+}
+
+// Retina
+@mixin retina {
+  @media
+    only screen and (-webkit-min-device-pixel-ratio: 2),
+    only screen and (min--moz-device-pixel-ratio: 2),
+    only screen and (-o-min-device-pixel-ratio: 2/1),
+    only screen and (min-device-pixel-ratio: 2),
+    only screen and (min-resolution: 192dpi),
+    only screen and (min-resolution: 2dppx) {
+    @content;
+  }
+}
+
+// Print
+@mixin print {
+  @media print {
+    @content;
+  }
+}
+
+// Orientation
+@mixin orientation($orientation) {
+    @media (orientation: $orientation) {
+        @content;
+    }
+}

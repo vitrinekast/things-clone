@@ -1,0 +1,114 @@
+.icon {
+
+    @extend .bg--100;
+    @extend .icon--md;
+
+    // Sizes
+    &--sm {
+        width: $gutter--md;
+        height: $gutter--md;
+    }
+
+    &--md {
+        width: $icon-size--md;
+        height: $icon-size--md;
+    }
+
+    &--lg {
+        width: $icon-size--lg;
+        height: $icon-size--lg;
+    }
+
+
+    &__type {
+
+        &--audio {
+        }
+
+        &--video {
+
+        }
+
+        &--image {
+
+        }
+    }
+
+    &__add {
+        background-image: url('#{$icon-path}ic__add.svg');
+    }
+
+    &__arrow {
+
+        &--next {
+            background-image: url('#{$icon-path}ic__arrow--next.svg');
+        }
+        &--back {
+            background-image: url('#{$icon-path}ic__arrow--back.svg');
+        }
+    }
+
+    &__calendar {
+        background-image: url('#{$icon-path}ic__calendar.svg');
+
+    }
+
+    &__close {
+        background-image: url('#{$icon-path}ic__close.svg');
+
+    }
+
+    &__flag {
+        background-image: url('#{$icon-path}ic__flag.svg');
+
+        &--active {
+            background-image: url('#{$icon-path}ic__flag--active.svg');
+        }
+    }
+
+    &__folder {
+        background-image: url('#{$icon-path}ic__folder.svg');
+
+    }
+
+    &__label {
+        background-image: url('#{$icon-path}ic__label.svg');
+
+    }
+
+    &__list {
+        background-image: url('#{$icon-path}ic__list.svg');
+
+
+    }
+
+    &__menu {
+        background-image: url('#{$icon-path}ic__menu.svg');
+
+    }
+    &__settings {
+        background-image: url('#{$icon-path}ic__settings.svg');
+
+    }
+    &__star {
+        background-image: url('#{$icon-path}ic__star.svg');
+
+        &--active {
+            background-image: url('#{$icon-path}ic__star--active.svg');
+        }
+    }
+    &__social {
+
+        &--fb {
+
+        }
+
+        &--tw {
+
+        }
+
+        &--ln {
+
+        }
+    }
+}

@@ -1,0 +1,12 @@
+// Disable or enable pointer events.
+
+.evt {
+    
+    &--none {
+        pointer-events: none;
+    }
+
+    &--auto {
+        pointer-events: auto;
+    }
+}

@@ -1,0 +1,53 @@
+// Image
+
+img {
+    width: 100%;
+    height: auto;
+    image-rendering: auto;
+}
+
+figure {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+
+    img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    figcaption {
+        text-align: right;
+    }
+}
+
+video {
+
+}
+
+// Media types
+
+.media {
+    @extend .bg--cover;
+    position: relative;
+
+    // Image type
+    &__image {
+        @include ratio(16/9);
+    }
+
+    // Video type
+    &__video {
+        @include ratio(16/9);
+
+        iframe {
+            @extend .p--abs--100;
+        }
+    }
+
+    // Audio type
+    &__audio {
+
+    }
+}

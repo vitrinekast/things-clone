@@ -1,0 +1,6 @@
+// Dependencies: '_config.scss'
+
+// Color function
+@function color($color, $tone: 'base') {
+    @return map-get(map-get($colors, $color), $tone);
+}

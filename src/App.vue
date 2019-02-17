@@ -1,29 +1,43 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+<div id="app" class='flex flex--start d--block--sm'>
+    <div class="col--2--lg col--3--md" v-if="!isMobile()" >
+        <main-navigation></main-navigation>
     </div>
-    <router-view/>
-  </div>
+    <div class="" v-if="isMobile()">
+        <mobile-navigation></mobile-navigation>
+    </div>
+    <main class='col--9--lg col--9--md col--12--sm'>
+        <div class="container">
+            <router-view />
+        </div>
+    </main>
+    <sub-navigation></sub-navigation>
+</div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+// @ is an alias to /src
+
+import { mixinDevice } from '@/mixins/device';
+
+import MainNavigation from '@/components/Navigation/Main.vue'
+import MobileNavigation from '@/components/Navigation/Mobile.vue'
+import SubNavigation from '@/components/Navigation/Sub.vue'
+
+export default {
+    name: 'app',
+    components: {
+        SubNavigation,
+        MainNavigation,
+        MobileNavigation
+    },
+    mixins: [mixinDevice]
+
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+</script>
+
+
+
+
+
+<style lang="scss" src='./scss/app.scss'>

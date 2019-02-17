@@ -1,0 +1,104 @@
+// Mixin for setting margin
+//
+// Usage:
+//
+// div {
+//     @include margin($gutter--lg, top, right, bottom);
+// }
+//
+// Output:
+//
+// div {
+//     margin-top: $gutter--lg;
+//     margin-right: $gutter--lg;
+//     margin-bottom: $gutter--lg;
+//
+//     @include break--md {
+//         margin-top: $gutter--lg/2;
+//         margin-right: $gutter--lg/2;
+//         margin-bottom: $gutter--lg/2;
+//     }
+//
+//     @include break--sm {
+//         margin-top: $gutter--lg/4;
+//         margin-right: $gutter--lg/4;
+//         margin-bottom: $gutter--lg/4;
+//     }
+// }
+//
+//
+// If you want to add margin on all sides of an element, just leave out the sides in the mixin:
+//
+// div {
+//     @include margin($gutter--lg);
+// }
+//
+// Output:
+//
+// div {
+//     margin: $gutter--lg;
+//
+//     @include break--md {
+//         margin: $gutter--lg/2;
+//     }
+//
+//     @include break--sm {
+//         margin: $gutter--lg/4;
+//     }
+// }
+//
+//
+// If you want to make use of the default margin set in the mixin, just use:
+// Note: The default margin in the mixin is set to $gutter--xlg (defined in _config.scss).
+//
+// div {
+//     @include margin();
+// }
+//
+// Output:
+//
+// div {
+//     margin: $gutter--xlg;
+//
+//     @include break--md {
+//         margin: $gutter--xlg/2;
+//     }
+//
+//     @include break--sm {
+//         margin: $gutter--xlg/4;
+//     }
+// }
+
+
+@mixin margin($size:$gutter--xlg, $sides...) {
+
+    @if $sides == () {
+        margin: $size;
+
+        @include break--md {
+            margin: $size/2;
+        }
+
+        @include break--sm {
+            margin: $size/4;
+        }
+
+    } @else {
+
+        @each $side in $sides {
+            margin-#{$side}: $size;
+        }
+
+        @include break--md {
+            @each $side in $sides {
+                margin-#{$side}: $size/2;
+            }
+        }
+
+        @include break--sm {
+            @each $side in $sides {
+                margin-#{$side}: $size/4;
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+// Clearfix for the win! Always usefull when working with floats.
+
+.clear {
+
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}

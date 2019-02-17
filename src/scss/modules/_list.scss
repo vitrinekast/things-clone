@@ -1,0 +1,19 @@
+// List
+
+.list {
+
+    &__type {
+
+    }
+
+    &--todos {
+        padding-top: $gutter--md;
+        padding-bottom: $gutter--md;
+    }
+
+    &__subtitle {
+        margin-bottom: $gutter--sm;
+        padding: $gutter--md $gutter--sm $gutter--sm/2 $gutter--md*2;
+        border-bottom: 1px solid $color--grey;
+    }
+}

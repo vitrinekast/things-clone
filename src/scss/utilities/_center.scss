@@ -1,0 +1,17 @@
+// Centering
+
+.center {
+    position: absolute;
+
+    &--both {
+        @include centering;
+    }
+
+    &--hor {
+        @include centering(true, false);
+    }
+
+    &--vert {
+        @include centering(false, true);
+    }
+}

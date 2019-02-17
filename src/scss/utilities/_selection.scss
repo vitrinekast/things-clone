@@ -1,0 +1,11 @@
+// Selection of elements
+::selection {
+    background: rgba(color(black, base), 0.99);
+    opacity: 0;
+    color: color(white, base);
+}
+
+::-moz-selection {
+    background: rgba(color(black, base), 0.99);
+    color: color(white, base);
+}

@@ -1,0 +1,17 @@
+// Mixin for truncating text.
+// Use this when you need to truncate text with ...
+// !! Only works on a singe line. For muli-lines ellipsis, you'll need some javascript magic.
+//
+// Usage:
+//     div {
+//         @include ellipsis(100%);
+//     }
+
+@mixin ellipsis($width: 100%) {
+    width: $width;
+    max-width: 100%;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

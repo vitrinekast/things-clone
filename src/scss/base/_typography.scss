@@ -1,0 +1,57 @@
+// The place for all the font styling related stuff
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+* {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: $font-family--base;
+    font-size: $font-size--base;
+    font-weight: $font-weight--normal;
+    line-height: $line-height--base;
+}
+
+input,
+textarea,
+select,
+button {
+    font-size: $font-size--base;
+}
+
+h1 {
+    font-size: $font-size--lg;
+}
+
+h2 {
+    font-size: $font-size--lg;
+}
+
+h3 {
+    font-size: $font-size--md;
+}
+
+h4, h5, h6 {
+    font-size: $font-size--md;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: $font-weight--bold;
+    font-family: $font-family--display;
+}
+
+a {
+    font-family: $font-family--display;
+    font-weight: 500;
+    text-decoration: none;
+    color: inherit;
+
+}
+
+b, strong {
+    font-weight: bolder;
+}

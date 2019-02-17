@@ -1,0 +1,19 @@
+// Background styles
+
+.bg {
+
+    &--default {
+        background-repeat: no-repeat;
+    	background-position: center;
+    }
+
+    &--cover {
+        @extend .bg--default;
+    	background-size: cover;
+    }
+
+    &--100 {
+        @extend .bg--default;
+    	background-size: 100%;
+    }
+}

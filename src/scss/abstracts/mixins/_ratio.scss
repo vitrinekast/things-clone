@@ -1,0 +1,23 @@
+// Mixin for creating an aspect ratio block.
+// When you use the Ratio mixin:
+// Keep in mind that the child element inside needs to be positioned absolute to make the content fit and keep the aspec ratio of the parent element.
+//
+// Usage:
+//     div {
+//         @include ratio(16/9);
+//
+//         div {
+//             @extend .absolute--100;
+//         }
+//     }
+
+@mixin ratio ($ratio: 16/9) {
+    overflow: hidden;
+
+    &:before {
+        content: '';
+        display: block;
+        height: 0;
+        padding-top: (1 / $ratio) * 100%;
+    }
+}

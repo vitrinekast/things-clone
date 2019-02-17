@@ -1,0 +1,5 @@
+// Mixin for input placeholders
+
+@mixin placeholder {
+  ::placeholder {@content}
+}

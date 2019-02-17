@@ -1,0 +1,53 @@
+html,
+body,
+#app {
+    height: 100%;
+    width: 100%;
+    background: #FAFAFA;
+}
+
+main {
+    height: 100%;
+    padding: $gutter--lg*2 $gutter--sm;
+
+}
+
+a {
+    cursor: pointer;
+
+    &:hover {
+
+    }
+
+    &:active,
+    &:focus {
+
+    }
+}
+
+p {
+
+}
+
+strong {
+
+}
+
+span {
+
+}
+
+blockquote {
+
+    p {
+
+    }
+
+    footer {
+
+    }
+
+    cite {
+
+    }
+}

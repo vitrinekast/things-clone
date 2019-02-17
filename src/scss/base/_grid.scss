@@ -1,0 +1,94 @@
+// Grid container:
+
+.container {
+    width: 100%;
+    position: relative;
+  	margin: 0 auto;
+
+    @include break--sm {
+      max-width: $break--sm;
+      padding: 0px $gutter--xlg;
+    }
+
+    @include break--md {
+      max-width: $break--md;
+      padding: 0px $gutter--xlg;
+    }
+
+    @include break--lg {
+      max-width: 900px;
+      padding: 0px $gutter--xlg*2;
+    }
+
+    &--fluid {
+      max-width: 100% !important;
+    }
+}
+
+// Grid basic Usage (IE11 workable)
+// Note: CSS Grid for IE11 Doesn't support auto-placement
+.grid {
+    display: -ms-grid;
+    display: grid;
+    grid-column-gap: $grid--gutter;
+    grid-template-columns: repeat(3, $grid--col-size);
+    -ms-grid-columns: repeat(3, $grid--col-size);
+
+    &--half {
+        -ms-grid-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, $grid--col-size);
+    }
+
+    &--rows {
+        grid-row-gap: $grid--gutter;
+    }
+
+    &--main {
+        grid-column-gap: 0;
+        grid-template-rows: none;
+        grid-template-columns: 2fr 10fr;
+    }
+
+    // set column size
+    .col {
+        @for $i from 1 through 4 {
+            &--#{$i} {
+                -ms-grid-column-span: $i;
+                grid-column-end: span $i;
+            }
+        }
+    }
+}
+
+// Grid specifics
+
+.grid {
+
+  &__article {
+
+  }
+
+  &__main {
+      display: flex;
+      // justify-content: flex-start;
+      // align-items: stretch;
+      // flex-wrap: nowrap;
+
+      main {
+          width: 100%;
+      }
+      @include break--sm {
+          display: block;
+
+          nav {
+              max-width: 100%;
+              height: auto;
+          }
+      }
+  }
+
+
+
+
+
+}

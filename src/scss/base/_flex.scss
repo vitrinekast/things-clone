@@ -1,0 +1,64 @@
+.flex {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &--start {
+        justify-content: flex-start;
+    }
+
+    .col {
+        display: block;
+        flex-basis: 0;
+        flex-grow: 1;
+        flex-shrink: 1;
+
+        &--right {
+            align-self: flex-end;
+        }
+
+        &--left {
+            align-self: flex-start;
+        }
+
+        @for $i from 1 through 10 {
+            &--#{$i} {
+                width: percentage($i / 12);
+
+                &--sm {
+                    @include break--sm {
+                        width: percentage($i / 12);
+                    }
+                }
+
+                &--md {
+                    @include break--md {
+                        width: percentage($i / 12);
+                    }
+                }
+
+                &--lg {
+                  @include break--lg {
+                      width: percentage($i / 12);
+                  }
+                }
+            }
+        }
+    }
+
+    &--center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &--hor {
+            display: flex;
+            justify-content: center;
+        }
+
+        &--vert {
+            display: flex;
+            align-items: center;
+        }
+    }
+}

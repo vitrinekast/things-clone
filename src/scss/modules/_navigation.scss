@@ -1,0 +1,88 @@
+// Navigation
+
+.nav {
+
+    &--main {
+        background: #F5F6F7;
+        padding: $gutter--xlg $gutter--lg;
+        border-right: 1px solid $color--grey;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        overflow: hidden;
+        z-index: 2;
+        max-width: 300px;
+    }
+    &--sub {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid $color--grey;
+        padding: $gutter--sm;
+    }
+
+    &--mobile {
+        padding: $gutter--sm;
+    }
+
+    &--tags {
+        padding-bottom: $gutter--md;
+        .nav__item {
+            color: $color--grey-blue;
+            display: inline-block;
+            padding: 0 $gutter--md;
+            border-radius: $gutter--lg;
+            &--active {
+                color: $color--white;
+                background: $color--grey-blue;
+            }
+        }
+    }
+
+    &--social {
+
+    }
+
+    &--pagination {
+
+    }
+
+    &--footer {
+
+    }
+    &__item {
+        transition: $transition--bezier;
+        border-radius: $border-radius;
+
+        &:hover {
+            background: rgba($color--grey-blue , .2);
+        }
+    }
+    &__item a {
+        font-weight: 500;
+        padding: $gutter--sm/2;
+        display: block;
+    }
+}
+
+// State: navigation opened
+
+body[data-nav="opened"] {
+
+}
+
+.dropzone {
+    transition: .2s ease-in;
+    border: 2px solid transparent;
+    border-radius: 4px;
+
+    &.active {
+        border-color: $color--blue;
+        font-weight: 900;
+    }
+
+    .sortable-ghost {
+        display: none;
+    }
+}
