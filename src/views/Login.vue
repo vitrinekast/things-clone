@@ -5,8 +5,8 @@
     </header>
     <input type="text" name="" v-model="email" value="" placeholder="Email">
     <input type="password" name="" v-model="password" value="" placeholder="Password">
-    <button type="button" @click="signUp" name="button">register</button>
-    <button type="button" @click="login" name="button">login</button>
+    <button type="button button--white button--md" @click="signUp" name="button">register</button>
+    <button type="button button--white button--md" @click="login" name="button">login</button>
     <p v-if="response">{{response}}</p>
 </div>
 </template>

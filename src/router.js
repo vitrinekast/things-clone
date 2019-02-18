@@ -27,15 +27,6 @@ const router = new Router( {
 			}
 		},
 		{
-			path: '/locations',
-			name: 'locations',
-			component: () =>
-				import( './views/Locations.vue' ),
-			meta: {
-				requiresAuth: true
-			}
-		},
-		{
 			path: '/tags/:id',
 			name: 'tags',
 			component: () =>

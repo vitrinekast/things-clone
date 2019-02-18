@@ -4,7 +4,8 @@ import { db } from '../main'
 const initialState = {
 	todos: [],
 	activeTodoId: false,
-	filteredTodos: []
+	filteredTodos: [],
+	filters: []
 };
 
 const ID = () => {
@@ -20,7 +21,8 @@ const baseTodo = ( id, userId ) => {
 		tags: [],
 		deadline: false,
 		anytime: false,
-		planned: false
+		planned: false,
+		created: new Date()
 	}
 };
 export const state = { ...initialState };
@@ -43,18 +45,22 @@ export const actions = {
 	},
 	getFilteredTodos( { state, commit }, filters ) {
 
-		var query = db.collection( "todos" ).where( "userId", "==", store.state.user.user.uid );
-
-		if( filters.tag ) {
-			query = query.where( "tags", "array-contains", filters.tag )
-		}
+		commit( "setTodoFilters", filters );
+		let query = db.collection( "todos" );
+		query.where( "userId", "==", store.state.user.user.uid );
+		query = filters.tag ? query.where( "tags", "array-contains", filters.tag ) : query
 
 		query.get()
 			.then( function ( querySnapshot ) {
-				var array = [];
+				let array = [];
 				querySnapshot.forEach( function ( doc ) {
 					array.push( doc.data() )
 				} );
+
+				array.sort( function ( a, b ) {
+					return new Date( b.created.seconds ) - new Date( a.created.seconds );
+				} );
+
 				commit( "setUserTodos", array );
 			} )
 			.catch( function ( error ) {
@@ -64,9 +70,9 @@ export const actions = {
 	},
 	createTodo( { state } ) {
 		const id = ID();
+
 		db.collection( "todos" ).doc( id ).set( baseTodo( id, store.state.user.user.uid ) )
 			.then( () => {
-				console.log( "Document successfully written!" );
 				this.dispatch( "getUserTodos" );
 			} )
 			.catch( ( error ) => {
@@ -85,25 +91,27 @@ export const actions = {
 
 	},
 	updateTodo( { state }, payload ) {
-		console.log( 'updateTodo', payload )
-		if( payload.text ) {
-			var string = payload.text
-			var regex = /\W(\#[a-zA-Z]+\b)(?!;)/gm;
-			const matches = string.match( regex ) ? string.match( regex ) : [];
 
-			matches.forEach( ( match ) => {
-
-				payload.text = payload.text.replace( match, '' );
-				match = match.replace( '#', '' ).trim();
-
-				var orgTag = payload.tags.find( function ( tag ) {
-					return tag === match;
-				} );
-				if( !orgTag ) {
-					payload.tags.push( match )
-				}
-			} );
+		if( payload.text.trim() === '' ) {
+			this.dispatch( 'deleteTodo', payload );
+			return false
 		}
+
+		const string = payload.text
+		const regex = /\W(\#[a-zA-Z]+\b)(?!;)/gm;
+		const matches = string.match( regex ) ? string.match( regex ) : [];
+
+		matches.forEach( ( match ) => {
+			payload.text = payload.text.replace( match, '' );
+			match = match.replace( '#', '' ).trim();
+
+			const orgTag = payload.tags.find( function ( tag ) {
+				return tag === match;
+			} );
+			if( !orgTag ) {
+				payload.tags.push( match )
+			}
+		} );
 
 		db.collection( "todos" )
 			.doc( payload.id )
@@ -121,6 +129,9 @@ export const actions = {
 
 	},
 	setActiveTodo( { state }, payload ) {
+		state.activeTodoId = payload.id;
+	},
+	toggleActiveTodo( { state }, payload ) {
 		state.activeTodoId = state.activeTodoId === payload.id ? false : payload.id;
 	},
 
@@ -136,6 +147,9 @@ export const mutations = {
 export const getters = {
 	todos( state ) {
 		return state.todos;
+	},
+	filters( state ) {
+		return state.filters;
 	},
 	activeTodoId( state ) {
 		return state.activeTodoId;

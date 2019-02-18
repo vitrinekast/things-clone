@@ -40,7 +40,6 @@ export default {
         tag: String
     },
     mounted() {
-        console.log('aa')
          this.$store.dispatch('getFilteredTodos', {
              tag: this.tag
          });

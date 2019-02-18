@@ -1,7 +1,10 @@
 <template>
 <nav class='nav nav--tags' v-if="tags.length > 1">
     <ul>
-        <li :id="tag.id" v-for="(tag, index) in tags" :key="index" class='nav__item' v-bind:class="{ 'nav__item--active': activeTag === tag.id }" @click="activeTag = tag.id">
+        <li class='nav__item' v-bind:class="{ 'nav__item--active': !filters.tag}" @click="clearActiveTag">
+            alles
+        </li>
+        <li :id="tag.id" v-for="(tag, index) in tags" :key="tag.id" class='nav__item' v-bind:class="{ 'nav__item--active': filters.tag === tag.text }" @click="onTagClick(tag)">
             {{ tag.text }}
         </li>
     </ul>
@@ -10,20 +13,30 @@
 
 <script>
 // @ is an alias to /src
-import { mapGetters } from 'vuex'
+import {
+    mapGetters
+} from 'vuex'
 export default {
     name: 'Tags',
-
-    data: function() {
-        return {
-            activeTag: 2
-        }
-    },
     computed: {
-        // mix the getters into computed with object spread operator
         ...mapGetters([
-          'tags'
+            'tags',
+            'filters'
         ])
     },
+    methods: {
+        onTagClick: function(tag) {
+            if (this.filters) {
+                this.$store.dispatch('getFilteredTodos', {
+                    tag: tag.text
+                });
+            }
+        },
+        clearActiveTag: function() {
+            this.$store.dispatch('getFilteredTodos', {
+                tag: false
+            });
+        }
+    }
 }
 </script>

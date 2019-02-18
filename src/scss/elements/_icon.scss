@@ -1,7 +1,6 @@
-.icon {
-
+.ic {
+    display: inline-block;
     @extend .bg--100;
-    @extend .icon--md;
 
     // Sizes
     &--sm {
@@ -50,7 +49,10 @@
 
     &__calendar {
         background-image: url('#{$icon-path}ic__calendar.svg');
+    }
 
+    &__attatchment {
+        background-image: url('#{$icon-path}ic__attatchment.svg');
     }
 
     &__close {

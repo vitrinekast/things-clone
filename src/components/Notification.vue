@@ -19,7 +19,6 @@ export default {
                 enabled: false,
                 text: 'You have 2 new to-dos'
             }
-
         }
     },
     methods: {

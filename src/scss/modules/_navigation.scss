@@ -31,7 +31,7 @@
     }
 
     &--tags {
-        padding-bottom: $gutter--md;
+        padding: $gutter--md 0 $gutter--sm;
         .nav__item {
             color: $color--grey-blue;
             display: inline-block;

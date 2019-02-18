@@ -7,17 +7,14 @@
 
     @include break--sm {
       max-width: $break--sm;
-      padding: 0px $gutter--xlg;
     }
 
     @include break--md {
       max-width: $break--md;
-      padding: 0px $gutter--xlg;
     }
 
     @include break--lg {
       max-width: 900px;
-      padding: 0px $gutter--xlg*2;
     }
 
     &--fluid {

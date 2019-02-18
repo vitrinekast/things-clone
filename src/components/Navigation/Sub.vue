@@ -3,9 +3,6 @@
     <div class="button button--sm" @click="createTodo">
         +
     </div>
-    <div class="button button--sm" @click="deleteAllTodos">
-        delete all todos
-    </div>
 </nav>
 </template>
 
@@ -13,17 +10,9 @@
 export default {
     name: 'MainNavigation',
     methods: {
-        createTodo: function () {
+        createTodo: function() {
             this.$store.dispatch('createTodo');
-        },
-        deleteAllTodos: function () {
-            this.$store.dispatch('deleteAllTodos');
         }
     }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-
-</style>

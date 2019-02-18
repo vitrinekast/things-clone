@@ -1,64 +1,55 @@
 <template>
-    <nav class='nav nav--main col--2--lg col--3--md'>
-        <ul>
-            <li class='nav__item'>
-                <router-link to="/">Home</router-link>
-            </li>
-            <li class='nav__item'>
-                <router-link to="/login">Login</router-link>
-            </li>
-            <li class='nav__item'>
-                <router-link to="/inbox">📥 Inbox</router-link>
-            </li>
-            <li class='nav__item'>
-                <router-link to="/today">⭐ Today</router-link>
-            </li>
-            <li class='nav__item'>
-                <router-link to="/tomorrow">🗓 Tomorrow</router-link>
-            </li>
-            <li class='nav__item'>
-                <router-link to="/someday">🕐 Someday</router-link>
-            </li>
+<nav class='nav nav--main col--2--lg col--3--md'>
+    <p v-if="user">You're logged in!</p>
+    <ul>
+        <li class='nav__item'>
+            <router-link to="/">Home</router-link>
+        </li>
+        <li class='nav__item'>
+            <router-link to="/login">Login</router-link>
+        </li>
+        <li class='nav__item'>
+            <router-link to="/inbox">📥 Inbox</router-link>
+        </li>
+        <li class='nav__item'>
+            <router-link to="/today">⭐ Today</router-link>
+        </li>
+        <li class='nav__item'>
+            <router-link to="/tomorrow">🗓 Tomorrow</router-link>
+        </li>
+        <li class='nav__item'>
+            <router-link to="/someday">🕐 Someday</router-link>
+        </li>
 
-        </ul>
+    </ul>
 
-        <h5>tags</h5>
+    <h5 v-if="projects">Projects</h5>
 
-        <ul>
-            <li v-for="(tag, index) in tags" :key="index">
-
-                <router-link :to="{ name: 'tags', params: { id: tag.id }}">{{tag.text}}</router-link>
-
-            </li>
-        </ul>
-        <h5>Areas</h5>
-        <h5>Projects</h5>
-
-        <p v-if="user">loggedin</p>
-
-    </nav>
+</nav>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {
+    mapGetters
+} from 'vuex'
 
 export default {
     name: 'MainNavigation',
+    data: function () {
+        return {
+            projects: []
+        }
+    },
     computed: {
-        // mix the getters into computed with object spread operator
+
         ...mapGetters([
-          'user',
-          'tags',
-          // ...
+            'user',
+            'tags',
+            // ...
         ])
     },
     mounted() {
-         this.$store.dispatch('getTags');
+        this.$store.dispatch('getTags');
     },
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-
-</style>
