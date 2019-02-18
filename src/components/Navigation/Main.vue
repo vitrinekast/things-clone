@@ -1,5 +1,5 @@
 <template>
-    <nav class='nav nav--main col--2--lg col--3--md d--none--sm'>
+    <nav class='nav nav--main col--2--lg col--3--md'>
         <ul>
             <li class='nav__item'>
                 <router-link to="/">Home</router-link>
@@ -25,7 +25,7 @@
         <h5>tags</h5>
 
         <ul>
-            <li v-for="tag in tags">
+            <li v-for="(tag, index) in tags" :key="index">
 
                 <router-link :to="{ name: 'tags', params: { id: tag.id }}">{{tag.text}}</router-link>
 
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import store from '@/store';
 import { mapGetters } from 'vuex'
 
 export default {

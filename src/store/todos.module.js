@@ -1,4 +1,3 @@
-import Vue from "vue";
 import store from "./index.js";
 import { db } from '../main'
 
@@ -45,7 +44,7 @@ export const actions = {
 	getFilteredTodos( { state, commit }, filters ) {
 
 		var query = db.collection( "todos" ).where( "userId", "==", store.state.user.user.uid );
-		
+
 		if( filters.tag ) {
 			query = query.where( "tags", "array-contains", filters.tag )
 		}

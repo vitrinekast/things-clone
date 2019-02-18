@@ -40,9 +40,6 @@ export default {
         activeTodoId: {
             get() {
                 return this.$store.getters.activeTodoId
-            },
-            set(value) {
-
             }
         }
     },

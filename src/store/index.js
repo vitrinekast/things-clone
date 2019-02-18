@@ -1,9 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
-import moment from "moment";
-import router from "../router.js";
-import firebase from "firebase";
 
 import tags from "./tags.module";
 import user from "./user.module";

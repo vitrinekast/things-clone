@@ -64,6 +64,15 @@ const router = new Router( {
 			}
 		},
 		{
+			path: '/menu',
+			name: 'menu',
+			component: () =>
+				import( './views/Menu.vue' ),
+			meta: {
+				requiresAuth: false
+			}
+		},
+		{
 			path: '/someday',
 			name: 'someday',
 			component: () =>

@@ -27,7 +27,6 @@
 // @ is an alias to /src
 import draggable from 'vuedraggable'
 import TodoItem from '@/components/TodoItem';
-import store from '../store/index';
 import { mapGetters } from 'vuex'
 
 export default {

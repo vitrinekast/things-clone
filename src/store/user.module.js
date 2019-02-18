@@ -1,4 +1,3 @@
-import Vue from "vue";
 import router from "../router.js";
 import firebase from "firebase";
 
@@ -40,7 +39,7 @@ export const actions = {
 };
 export const mutations = {
 	setUser( state, payload ) {
-		
+
 		state.user = payload.user
 	}
 };
