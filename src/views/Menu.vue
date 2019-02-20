@@ -8,8 +8,8 @@
 <script>
     // @ is an alias to /src
     //
-    import MainNavigation from '@/components/Navigation/Main.vue'
-    // '@/components/Navigation/Tags';
+    import MainNavigation from '@/components/NavigationMain.vue'
+    // '@/components/NavigationTags';
 
     export default {
         name: 'home',

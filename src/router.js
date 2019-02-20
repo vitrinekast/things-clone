@@ -17,6 +17,15 @@ const router = new Router( {
 				requiresAuth: true
 			}
 		},
+	 {
+			path: '/styleguide',
+			name: 'styleguide',
+			component: () =>
+				import( './views/styleguide.vue' ),
+			meta: {
+				requiresAuth: true
+			}
+		},
 		{
 			path: '/inbox',
 			name: 'inbox',

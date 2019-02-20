@@ -1,33 +1,33 @@
-.modal {
-    padding: $gutter--sm $gutter--sm;
-    border-radius: $border-radius;
-    margin: $gutter--md 0;
-
-    &--notification {
-        background: #F3DF81;
-        color: black;
-
-        .card__button {
-            @extend .button--yellow;
-        }
-    }
-
-    &--calendar {
-        background: #EDEEEF;
-
-    }
-
-    &__text {
-
-    }
-
-    &__timestamp {
-        color: #F3DF81;
-        font-weight: 900;
-        padding-right: $gutter--sm;
-    }
-
-    &__button {
-
-    }
-}
+// .modal {
+//     padding: $gutter--sm $gutter--sm;
+//     border-radius: $border-radius;
+//     margin: $gutter--md 0;
+//
+//     &--notification {
+//         background: #F3DF81;
+//         color: black;
+//
+//         .card__button {
+//             @extend .button--yellow;
+//         }
+//     }
+//
+//     &--calendar {
+//         background: #EDEEEF;
+//
+//     }
+//
+//     &__text {
+//
+//     }
+//
+//     &__timestamp {
+//         color: #F3DF81;
+//         font-weight: 900;
+//         padding-right: $gutter--sm;
+//     }
+//
+//     &__button {
+//
+//     }
+// }

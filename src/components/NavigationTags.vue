@@ -1,17 +1,19 @@
 <template>
 <nav class='nav nav--tags' v-if="tags.length > 1">
     <ul>
-        <li class='nav__item' v-bind:class="{ 'nav__item--active': !filters.tag}" @click="clearActiveTag">
+        <li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': !filters.tag}" @click="clearActiveTag">
             alles
         </li>
-        <li :id="tag.id" v-for="(tag, index) in tags" :key="tag.id" class='nav__item' v-bind:class="{ 'nav__item--active': filters.tag === tag.text }" @click="onTagClick(tag)">
+        <li :id="tag.id" v-for="(tag, index) in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.text }" @click="onTagClick(tag)">
             {{ tag.text }}
         </li>
+
     </ul>
 </nav>
 </template>
 
 <script>
+
 // @ is an alias to /src
 import {
     mapGetters

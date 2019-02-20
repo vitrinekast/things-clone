@@ -1,0 +1,30 @@
+.label {
+    transition: $transition--bezier;
+    display: inline-block;
+
+    &--tag {
+        border-radius: $border-radius * 4;
+        border: 1px solid transparent;
+        font-size: $font-size--sm;
+        padding: 0 $gutter--sm;
+        margin: 0 $gutter--sm/2;
+    }
+    &--light {
+        background-color: transparent;
+        border-color: color(grey, light);
+        color: color(grey, base);
+    }
+
+    &--dark {
+        color: color(grey, base);
+        border-color: color(grey, light);
+        color: $color--white;
+        background:  color(grey, base);
+    }
+
+    &--green {
+        background: color(green, light);
+        color: color(green, base);
+        border-color: darken(color(green, light), .5)
+    }
+}

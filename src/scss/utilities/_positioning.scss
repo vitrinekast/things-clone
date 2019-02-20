@@ -9,6 +9,12 @@
           top: 3008;
         }
 
+        &--bottom {
+            width: 100%;
+            left: 0;
+            bottom: 0;
+        }
+
         &--100 {
             position: absolute;
             top: 0;

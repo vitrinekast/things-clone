@@ -1,5 +1,5 @@
 <template>
-<nav class='nav nav--main col--2--lg col--3--md'>
+<nav class='nav nav--main'>
     <p v-if="user">You're logged in!</p>
     <ul>
         <li class='nav__item'>
@@ -20,10 +20,22 @@
         <li class='nav__item'>
             <router-link to="/someday">🕐 Someday</router-link>
         </li>
+        <li class='nav__item'>
+            <router-link to="/styleguide">Style guide</router-link>
+        </li>
 
     </ul>
 
     <h5 v-if="projects">Projects</h5>
+
+    <div class="p--abs p--abs--bottom flex flex--center">
+        <div class="col button button--white button--sm" @click="createTodo">
+            new todo
+        </div>
+        <div class="col button button--white button--sm">
+            new project
+        </div>
+    </div>
 
 </nav>
 </template>
@@ -51,5 +63,10 @@ export default {
     mounted() {
         this.$store.dispatch('getTags');
     },
+    methods: {
+        createTodo: function() {
+            this.$store.dispatch('createTodo');
+        }
+    }
 }
 </script>
