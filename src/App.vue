@@ -30,7 +30,19 @@ export default {
         MainNavigation,
         MobileNavigation
     },
-    mixins: [mixinDevice]
+    mixins: [mixinDevice],
+    mounted: function () {
+        this.fetchTodos();
+        this.fetchTags();
+    },
+    methods: {
+        fetchTodos() {
+            this.$store.dispatch('getAllTodos');
+        },
+        fetchTags() {
+            this.$store.dispatch('getAllTags');
+        }
+    }
 
 }
 </script>

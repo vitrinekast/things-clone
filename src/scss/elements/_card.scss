@@ -6,13 +6,26 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: $gutter--sm/2;
+    padding: $gutter--sm/2 $gutter--sm;
+
 
     &--active {
         box-shadow: 0 0.125rem 0.375rem rgba(0,0,0,.2);
         background: color(white, base);
-        z-index: 1;
+        z-index: 3;
         display: block;
+        padding-top: $gutter--md;
+        padding-bottom: $gutter--md;
+        margin: $gutter--sm 0;
+    }
+
+    textarea {
+        margin: 0 0;
+    }
+
+    &__backdrop {
+        background: rgba(0, 0, 0, .5);
+        z-index: 2;
     }
 }
 
@@ -45,11 +58,6 @@
 //             z-index: 1;
 //             display: block;
 //
-//             .label {
-//                 background: color(green, light);
-//                 color: color(green, base);
-//                 border-color: darken(color(green, light), .5)
-//             }
 //         }
 //         .card {
 //             &__label {

@@ -1,9 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
-import moment from "moment";
 import router from "./router.js";
-import firebase from "firebase";
+import firebase from 'firebase/app';;
 
 const vuexPersist = new VuexPersist( {
 	key: "my-app",

@@ -1,86 +1,86 @@
-// // Inputs styling
-//
-// #{$inputs} {
-//     appearance: none;
-//     display: inline-block;
-//     outline: 0;
-//     width: 100%;
-// }
-//
-// #{$input__text}, textarea {
-//     border: none;
-//     margin-bottom: $gutter--sm;
-//     // States
-//     &:focus {
-//
-//     }
-//
-//     &:valid {
-//
-//     }
-//
-//     &:invalid {
-//
-//     }
-//
-//     &:required {
-//
-//     }
-//
-//     &:optional {
-//
-//     }
-//
-//     &:enabled {
-//
-//     }
-//
-//     &:disabled {
-//
-//     }
-//
-//     &:not(:checked) {
-//
-//     }
-//
-//     &:in-range {
-//
-//     }
-//
-//     &:out-of-range {
-//
-//     }
-//
-//     &:user-error {
-//
-//     }
-//
-//     &:empty {
-//
-//     }
-//
-//     &:blank {
-//
-//     }
-// }
-//
-// #{$input__text}, textarea, input[type="file"] {
-//     resize: none;
-//     // Placeholder
-//     @include placeholder {
-//         color: color(black, light);
-//     }
-// }
-//
-// #{$input__buttons} {
-//     // @include button--color($color--white, $color--black, transparent);
-// }
-//
-// #{$input__dates} {
-//     border: none;
-//     font-family: $font-family--base;
-//     background: color(grey, light);
-//     width: auto !important;
-//     border-radius: $border-radius;
-//     padding: $gutter--sm/2 $gutter--sm;
-// }
+// Inputs styling
+
+#{$inputs} {
+    appearance: none;
+    display: inline-block;
+    outline: 0;
+    width: 100%;
+}
+
+#{$input__text}, textarea {
+    border: none;
+    margin-bottom: $gutter--sm;
+    // States
+    &:focus {
+
+    }
+
+    &:valid {
+
+    }
+
+    &:invalid {
+
+    }
+
+    &:required {
+
+    }
+
+    &:optional {
+
+    }
+
+    &:enabled {
+
+    }
+
+    &:disabled {
+
+    }
+
+    &:not(:checked) {
+
+    }
+
+    &:in-range {
+
+    }
+
+    &:out-of-range {
+
+    }
+
+    &:user-error {
+
+    }
+
+    &:empty {
+
+    }
+
+    &:blank {
+
+    }
+}
+
+#{$input__text}, textarea, input[type="file"] {
+    resize: none;
+    // Placeholder
+    @include placeholder {
+        color: color(black, light);
+    }
+}
+
+#{$input__buttons} {
+    // @include button--color($color--white, $color--black, transparent);
+}
+
+#{$input__dates} {
+    border: none;
+    font-family: $font-family--base;
+    background: color(grey, light);
+    width: auto !important;
+    border-radius: $border-radius;
+    padding: $gutter--sm/2 $gutter--sm;
+}

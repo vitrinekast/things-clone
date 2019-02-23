@@ -6,6 +6,7 @@
         </li>
         <li :id="tag.id" v-for="(tag, index) in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.text }" @click="onTagClick(tag)">
             {{ tag.text }}
+            <span v-for='id in tag.todos'>{{id}}</span>
         </li>
 
     </ul>
@@ -29,15 +30,18 @@ export default {
     methods: {
         onTagClick: function(tag) {
             if (this.filters) {
-                this.$store.dispatch('getFilteredTodos', {
+                this.$store.dispatch('updateFilters', {
                     tag: tag.text
                 });
             }
         },
         clearActiveTag: function() {
-            this.$store.dispatch('getFilteredTodos', {
+            this.$store.dispatch('updateFilters', {
                 tag: false
             });
+            // this.$store.dispatch('getFilteredTodos', {
+            //     tag: false
+            // });
         }
     }
 }

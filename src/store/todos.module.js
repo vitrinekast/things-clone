@@ -1,5 +1,8 @@
 import store from "./index.js";
 import { db } from '../main'
+import { ApiService } from "@/common/api.service";
+import { TodoService } from "@/common/todo.service";
+
 
 const initialState = {
 	todos: [],
@@ -11,136 +14,61 @@ const initialState = {
 const ID = () => {
 	return '_' + Math.random().toString( 36 ).substr( 2, 9 );
 };
-const baseTodo = ( id, userId ) => {
-	return {
-		userId: userId,
-		id: id,
-		text: "This is a new todo",
-		done: false,
-		notes: "",
-		tags: [],
-		deadline: false,
-		anytime: false,
-		planned: false,
-		created: new Date()
-	}
-};
+
 export const state = { ...initialState };
 
 export const actions = {
-	getUserTodos( { state, commit } ) {
-		db.collection( "todos" )
-			.where( "userId", "==", store.state.user.user.uid )
-			.get()
-			.then( function ( querySnapshot ) {
-				var array = [];
-				querySnapshot.forEach( function ( doc ) {
-					array.push( doc.data() )
-				} );
-				commit( "setUserTodos", array );
-			} )
-			.catch( function ( error ) {
-				console.error( "Error getting documents: ", error );
-			} );
+	async getAllTodos( { state, commit } ) {
+		if( !store.state.user.user ) { return false }
+		const data = await TodoService.get();
+		commit( 'setTodos', data );
 	},
-	getFilteredTodos( { state, commit }, filters ) {
+	async createTodo( { state, commit } ) {
+		if( !store.state.user.user ) { return false }
+		await TodoService.create();
+		this.dispatch( "getAllTodos" );
+	},
 
-		commit( "setTodoFilters", filters );
-		let query = db.collection( "todos" );
-		query.where( "userId", "==", store.state.user.user.uid );
-		query = filters.tag ? query.where( "tags", "array-contains", filters.tag ) : query
-
-		query.get()
-			.then( function ( querySnapshot ) {
-				let array = [];
-				querySnapshot.forEach( function ( doc ) {
-					array.push( doc.data() )
-				} );
-
-				array.sort( function ( a, b ) {
-					return new Date( b.created.seconds ) - new Date( a.created.seconds );
-				} );
-
-				commit( "setUserTodos", array );
-			} )
-			.catch( function ( error ) {
-				console.error( "Error getting documents: ", error );
-			} );
+	updateFilters( { state, commit }, payload ) {
+		commit( "setFilters", payload );
+	},
+	updateTodo( { state, commit }, payload ) {
+		TodoService.update( payload ).then( (todo ) => {
+			console.log('got updated', todo)
+			this.dispatch( "getAllTodos" );
+			this.dispatch( "getAllTags" );
+		} )
 
 	},
-	createTodo( { state } ) {
-		const id = ID();
-
-		db.collection( "todos" ).doc( id ).set( baseTodo( id, store.state.user.user.uid ) )
-			.then( () => {
-				this.dispatch( "getUserTodos" );
-			} )
-			.catch( ( error ) => {
-				console.error( "Error writing document: ", error );
-				this.dispatch( "getUserTodos" );
-			} );
+	deleteTodo( { state, commit }, payload ) {
+		TodoService.delete( payload ).then( ( ) => {
+			this.dispatch( "getAllTodos" );
+			this.dispatch( "getAllTags" );
+		} )
 	},
-	deleteTodo( { state }, payload ) {
+	deleteAllTodos( { state, commit } ) {
+		state.todos.forEach((todo) => {
+			return TodoService.delete( todo );
+		})
 
-		db.collection( "todos" ).doc( payload.id ).delete().then( () => {
-			this.dispatch( "getUserTodos" );
-		} ).catch( ( error ) => {
-			console.error( "Error removing document: ", error );
-			this.dispatch( "getUserTodos" );
-		} );
-
+		this.dispatch( "getAllTodos" );
 	},
-	updateTodo( { state }, payload ) {
-
-		if( payload.text.trim() === '' ) {
-			this.dispatch( 'deleteTodo', payload );
-			return false
-		}
-
-		const string = payload.text
-		const regex = /\W(\#[a-zA-Z]+\b)(?!;)/gm;
-		const matches = string.match( regex ) ? string.match( regex ) : [];
-
-		matches.forEach( ( match ) => {
-			payload.text = payload.text.replace( match, '' );
-			match = match.replace( '#', '' ).trim();
-
-			const orgTag = payload.tags.find( function ( tag ) {
-				return tag === match;
-			} );
-			if( !orgTag ) {
-				payload.tags.push( match )
-			}
-		} );
-
-		db.collection( "todos" )
-			.doc( payload.id )
-			.update( payload )
-			.then( () => {
-				this.dispatch( "getUserTodos" );
-				this.dispatch( 'updateTagsFromTodo', payload );
-			} )
-			.catch( ( error ) => {
-				// The document probably doesn't exist.
-				this.dispatch( "getUserTodos" );
-				this.dispatch( 'updateTagsFromTodo', payload );
-				console.error( "Error updating document: ", error );
-			} );
-
-	},
-	setActiveTodo( { state }, payload ) {
-		state.activeTodoId = payload.id;
-	},
-	toggleActiveTodo( { state }, payload ) {
-		state.activeTodoId = state.activeTodoId === payload.id ? false : payload.id;
-	},
+	setActiveTodo( { state, commit }, payload ) {
+		commit( "setActiveTodo", payload.id );
+	}
 
 };
 export const mutations = {
-	setUserTodos( state, payload ) {
+	setTodos( state, payload ) {
 		state.todos = payload;
 	},
-	setTodoFilters( state, payload ) {
+	createTodo( state, payload ) {
+		state.todos.push( payload );
+	},
+	setActiveTodo( state, payload ) {
+		state.activeTodoId = payload;
+	},
+	setFilters( state, payload ) {
 		state.filters = payload;
 	},
 };

@@ -35,7 +35,14 @@
         <div class="col button button--white button--sm">
             new project
         </div>
+        <div class="col button button--white button--sm" @click="deleteAllTodos">
+            delete all todos
+        </div>
+        <div class="col button button--white button--sm" @click="deleteAllTags">
+            delete all tags
+        </div>
     </div>
+
 
 </nav>
 </template>
@@ -61,11 +68,17 @@ export default {
         ])
     },
     mounted() {
-        this.$store.dispatch('getTags');
+        // this.$store.dispatch('getTags');
     },
     methods: {
         createTodo: function() {
             this.$store.dispatch('createTodo');
+        },
+        deleteAllTodos: function() {
+            this.$store.dispatch('deleteAllTodos');
+        },
+        deleteAllTags: function() {
+            this.$store.dispatch('deleteAllTags');
         }
     }
 }

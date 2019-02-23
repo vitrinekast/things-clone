@@ -1,18 +1,23 @@
 // Navigation
-.nav {
-
-    &--main {
-        padding: $gutter--xlg $gutter--lg;
+.nav
+{
+    &--main
+    {
         height: 100%;
+        padding: $gutter--xlg $gutter--lg;
     }
 
-    &--tags {
+    &--tags
+    {
         padding: $gutter--md 0 $gutter--sm;
 
-        .label {
-            &--active, &:hover {
-                 color: $color--white;
-                 background:  color(grey, base);
+        .label
+        {
+            &--active,
+            &:hover
+            {
+                color: $color--white;
+                background: color(grey, base);
             }
         }
     }

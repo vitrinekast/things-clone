@@ -1,8 +1,10 @@
 import Vue from "vue";
 import router from "../router.js";
-import firebase from "firebase";
+import firebase from 'firebase/app';;
 import store from "./index.js";
-import { db } from '../main'
+import { db } from '../main';
+import { ApiService } from "@/common/api.service";
+import { TagService } from "@/common/tag.service";
 
 const initialState = {
 	tags: [],
@@ -24,122 +26,38 @@ const baseTag = ( id, userId, text ) => {
 export const state = { ...initialState };
 
 export const actions = {
-	createTag( { state, commit }, tag ) {
-
-		const id = ID();
-
-		db.collection( "tags" )
-			.doc( id )
-			.set( {
-				id: id,
-				userId: store.state.user.user.uid,
-				text: tag.text,
-				todos: [ tag.todoId ]
-			} )
-			.then( ( doc ) => {
-				console.log( "Document successfully written!", doc );
-				this.dispatch( "getTags" );
-			} )
-			.catch( ( error ) => {
-				console.error( "Error writing document: ", error );
-				this.dispatch( "getTags" );
-			} );
+	async getAllTags( { state, commit } ) {
+		if( !store.state.user.user ) { return false }
+		const data = await TagService.get();
+		commit( 'setTags', data );
 	},
-	addTodoIdsToTag( { state, commit }, payload ) {
-		console.log('addTodoIdsToTag', payload)
-		db.collection( "tags" )
-			.doc( payload.doc )
-			.update( {
-				todos: firebase.firestore.FieldValue.arrayUnion( payload.todoId )
-			} )
-			.then( () => {
-				this.dispatch( "getTags" );
-			} )
-			.catch( ( error ) => {
-				this.dispatch( "getTags" );
-			} );
+	deleteAllTags( { state, commit } ) {
+		state.tags.forEach((tag) => {
+			return TagService.delete( tag );
+		})
 
-	},
-	updateTagsFromTodo( { state, commit }, todo ) {
-		console.log( 'updateTagsFromTodo', todo );
-
-		todo.tags.forEach( ( tag ) => {
-			db.collection( "tags" )
-				.where( "userId", "==", store.state.user.user.uid )
-				.where( "text", "==", tag )
-				.get()
-				.then( ( doc ) => {
-					if( doc.size > 0 ) {
-						this.dispatch( 'addTodoIdsToTag', { doc: doc.docs[ 0 ].id, text: tag, todoId: todo.id } )
-					} else {
-						this.dispatch( 'createTag', {
-							text: tag,
-							todoId: todo.id
-						} );
-					}
-				} ).catch( ( err ) => {
-					console.error( 'error:', err )
-				} )
-		} )
-	},
-	getTags( { state, commit }, tags ) {
-		return db.collection( "tags" )
-			.where( "userId", "==", store.state.user.user.uid )
-			.get()
-			.then( function ( querySnapshot ) {
-				var array = [];
-				querySnapshot.forEach( function ( doc ) {
-					array.push( doc.data() )
-				} );
-				commit( "setTags", array );
-			} )
-			.catch( function ( error ) {
-				console.error( "Error getting documents: ", error );
-			} );
-	},
-	getTag( { state, commit }, id ) {
-
-		return db.collection( "tags" )
-			.doc( id )
-			.get()
-			.then( ( doc ) => {
-				commit( 'setTag', doc.data() )
-			} ).catch( ( error ) => {
-
-			} )
-	},
-	getTagByName( { state, commit }, text ) {
-
-		return db.collection( "tags" )
-			.where( "userId", "==", store.state.user.user.uid )
-			.where( "text", "==", text )
-			.get()
-			.then( ( doc ) => {
-				console.log( 'found some' )
-			} ).catch( ( error ) => {
-
-			} )
-	},
+		this.dispatch( "getAllTags" );
+	}
 };
 export const mutations = {
 	setTags( state, tags ) {
 		state.tags = tags;
 	},
-	setTag( state, tag ) {
-
-		state.tag = tag;
-	},
-	addTag( state, tag ) {
-		state.tags.push( tag )
-	}
+	// setTag( state, tag ) {
+	//
+	// 	state.tag = tag;
+	// },
+	// addTag( state, tag ) {
+	// 	state.tags.push( tag )
+	// }
 };
 export const getters = {
 	tags( state ) {
 		return state.tags;
 	},
-	tag( state ) {
-		return state.tag;
-	},
+	// tag( state ) {
+	// 	return state.tag;
+	// },
 };
 export default {
 	state,

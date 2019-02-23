@@ -94,7 +94,6 @@ const router = new Router( {
 } )
 
 router.beforeEach( ( to, from, next ) => {
-	console.log( 'beforeeach?', store.state.user )
 	if( to.matched.some( record => record.meta.requiresAuth ) ) {
 		if( !store.state.user ) {
 			next( {

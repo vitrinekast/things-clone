@@ -1,5 +1,5 @@
 import router from "../router.js";
-import firebase from "firebase";
+import firebase from 'firebase';
 
 const initialState = {
 	user: null
@@ -39,7 +39,6 @@ export const actions = {
 };
 export const mutations = {
 	setUser( state, payload ) {
-
 		state.user = payload.user
 	}
 };
