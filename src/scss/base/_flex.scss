@@ -1,17 +1,33 @@
+
 .flex {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 
+    &--container {
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
     &--start {
         justify-content: flex-start;
     }
 
+    &--multiline {
+      flex-wrap: wrap;
+    }
+
+    &--reverse {
+      & > *:nth-of-type(even) {
+        order: -1;
+      }
+    }
+
     .col {
         display: block;
-        flex-basis: 0;
         flex-grow: 1;
-        flex-shrink: 1;
+        flex-basis: 0;
+        max-width: 100%;
 
         &--right {
             align-self: flex-end;
@@ -21,28 +37,33 @@
             align-self: flex-start;
         }
 
-        @for $i from 1 through 10 {
-            &--#{$i} {
-                width: percentage($i / 12);
-
-                &--sm {
-                    @include break--sm {
-                        width: percentage($i / 12);
-                    }
-                }
-
-                &--md {
-                    @include break--md {
-                        width: percentage($i / 12);
-                    }
-                }
-
-                &--lg {
-                  @include break--lg {
-                      width: percentage($i / 12);
-                  }
-                }
+        @for $i from 1 through 12 {
+          &--#{$i} {
+            flex-basis: ($i / 12) * 100%;
+            max-width: ($i / 12) * 100%;
+          }
+        }
+        @for $i from 1 through 12 {
+          &--#{$i} {
+            @include break--sm {
+              &--sm {
+                flex-basis: ($i / 12) * 100%;
+                max-width: ($i / 12) * 100%;
+              }
             }
+            @include break--md {
+              &--md {
+                flex-basis: ($i / 12) * 100%;
+                max-width: ($i / 12) * 100%;
+              }
+            }
+            @include break--lg {
+              &--lg {
+                flex-basis: ($i / 12) * 100%;
+                max-width: ($i / 12) * 100%;
+              }
+            }
+          }
         }
     }
 

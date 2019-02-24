@@ -1,51 +1,65 @@
 <template>
-    <div class="">
-        <span v-for="tag in todoTags">{{tag}}</span>
-    </div>
-    <!-- <ul v-if="todoTags.length > 0">
-        <li v-for='(tag, index) in todoTags' class='label label--tag label--light' v-bind:class="{ 'label--green': isInActiveItem }">{{tag}}</li>
-        <input v-if="isInActiveItem" class="" list="tagList" v-model="newTag" @keyup="onChange" />
-        <ul v-if="autocomplete.length > 0">
-            auto:<li v-for="(tag, index) in autocomplete" @click="addNewTag(tag.text)">{{tag.text}}</li>
-        </ul>
-    </ul> -->
+<div class="">
+	<ul v-if="!isInActiveItem && todo">
+		<li v-for='(tag, index) in todo.tags' :key="index" class='label label--tag label--light' v-bind:class="{ 'label--green': isInActiveItem }">{{tag}}</li>
+	</ul>
+
+	<input v-if="isInActiveItem" id="choices-text-remove-button" type="text" v-bind:value="todoTagsChoiceValue" placeholder="Add a new tag">
+</div>
 </template>
 
 <script>
-    // @ is an alias to /src
-    import {
-        mapGetters
-    } from 'vuex'
-    export default {
-        name: 'TodoItemTag',
-        props: [
-            'todoTags', 'isInActiveItem'
-        ],
-        data: function() {
-            return {
-                newTag: '',
-                autocomplete: []
-            }
-        },
-        computed: {
-            ...mapGetters([
-                'tags'
-            ]),
-            possibleTags: function () {
+// @ is an alias to /src
+import { mapGetters } from 'vuex'
+import Choices from 'choices.js'
+export default {
+	name: 'TodoItemTag',
+	props: [
+		'todo', 'isInActiveItem'
+	],
+	data: function () {
+		return {
+			newTag: '',
+			autocomplete: []
+		}
+	},
+	mounted: function () {
 
-                const filteredTags = this.tags.filter(tag => !this.todoTags.includes(tag.text))
-                return filteredTags
-            }
-        },
-        methods: {
-            onChange: function () {
-                this.autocomplete = this.tags.filter(tag =>  tag.text.startsWith(this.newTag.trim()))
-            },
-            addNewTag: function(text) {
-                this.todoTags.push(text);
-                this.autocomplete = [];
-                this.newTag = '';
-            }
-        }
-    }
+		if( !this.isInActiveItem ) {
+			return false
+		}
+		var textRemove = new Choices( document.getElementById( 'choices-text-remove-button' ), {
+			delimiter: ',',
+			maxItemCount: -1,
+			duplicateItemsAllowed: false
+		} );
+
+		textRemove.passedElement.element.addEventListener( 'addItem', ( e ) => {
+			this.todo.tags.push( e.detail.value );
+			this.updateTags()
+		}, );
+		textRemove.passedElement.element.addEventListener( 'removeItem', ( e ) => {
+			this.todo.tags = this.todo.tags.filter(function(value){
+				return value.text  === e.detail.value
+			});
+			this.updateTags()
+		} );
+
+	},
+	computed: {
+		...mapGetters( [
+			'tags'
+		] ),
+
+		todoTagsChoiceValue: function () {
+			let string = this.todo.tags.toString();
+			return string
+		}
+	},
+	methods: {
+		updateTags: function () {
+			this.$store.dispatch( 'updateTodo', this.todo );
+		},
+	}
+}
 </script>

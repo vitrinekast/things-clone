@@ -1,30 +1,38 @@
-import Vue from "vue";
-import axios from "axios";
-import VueAxios from "vue-axios";
 import { db } from '../main'
 import store from "../store/index.js";
 
+export const getDataFromSnapshot = ( querySnapshot ) => {
+	let array = [];
+	const dateItems = ['created', 'planned'];
+	querySnapshot.forEach( function ( doc ) {
+		let data = doc.data();
+		dateItems.forEach((date)=> {
+			if(data[date]) {
+				if(data[date].toDate) {
+					data[date] = data[date].toDate()
+				}
+			}
+		})
+
+		array.push( data )
+	} );
+	return array
+};
+
 export const ApiService = {
-	getDataFromSnapshot( querySnapshot ) {
-		let array = [];
-		querySnapshot.forEach( function ( doc ) {
-			array.push( doc.data() )
-		} );
-		return array
-	},
-	async get( resource, slug = "" ) {
+
+	async get( resource ) {
 		const uid = store.state.user.user.uid;
-        
-		return db.collection( resource ).where( "userId", "==", uid ).get()
+
+		return db.collection( resource ).where( "userId", "==", uid ).orderBy("order").get()
 			.then( function ( querySnapshot ) {
-				return ApiService.getDataFromSnapshot( querySnapshot )
+				return getDataFromSnapshot( querySnapshot )
 			} )
 			.catch( function ( error ) {
 				throw new Error( error );
 			} );
 	},
 	post( resource, params ) {
-
 		db.collection( resource ).doc( params.id ).set( params )
 			.then( ( data ) => {
 				return data
@@ -33,9 +41,9 @@ export const ApiService = {
 				throw new Error( error );
 			} );
 	},
-	update( resource, params ) {
+	async update( resource, params ) {
 
-        db.collection( resource ).doc( params.id ).update( params )
+        return db.collection( resource ).doc( params.id ).update( params )
 			.then( ( data ) => {
 				return data
 			} )

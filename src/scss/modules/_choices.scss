@@ -1,0 +1,43 @@
+form .choices {
+    &__list {
+        &--multiple {
+            display: inline-block;
+
+            .choices__item {
+                @extend .label;
+                @extend .label--tag;
+                @extend .label--green;
+                position: relative;
+
+                button {
+                    display: none;
+                }
+            }
+        }
+
+        &--dropdown {
+            display: none;
+            &.is-active {
+                display: block;
+            }
+
+            .choices__item {
+                padding: $gutter--sm/2 0;
+                color: color(grey, dark)
+            }
+        }
+    }
+
+    &__input {
+        display: inline-block;
+        // float: left;
+        margin: 0 0 !important;
+        width: auto !important;
+        font-size: $font-size--base;
+    }
+
+
+    .is-hidden {
+        display: none !important;
+    }
+}

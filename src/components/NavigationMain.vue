@@ -1,5 +1,5 @@
 <template>
-<nav class='nav nav--main'>
+<nav class='nav nav--main' v-bind:class="{ 'nav--active': menuOpen }">
     <p v-if="user">You're logged in!</p>
     <ul>
         <li class='nav__item'>
@@ -20,10 +20,6 @@
         <li class='nav__item'>
             <router-link to="/someday">🕐 Someday</router-link>
         </li>
-        <li class='nav__item'>
-            <router-link to="/styleguide">Style guide</router-link>
-        </li>
-
     </ul>
 
     <h5 v-if="projects">Projects</h5>
@@ -41,6 +37,7 @@
         <div class="col button button--white button--sm" @click="deleteAllTags">
             delete all tags
         </div>
+
     </div>
 
 
@@ -48,9 +45,7 @@
 </template>
 
 <script>
-import {
-    mapGetters
-} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'MainNavigation',
@@ -59,6 +54,7 @@ export default {
             projects: []
         }
     },
+    props: ['menuOpen'],
     computed: {
 
         ...mapGetters([

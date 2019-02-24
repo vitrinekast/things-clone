@@ -1,12 +1,12 @@
 <template>
-<nav class='nav nav--tags' v-if="tags.length > 1">
+<nav class='nav nav--tags' v-if="tags.length > 0">
     <ul>
+
         <li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': !filters.tag}" @click="clearActiveTag">
             alles
         </li>
-        <li :id="tag.id" v-for="(tag, index) in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.text }" @click="onTagClick(tag)">
+        <li :id="tag.id" v-for="tag in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.text }" @click="onTagClick(tag)">
             {{ tag.text }}
-            <span v-for='id in tag.todos'>{{id}}</span>
         </li>
 
     </ul>
@@ -14,11 +14,8 @@
 </template>
 
 <script>
-
 // @ is an alias to /src
-import {
-    mapGetters
-} from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
     name: 'Tags',
     computed: {

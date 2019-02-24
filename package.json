@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "choices.js": "^6.0.2",
     "chrono-node": "^1.3.11",
     "faker": "^4.1.0",
     "firebase": "^5.8.2",

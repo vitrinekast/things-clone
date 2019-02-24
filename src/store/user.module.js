@@ -1,4 +1,4 @@
-import router from "../router.js";
+import router from "@/router.js";
 import firebase from 'firebase';
 
 const initialState = {

@@ -5,11 +5,12 @@ const ID = () => {
 	return '_' + Math.random().toString( 36 ).substr( 2, 9 );
 };
 
-const baseTag = ( userId, text, todoId ) => {
+const baseTag = ( text, todoId ) => {
 	return {
 		id: ID(),
-		userId: userId,
+		userId: store.state.user.user.uid,
 		text: text,
+		order: -1,
 		todos: [ todoId ]
 	}
 };
@@ -19,23 +20,37 @@ export const TagService = {
 		return ApiService.get( "tags" );
 	},
 	create( tagText, todo ) {
+		const tag = baseTag( tagText, todo.id );
+		return ApiService.post( "tags", tag );
+	},
+	updateTodoIdInTag( tag, todo ) {
+		if( tag.todos.includes( todo.id ) ) { return false }
 
-		var result = store.state.tags.tags.find( function ( tag ) {
+		tag.todos.push( todo.id );
+		return ApiService.post( "tags", tag );
+
+	},
+	createOrUpdate( tagText, todo ) {
+		const result = store.state.tags.tags.find( function ( tag ) {
 			return tag.text === tagText
 		} );
-
-		if( result ) {
-			if( !result.todos.includes( todo.id ) ) {
-				result.todos.push( todo.id );
-				return ApiService.post( "tags", result );
-			}
-
-		} else {
-			var tag = baseTag( store.state.user.user.uid, tagText, todo.id );
-			return ApiService.post( "tags", tag );
-		}
+		result ? TagService.updateTodoIdInTag( result, todo ) : TagService.create( tagText, todo );
 	},
 	delete( payload ) {
 		return ApiService.delete( "tags", payload )
+	},
+	cleanup() {
+		let backup = store.state.tags.tags
+
+		backup.forEach( ( elem ) => {
+			elem.found = store.state.todos.todos.find( function ( todo ) {
+				return todo.tags.includes( elem.text )
+			} );
+
+			if( !elem.found ) {
+				TagService.delete( elem );
+			}
+		} )
+
 	}
 };

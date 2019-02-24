@@ -16,4 +16,8 @@
     &--ellipsis {
         @include ellipsis(auto);
     }
+
+    &--grey {
+        color: color(grey, dark)
+    }
 }

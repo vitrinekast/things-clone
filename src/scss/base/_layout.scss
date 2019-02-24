@@ -9,6 +9,10 @@ body,
 main {
     height: 100%;
     padding: $gutter--xlg $gutter--xlg*2;
+
+    @include break--sm {
+        padding: $gutter--md $gutter--sm;
+    }
 }
 .aside {
     @extend .col--2;

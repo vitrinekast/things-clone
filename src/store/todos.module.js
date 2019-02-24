@@ -1,6 +1,4 @@
-import store from "./index.js";
-import { db } from '../main'
-import { ApiService } from "@/common/api.service";
+import store from "@/store/index.js";
 import { TodoService } from "@/common/todo.service";
 
 
@@ -11,49 +9,53 @@ const initialState = {
 	filters: []
 };
 
-const ID = () => {
-	return '_' + Math.random().toString( 36 ).substr( 2, 9 );
-};
-
 export const state = { ...initialState };
 
 export const actions = {
-	async getAllTodos( { state, commit } ) {
+	async getAllTodos( { commit } ) {
 		if( !store.state.user.user ) { return false }
 		const data = await TodoService.get();
 		commit( 'setTodos', data );
 	},
-	async createTodo( { state, commit } ) {
+	async createTodo() {
 		if( !store.state.user.user ) { return false }
 		await TodoService.create();
 		this.dispatch( "getAllTodos" );
 	},
-
-	updateFilters( { state, commit }, payload ) {
+	updateAllTodos({state, commit}, payload) {
+		console.log('should update all todos', payload)
+		TodoService.updateOrder( payload ).then( () => {
+			this.dispatch( "getAllTodos" );
+			this.dispatch( "getAllTags" );
+		} )
+	},
+	updateFilters( { commit }, payload ) {
 		commit( "setFilters", payload );
 	},
-	updateTodo( { state, commit }, payload ) {
-		TodoService.update( payload ).then( (todo ) => {
-			console.log('got updated', todo)
+	updateTodo( {state }, payload ) {
+		if( payload.text.trim() === '' ) {
+			this.dispatch( "deleteTodo", payload );
+		} else {
+			TodoService.update( payload ).then( () => {
+				this.dispatch( "getAllTodos" );
+				this.dispatch( "getAllTags" );
+			} )
+		}
+	},
+	deleteTodo( payload ) {
+		TodoService.delete( payload ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
 		} )
-
 	},
-	deleteTodo( { state, commit }, payload ) {
-		TodoService.delete( payload ).then( ( ) => {
-			this.dispatch( "getAllTodos" );
-			this.dispatch( "getAllTags" );
-		} )
-	},
-	deleteAllTodos( { state, commit } ) {
-		state.todos.forEach((todo) => {
+	deleteAllTodos( { state } ) {
+		state.todos.forEach( ( todo ) => {
 			return TodoService.delete( todo );
-		})
+		} )
 
 		this.dispatch( "getAllTodos" );
 	},
-	setActiveTodo( { state, commit }, payload ) {
+	setActiveTodo( { commit }, payload ) {
 		commit( "setActiveTodo", payload.id );
 	}
 
@@ -75,6 +77,11 @@ export const mutations = {
 export const getters = {
 	todos( state ) {
 		return state.todos;
+	},
+	todo( state ) {
+		return state.todos.find( function ( todo ) {
+			return todo.id === state.activeTodoId;
+		} );
 	},
 	filters( state ) {
 		return state.filters;

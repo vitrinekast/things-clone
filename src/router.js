@@ -17,39 +17,20 @@ const router = new Router( {
 				requiresAuth: true
 			}
 		},
-	 {
-			path: '/styleguide',
-			name: 'styleguide',
-			component: () =>
-				import( './views/styleguide.vue' ),
-			meta: {
-				requiresAuth: true
-			}
-		},
 		{
 			path: '/inbox',
 			name: 'inbox',
 			component: () =>
-				import( './views/Inbox.vue' ),
+				import( './views/Overview.vue' ),
 			meta: {
 				requiresAuth: true
 			}
-		},
-		{
-			path: '/tags/:id',
-			name: 'tags',
-			component: () =>
-				import( './views/Tags.vue' ),
-			meta: {
-				requiresAuth: true
-			}
-
 		},
 		{
 			path: '/today',
 			name: 'today',
 			component: () =>
-				import( './views/Today.vue' ),
+				import( './views/Overview.vue' ),
 			meta: {
 				requiresAuth: true
 			}
@@ -58,7 +39,7 @@ const router = new Router( {
 			path: '/tomorrow',
 			name: 'tomorrow',
 			component: () =>
-				import( './views/Tomorrow.vue' ),
+				import( './views/Overview.vue' ),
 			meta: {
 				requiresAuth: true
 			}
@@ -76,7 +57,7 @@ const router = new Router( {
 			path: '/someday',
 			name: 'someday',
 			component: () =>
-				import( './views/Someday.vue' ),
+				import( './views/Overview.vue' ),
 			meta: {
 				requiresAuth: true
 			}

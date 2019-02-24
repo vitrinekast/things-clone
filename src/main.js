@@ -11,12 +11,12 @@ import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
-firebase.initializeApp(FIREBASE_CONFIG);
+firebase.initializeApp( FIREBASE_CONFIG );
 
 export const db = firebase.firestore()
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+new Vue( {
+	router,
+	store,
+	render: h => h( App )
+} ).$mount( '#app' )
