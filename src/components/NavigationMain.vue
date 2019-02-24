@@ -1,5 +1,5 @@
 <template>
-<nav class='nav nav--main' v-bind:class="{ 'nav--active': menuOpen }">
+<nav class='nav nav_main' v-bind:class="{ 'nav--active': menuOpen }">
     <p v-if="user">You're logged in!</p>
     <ul>
         <li class='nav__item'>

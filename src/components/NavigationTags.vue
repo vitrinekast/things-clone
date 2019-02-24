@@ -1,5 +1,5 @@
 <template>
-<nav class='nav nav--tags' v-if="tags.length > 0">
+<nav class='nav nav_tags' v-if="tags.length > 0">
     <ul>
 
         <li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': !filters.tag}" @click="clearActiveTag">

@@ -43,6 +43,19 @@ export const actions = {
 		if( !store.state.user.user ) { return false }
 		await ProjectService.create();
 		this.dispatch( "getAllProjects" );
+	},
+	addTodoToProject({state, commit}, todo) {
+		console.log(state)
+		const project = state.projects.find((project) => {
+			return project.id === todo.project
+		})
+		project.todos.push(todo.id);
+
+		ProjectService.update( project ).then( () => {
+			this.dispatch( "getAllTodos" );
+			this.dispatch( "getAllTags" );
+			this.dispatch( "getProject", project.id );
+		} )
 	}
 };
 export const mutations = {

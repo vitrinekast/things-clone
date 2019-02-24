@@ -8,7 +8,7 @@
         padding: $gutter--md;
     }
 
-    &--main {
+    &_main {
         height: 100%;
         padding: $gutter--xlg $gutter--lg;
 
@@ -29,7 +29,7 @@
         }
     }
 
-    &--tags {
+    &_tags {
         padding: $gutter--md 0 $gutter--sm;
 
         .label {
@@ -38,6 +38,28 @@
                 color: $color--white;
                 background: color(grey, base);
             }
+        }
+    }
+
+    &_todo {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        z-index: 2;
+        padding-bottom: $gutter--sm;
+
+        &_projects {
+            position: fixed;
+            padding: $gutter--sm;
+            top: 0;
+            left: 0;
+            width: calc(100% - #{$gutter--sm*2});
+            height: calc(100% - #{$gutter--sm*2});
+            margin: $gutter--sm;
+            background: color(grey, dark);
+            border-radius: 8px;
+            z-index: 2;
         }
     }
 }

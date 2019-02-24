@@ -36,11 +36,6 @@ export const ProjectService = {
 		return ApiService.post( "projects", project );
 	},
 	async update( payload ) {
-		// const todo = parseTodo( payload );
-		//
-		// todo.tags.forEach( ( tag ) => {
-		// 	TagService.createOrUpdate( tag, todo );
-		// } )
 		console.log('update service', payload)
 		return ApiService.update( "projects", payload )
 	},

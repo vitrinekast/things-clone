@@ -10,7 +10,7 @@
 
     &--white {
         border: 1px solid transparent;
-        @include button--color($color--black, rgba(color(grey, light), 0.3), color(grey, light));
+        @include button--color($color--black, color(grey, light), color(grey, light));
     }
 
     &--yellow {
@@ -43,30 +43,30 @@
     // button groups
 
     &__group {
-      display: flex !important;
-      flex-direction: row;
-      flex-wrap: wrap;
+        display: flex !important;
+        flex-direction: row;
+        flex-wrap: wrap;
 
-      &--left {
-          .button {
-              margin: 0 $gutter--sm $gutter--sm 0;
-          }
-      }
+        &--left {
+            .button {
+                margin: 0 $gutter--sm $gutter--sm 0;
+            }
+        }
 
-      &--right {
-          .button {
-              margin: 0 0 $gutter--sm $gutter--sm;
-          }
-      }
+        &--right {
+            .button {
+                margin: 0 0 $gutter--sm $gutter--sm;
+            }
+        }
 
-      &--center {
-          .button {
-              margin: 0 $gutter--sm $gutter--sm 0;
+        &--center {
+            .button {
+                margin: 0 $gutter--sm $gutter--sm 0;
 
-              &:last-child {
-                  margin-right: 0;
-              }
-          }
-      }
-  }
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
 }
