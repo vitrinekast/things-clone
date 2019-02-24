@@ -1,30 +1,20 @@
 import store from "@/store/index.js";
 import { ProjectService } from "@/common/project.service";
-
 const initialState = {
 	projects: []
 };
-
 export const state = { ...initialState };
-
 export const actions = {
 	async getAllProjects( { commit } ) {
-
 		if( !store.state.user.user ) { return false }
 		const data = await ProjectService.get();
-
 		commit( 'setProjects', data );
 	},
-	async getProject( { commit }, id ) {
-		const project = store.state.project.projects.find((project) => {
-			return project.id === id
-		})
+	async getProject( { commit } ) {
 		const data = await ProjectService.get();
-
 		commit( 'setProject', data );
 	},
-	updateProject( {state }, payload ) {
-
+	updateProject( { state }, payload ) {
 		ProjectService.update( payload ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
@@ -35,22 +25,18 @@ export const actions = {
 		state.projects.forEach( ( project ) => {
 			return ProjectService.delete( project );
 		} )
-
 		this.dispatch( "getAllProjects" );
 	},
-	async createProject( { state } ) {
-
+	async createProject( ) {
 		if( !store.state.user.user ) { return false }
 		await ProjectService.create();
 		this.dispatch( "getAllProjects" );
 	},
-	addTodoToProject({state, commit}, todo) {
-		console.log(state)
-		const project = state.projects.find((project) => {
+	addTodoToProject( { state }, todo ) {
+		const project = state.projects.find( ( project ) => {
 			return project.id === todo.project
-		})
-		project.todos.push(todo.id);
-
+		} )
+		project.todos.push( todo.id );
 		ProjectService.update( project ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );

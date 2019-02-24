@@ -3,12 +3,11 @@
     <ul>
 
         <li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': !filters.tag}" @click="clearActiveTag">
-            alles
+            all
         </li>
         <li :id="tag.id" v-for="tag in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.text }" @click="onTagClick(tag)">
-            {{ tag.text }}
+            #{{ tag.text }}
         </li>
-
     </ul>
 </nav>
 </template>

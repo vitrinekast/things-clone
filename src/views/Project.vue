@@ -54,7 +54,6 @@ export default {
 	},
 	methods: {
 		updateProject() {
-            console.log('this.project', this.project)
 			this.$store.dispatch( 'updateProject', this.project );
 		},
 	}

@@ -5,6 +5,7 @@
     display: inline-block;
     outline: 0;
     width: 100%;
+    font-family: $font-family--base;
 }
 
 #{$input__text}, textarea {

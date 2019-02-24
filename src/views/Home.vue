@@ -1,7 +1,7 @@
 <template>
 <div class="home">
     <header>
-        <h2>All todos</h2>
+        <h2>Backlog</h2>
     </header>
     <Calendar />
     <Navigation-tags />

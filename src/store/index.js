@@ -5,6 +5,7 @@ import VuexPersist from "vuex-persist";
 import tags from "./tags.module";
 import user from "./user.module";
 import todos from "./todos.module";
+import general from "./general.module";
 import project from "./project.module";
 
 const vuexPersist = new VuexPersist( {
@@ -21,6 +22,7 @@ export default new Vuex.Store( {
 		tags,
 		user,
 		project,
-		todos
+		todos,
+		general
 	}
 } );

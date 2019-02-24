@@ -12,6 +12,7 @@ main {
 
     @include break--sm {
         padding: $gutter--md $gutter--sm;
+        padding-top: $gutter--lg*2;
     }
 }
 .aside {

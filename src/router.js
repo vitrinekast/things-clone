@@ -84,6 +84,7 @@ const router = new Router( {
 } )
 
 router.beforeEach( ( to, from, next ) => {
+	store.dispatch( 'updateMenuOpen', false );
 	if( to.matched.some( record => record.meta.requiresAuth ) ) {
 		if( !store.state.user ) {
 			next( {

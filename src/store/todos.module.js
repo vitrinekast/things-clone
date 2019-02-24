@@ -1,16 +1,12 @@
 import store from "@/store/index.js";
 import { TodoService } from "@/common/todo.service";
-
-
 const initialState = {
 	todos: [],
 	activeTodoId: false,
 	filteredTodos: [],
 	filters: []
 };
-
 export const state = { ...initialState };
-
 export const actions = {
 	async getAllTodos( { commit } ) {
 		if( !store.state.user.user ) { return false }
@@ -22,18 +18,16 @@ export const actions = {
 		await TodoService.create();
 		this.dispatch( "getAllTodos" );
 	},
-	updateAllTodos({state, commit}, payload) {
-		console.log('should update all todos', payload)
+	updateAllTodos( { state }, payload ) {
 		TodoService.updateOrder( payload ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
 		} )
 	},
 	updateFilters( { commit }, payload ) {
-		console.log('update filders')
 		commit( "setFilters", payload );
 	},
-	updateTodo( {state }, payload ) {
+	updateTodo( { state }, payload ) {
 		if( payload.text.trim() === '' ) {
 			this.dispatch( "deleteTodo", payload );
 		} else {
@@ -53,13 +47,11 @@ export const actions = {
 		state.todos.forEach( ( todo ) => {
 			return TodoService.delete( todo );
 		} )
-
 		this.dispatch( "getAllTodos" );
 	},
 	setActiveTodo( { commit }, payload ) {
 		commit( "setActiveTodo", payload.id );
 	}
-
 };
 export const mutations = {
 	setTodos( state, payload ) {
@@ -91,7 +83,6 @@ export const getters = {
 		return state.activeTodoId;
 	},
 };
-
 export default {
 	state,
 	actions,

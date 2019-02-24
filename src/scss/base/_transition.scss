@@ -1,0 +1,19 @@
+
+.slide-left {
+    &-enter, &-leave-to {
+        transform: translateX(-100%);
+    }
+    &-enter-active, &-leave-active {
+        transition: $transition--bezier;
+    }
+}
+
+
+.slide-right {
+    &-enter, &-leave-to {
+        transform: translateX(100%);
+    }
+    &-enter-active, &-leave-active {
+        transition: $transition--bezier;
+    }
+}

@@ -1,13 +1,12 @@
 <template>
 <nav class='nav nav_fab'>
-    <div class="col button button--black button--sm" @click="createTodo">
-        + new todo
+    <div class="button button--ic button--sm button--circle button--blue" @click='createTodo'>
+        <i class="ic ic--md ic__add--light"></i>
     </div>
 </nav>
 </template>
 
 <script>
-
 export default {
     name: 'FabNavigation',
     methods: {

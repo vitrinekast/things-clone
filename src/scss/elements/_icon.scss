@@ -35,6 +35,10 @@
 
     &__add {
         background-image: url('#{$icon-path}ic__add.svg');
+
+        &--light {
+            background-image: url('#{$icon-path}ic__add--light.svg');
+        }
     }
 
     &__arrow {

@@ -9,16 +9,15 @@
     }
 
     &--white {
-        border: 1px solid transparent;
-        @include button--color($color--black, color(grey, light), color(grey, light));
+        @include button--color($color--black, $color--white, transparent);
     }
 
     &--yellow {
         @include button--color($color--black, $color--yellow, transparent);
     }
 
-    &--grey {
-        @include button--color(color(white, base), color(grey, base), color(grey, light));
+    &--blue {
+        @include button--color(color(white, base), color(blue, dark), transparent);
     }
 
     // Sizes
@@ -38,6 +37,17 @@
         border-style: solid;
         border-width: 1px;
         border-radius: 16px;
+    }
+
+    &--circle {
+        border-radius: 100%;
+        width: 3em;
+        height: 3em;
+    }
+    &--ic {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     // button groups
