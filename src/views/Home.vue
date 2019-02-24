@@ -28,6 +28,11 @@ export default {
         NavigationTags,
         Notification,
         TodoList
+    },
+    mounted: function () {
+        this.$store.dispatch('updateFilters', {
+            project: false
+        });
     }
 }
 </script>

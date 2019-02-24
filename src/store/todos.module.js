@@ -30,6 +30,7 @@ export const actions = {
 		} )
 	},
 	updateFilters( { commit }, payload ) {
+		console.log('update filders')
 		commit( "setFilters", payload );
 	},
 	updateTodo( {state }, payload ) {

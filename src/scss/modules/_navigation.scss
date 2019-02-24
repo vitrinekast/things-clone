@@ -1,37 +1,40 @@
 // Navigation
-.nav
-{
-    &--main
-    {
+
+.nav {
+    &_fab {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        padding: $gutter--md;
+    }
+
+    &--main {
         height: 100%;
         padding: $gutter--xlg $gutter--lg;
 
         @include break--sm {
             position: fixed;
             top: 24px;
-            left:0;
-            width: 100%;height: calc(100% - 24px);
+            left: 0;
+            width: 100%;
+            height: calc(100% - 24px);
             transition: $transition--bezier;
             transform: translate3d(-100%, 0, 0);
 
-
             &.nav--active {
+                z-index: 1;
                 transform: translate3d(0%, 0, 0);
                 background: rgba(color(grey, light), 1);
-                z-index: 1;
             }
         }
     }
 
-    &--tags
-    {
+    &--tags {
         padding: $gutter--md 0 $gutter--sm;
 
-        .label
-        {
+        .label {
             &--active,
-            &:hover
-            {
+            &:hover {
                 color: $color--white;
                 background: color(grey, base);
             }

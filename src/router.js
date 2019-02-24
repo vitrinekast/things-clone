@@ -63,6 +63,15 @@ const router = new Router( {
 			}
 		},
 		{
+			path: '/projects/:projectId',
+			name: 'project',
+			component: () =>
+				import( './views/Project.vue' ),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
 			path: '/login',
 			name: 'login',
 			component: () =>

@@ -42,7 +42,7 @@ export const ApiService = {
 			} );
 	},
 	async update( resource, params ) {
-
+		console.log('update', params)
         return db.collection( resource ).doc( params.id ).update( params )
 			.then( ( data ) => {
 				return data

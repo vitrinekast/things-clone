@@ -50,6 +50,9 @@ export default {
 				if( this.filters.tag ) {
 					array = this.todos.filter( todo => todo.tags.includes( this.filters.tag ) );
 				}
+				if( this.filters.project ) {
+					array = this.todos.filter( todo => todo.project === this.filters.project );
+				}
 				return array
 			},
 			set( value ) {

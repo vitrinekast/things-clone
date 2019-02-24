@@ -23,14 +23,19 @@
     </ul>
 
     <h5 v-if="projects">Projects</h5>
+    <li class='nav__item' v-for="(project, index) in projects" :key="index">
+        <router-link :to="{ name: 'project', params: { projectId: project.id }}">
+            <span v-if="project.title">{{project.title}}</span>
+            <span v-else>A new project</span>
+        </router-link>
+    </li>
+
+    <div class="button button--bordered button--grey button--sm d--inl-block" @click="createProject">
+        new project
+    </div>
 
     <div class="p--abs p--abs--bottom flex flex--center">
-        <div class="col button button--white button--sm" @click="createTodo">
-            new todo
-        </div>
-        <div class="col button button--white button--sm">
-            new project
-        </div>
+
         <div class="col button button--white button--sm" @click="deleteAllTodos">
             delete all todos
         </div>
@@ -49,26 +54,17 @@ import { mapGetters } from 'vuex'
 
 export default {
     name: 'MainNavigation',
-    data: function () {
-        return {
-            projects: []
-        }
-    },
     props: ['menuOpen'],
     computed: {
-
         ...mapGetters([
             'user',
             'tags',
-            // ...
+            'projects'
         ])
     },
-    mounted() {
-        // this.$store.dispatch('getTags');
-    },
     methods: {
-        createTodo: function() {
-            this.$store.dispatch('createTodo');
+        createProject: function() {
+            this.$store.dispatch('createProject');
         },
         deleteAllTodos: function() {
             this.$store.dispatch('deleteAllTodos');

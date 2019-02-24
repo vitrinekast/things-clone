@@ -18,7 +18,7 @@
     }
 
     &--grey {
-        @include button--color($color--black, color(grey, base), transparent);
+        @include button--color(color(white, base), color(grey, base), color(grey, light));
     }
 
     // Sizes
@@ -32,6 +32,12 @@
 
     &--lg {
         @include button--size($gutter--lg, $gutter--lg, $font-size--lg, $line-height--base, 0);
+    }
+
+    &--bordered {
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 16px;
     }
 
     // button groups
