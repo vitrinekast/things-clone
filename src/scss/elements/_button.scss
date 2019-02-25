@@ -8,6 +8,11 @@
         @include button--color($color--white, $color--black, transparent);
     }
 
+    // Styles
+    &--black {
+        @include button--color($color--white, $color--black, transparent);
+    }
+
     &--white {
         @include button--color($color--black, $color--white, transparent);
     }
@@ -16,8 +21,8 @@
         @include button--color($color--black, $color--yellow, transparent);
     }
 
-    &--blue {
-        @include button--color(color(white, base), color(blue, dark), transparent);
+    &--grey {
+        @include button--color(color(black, base), color(grey, light), darken(color(grey, light), 1));
     }
 
     // Sizes
@@ -36,7 +41,6 @@
     &--bordered {
         border-style: solid;
         border-width: 1px;
-        border-radius: 16px;
     }
 
     &--circle {

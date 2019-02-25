@@ -6,7 +6,7 @@
 		<draggable class="list-group list_draggable" element="ul" v-model="filteredTodos" :options="dragOptions" @start="isDragging = true" @end="isDragging = false">
 			<transition-group type="transition" :name="'flip-list'">
 
-			<li class="list-group-item" v-for="(todo, index) in todos" :key="todo.id">
+			<li class="list-group-item" v-for="(todo, index) in filteredTodos" :key="todo.id">
 				<div class="p--fixed p--abs--100 card__backdrop" v-if="todo.id === activeTodoId" @click="removeActiveTodo(todo)"></div>
 				<todo-item v-bind:todo="todo" v-bind:index="index" :active="todo.index === activeTodoId" />
 			</li>
@@ -79,24 +79,3 @@ export default {
 	},
 }
 </script>
-<style media="screen">
-.button {
-margin-top: 35px;
-}
-.flip-list-move {
-transition: transform 0.5s;
-}
-.no-move {
-transition: transform 0s;
-}
-
-.list-group {
-min-height: 20px;
-}
-.list-group-item {
-cursor: move;
-}
-.list-group-item i {
-cursor: pointer;
-}
-</style>
