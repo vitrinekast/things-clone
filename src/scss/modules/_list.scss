@@ -1,9 +1,38 @@
 // List
 
 .list {
+    &_draggable {
+        .list-group-item {
+            transition: background .2s ease-in;
+            background: transparent;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
 
-    &__type {
+            &:before {
+                @extend .p--abs--100;
+                transition: opacity .2s ease-in;
+                background: color(grey,light);
+                content: '';
+                z-index: 1;
+                opacity: 0;
+                pointer-events: none;
+            }
 
+            &.list_draggable {
+                &--ghost {
+                    &:before {
+                        opacity: 1;
+                        pointer-events: all;
+                    }
+                }
+
+                &--dragging {
+                    background: rgba(color(blue, light), .5);
+                }
+
+            }
+        }
     }
 
     &--todos {

@@ -76,7 +76,7 @@ export const TodoService = {
 	},
 	async updateOrder( payload ) {
 
-		payload.forEach( ( elem ) => {
+		return payload.forEach( ( elem ) => {
 			return ApiService.update( "todos", elem )
 		} )
 	},

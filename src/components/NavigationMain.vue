@@ -2,7 +2,7 @@
 <nav class='nav nav_main'>
 	<ul>
 		<li class='nav__item'>
-			<router-link to="/">Backlog</router-link>
+			<router-link to="/">Log</router-link>
 		</li>
 		<li class='nav__item'>
 			<router-link to="/inbox">Inbox</router-link>

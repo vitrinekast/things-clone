@@ -3,13 +3,14 @@
 
 	<ol v-if="todos" class='list list--todos'>
 
-		<draggable class="list-group" element="ul" v-model="filteredTodos" :options="dragOptions" @start="isDragging = true" @end="isDragging = false">
+		<draggable class="list-group list_draggable" element="ul" v-model="filteredTodos" :options="dragOptions" @start="isDragging = true" @end="isDragging = false">
+			<transition-group type="transition" :name="'flip-list'">
 
-			<li class="list-group-item" v-for="(todo, index) in filteredTodos" :key="index">
+			<li class="list-group-item" v-for="(todo, index) in todos" :key="todo.id">
 				<div class="p--fixed p--abs--100 card__backdrop" v-if="todo.id === activeTodoId" @click="removeActiveTodo(todo)"></div>
 				<todo-item v-bind:todo="todo" v-bind:index="index" :active="todo.index === activeTodoId" />
 			</li>
-
+		</transition-group>
 		</draggable>
 	</ol>
 
@@ -41,7 +42,9 @@ export default {
 				animation: 0,
 				group: "description",
 				disabled: false,
-				ghostClass: "ghost"
+				ghostClass: "list_draggable--ghost",
+				dragClass: 'list_draggable--dragging',
+				dragging: false
 			};
 		},
 		filteredTodos: {
@@ -58,12 +61,13 @@ export default {
 			set( value ) {
 				let array = [];
 				value.forEach( ( val, index ) => {
+					val.order = index;
 					array.push( {
 						order: index,
 						id: val.id
 					} )
 				} )
-				this.$store.dispatch( 'updateAllTodos', array );
+				this.$store.dispatch( 'updateAllTodos', {changes: array, allData: value} );
 			}
 		}
 	},
@@ -75,3 +79,24 @@ export default {
 	},
 }
 </script>
+<style media="screen">
+.button {
+margin-top: 35px;
+}
+.flip-list-move {
+transition: transform 0.5s;
+}
+.no-move {
+transition: transform 0s;
+}
+
+.list-group {
+min-height: 20px;
+}
+.list-group-item {
+cursor: move;
+}
+.list-group-item i {
+cursor: pointer;
+}
+</style>

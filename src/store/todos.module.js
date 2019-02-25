@@ -18,10 +18,13 @@ export const actions = {
 		await TodoService.create();
 		this.dispatch( "getAllTodos" );
 	},
-	updateAllTodos( { state }, payload ) {
-		TodoService.updateOrder( payload ).then( () => {
-			this.dispatch( "getAllTodos" );
-			this.dispatch( "getAllTags" );
+	updateAllTodos( { commit }, payload, allTodos ) {
+		commit( 'setTodos', payload.allData );
+
+		TodoService.updateOrder( payload.changes ).then( (data) => {
+			// console.log(data)
+			// this.dispatch( "getAllTodos" );
+			// this.dispatch( "getAllTags" );
 		} )
 	},
 	updateFilters( { commit }, payload ) {
