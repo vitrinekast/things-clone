@@ -18,10 +18,7 @@ export default {
     data: function() {
         return {
             events: [
-            //     {
-            //     time: '12:00',
-            //     text: '30 x 20 minuten festival'
-            // }
+            
         ]
 
         }

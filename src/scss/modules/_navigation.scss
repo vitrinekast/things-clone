@@ -70,6 +70,25 @@
 
     &__item {
         margin: $gutter--sm 0;
+        position: relative;
+        &--drag-target {
+            @extend .p--abs--100;
+        }
+
+        .sortable-chosen {
+            border-radius: 4px;
+            
+            position: relative;
+            &:before {
+                @extend .p--abs--100;
+                background: rgba(color(blue, light), 50);
+                border-radius: 4px;
+                content: '';
+            }
+            & > * {
+                display: none;
+            }
+        }
     }
 
     &__title {

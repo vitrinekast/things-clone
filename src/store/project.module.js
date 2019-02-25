@@ -32,15 +32,18 @@ export const actions = {
 		await ProjectService.create();
 		this.dispatch( "getAllProjects" );
 	},
+
 	addTodoToProject( { state }, todo ) {
+
 		const project = state.projects.find( ( project ) => {
 			return project.id === todo.project
 		} )
-		project.todos.push( todo.id );
+		if (project.todos.filter(t => t.id === todo.id).length === 0) {
+			  project.todos.push(todo.id)
+	  } 
 		ProjectService.update( project ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
-			this.dispatch( "getProject", project.id );
 		} )
 	}
 };

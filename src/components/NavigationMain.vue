@@ -20,32 +20,26 @@
 			<router-link to="/login">Login</router-link>
 		</li>
 	</ul>
-	<h5 class='nav__title' v-if="projects">Projects</h5>
-	<ul>
-		<draggable class="list-group list_draggable" element="ul" v-model="projects" :options="dragOptions" @start="isDragging = true" @end="isDragging = false">
+
+	<h5 class='nav__title' v-if="projects.length > 0">Projects</h5>
+
+	<ul v-if="projects.length > 0">
 		<li class='nav__item' v-for="(project, index) in projects" :key="project.id">
+
 			<router-link :to="{ name: 'project', params: { projectId: project.id }}">
 				<span v-if="project.title">{{project.title}}</span>
 				<span v-else class='t--grey'>New project</span>
+				<span>{{project.todos.length}}</span>
+				<draggable  :options="dragOptions" :project-id="project.id" class='nav__item--drag-target'></draggable>
 			</router-link>
 		</li>
-		</draggable>
-		<draggable v-model="projects" :options="dragOptions" @start="isDragging = true" @end="isDragging = false">
-			<div class="" style='background: red; width: 100px; height: 100px;'>
-
-			</div>
-		</draggable>
-
 	</ul>
 	<div class="p--abs p--abs--bottom flex">
 		<div class="col button button--grey button--bordered button--sm flex--center" @click="createProject">
 			<span class='d--block'>new project</span>
 		</div>
-		<div class="col button button--grey button--bordered button--sm flex--center" @click="deleteAllTodos">
-			<span class='d--block'>delete all todos</span>
-		</div>
-		<div class="col button button--grey button--bordered button--sm flex--center" @click="deleteAllTags">
-			<span class='d--block'>delete all tags</span>
+		<div class="col button button--grey button--bordered button--sm flex--center" @click="deleteAllData">
+			<span class='d--block'>delete all data</span>
 		</div>
 	</div>
 </nav>
@@ -58,21 +52,24 @@ export default {
 	components: {
 		draggable
 	},
+	
 	computed: {
 		...mapGetters( [
 			'user',
 			'tags',
-			'projects',
 			'menuOpen'
 		] ),
+		projects: {
+			get() {
+				return this.$store.getters.projects
+			},
+			set() {
+				this.$store.dispatch( 'setProjects', this.projects );
+			}
+		},
 		dragOptions() {
 			return {
-				animation: 0,
-				group: "description",
-				disabled: false,
-				ghostClass: "list_draggable--ghost",
-				dragClass: 'list_draggable--dragging',
-				dragging: false
+				group: "todo"
 			};
 		},
 	},
@@ -81,13 +78,11 @@ export default {
 			this.$store.dispatch( 'updateMenuOpen', false )
 			this.$store.dispatch( 'createProject' );
 		},
-		deleteAllTodos: function () {
+		deleteAllData: function () {
 			this.$store.dispatch( 'updateMenuOpen', false )
 			this.$store.dispatch( 'deleteAllTodos' );
-		},
-		deleteAllTags: function () {
-			this.$store.dispatch( 'updateMenuOpen', false )
 			this.$store.dispatch( 'deleteAllTags' );
+			this.$store.dispatch( 'deleteAllProjects' );
 		}
 	}
 }

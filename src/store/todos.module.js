@@ -22,23 +22,16 @@ export const actions = {
 		commit( 'setTodos', payload.allData );
 
 		TodoService.updateOrder( payload.changes ).then( (data) => {
-			// console.log(data)
-			// this.dispatch( "getAllTodos" );
-			// this.dispatch( "getAllTags" );
 		} )
 	},
 	updateFilters( { commit }, payload ) {
 		commit( "setFilters", payload );
 	},
 	updateTodo( { state }, payload ) {
-		if( payload.text.trim() === '' ) {
-			this.dispatch( "deleteTodo", payload );
-		} else {
-			TodoService.update( payload ).then( () => {
-				this.dispatch( "getAllTodos" );
-				this.dispatch( "getAllTags" );
-			} )
-		}
+		TodoService.update( payload ).then( () => {
+			this.dispatch( "getAllTodos" );
+			this.dispatch( "getAllTags" );
+		} )
 	},
 	deleteTodo( payload ) {
 		TodoService.delete( payload ).then( () => {

@@ -3,14 +3,14 @@
 
 	<ol v-if="todos" class='list list--todos'>
 
-		<draggable class="list-group list_draggable" element="ul" v-model="filteredTodos" :options="dragOptions" @start="isDragging = true" @end="isDragging = false">
-			<transition-group type="transition" :name="'flip-list'">
+		<draggable class="list-group list_draggable" element="ul" v-model="filteredTodos" :options="dragOptions" @end="onEnd">
 
-			<li class="list-group-item" v-for="(todo, index) in filteredTodos" :key="todo.id">
-				<div class="p--fixed p--abs--100 card__backdrop" v-if="todo.id === activeTodoId" @click="removeActiveTodo(todo)"></div>
-				<todo-item v-bind:todo="todo" v-bind:index="index" :active="todo.index === activeTodoId" />
-			</li>
-		</transition-group>
+			<transition-group type="transition" :name="'flip-list'">
+				<li class="list-group-item" v-for="(todo, index) in filteredTodos" :todo-id="todo.id" :key="todo.id">
+					<div class="p--fixed p--abs--100 card__backdrop" v-if="todo.id === activeTodoId" @click="removeActiveTodo(todo)"></div>
+					<todo-item v-bind:todo="todo" v-bind:index="index" :active="todo.index === activeTodoId" />
+				</li>
+			</transition-group>
 		</draggable>
 	</ol>
 
@@ -23,6 +23,7 @@
 import TodoItem from '@/components/TodoItem';
 import draggable from 'vuedraggable'
 import { mapGetters } from 'vuex'
+let idGlobal = 8;
 
 export default {
 	name: 'TodoList',
@@ -39,12 +40,11 @@ export default {
 		] ),
 		dragOptions() {
 			return {
-				animation: 0,
-				group: "description",
-				disabled: false,
+
+				group: { name: 'todo', pull: 'clone', put: false },
 				ghostClass: "list_draggable--ghost",
 				dragClass: 'list_draggable--dragging',
-				dragging: false
+
 			};
 		},
 		filteredTodos: {
@@ -67,7 +67,7 @@ export default {
 						id: val.id
 					} )
 				} )
-				this.$store.dispatch( 'updateAllTodos', {changes: array, allData: value} );
+				this.$store.dispatch( 'updateAllTodos', { changes: array, allData: value } );
 			}
 		}
 	},
@@ -75,6 +75,16 @@ export default {
 		removeActiveTodo: function ( todo ) {
 			this.$store.dispatch( 'setActiveTodo', false );
 			this.$store.dispatch( 'updateTodo', todo );
+		},
+		onEnd: function ( e ) {
+			const projectId = e.to.getAttribute( 'project-id' );
+			if( !projectId ) { return false };
+
+			let todo = this.todos.find( ( todo ) => { return todo.id === e.item.getAttribute( 'todo-id' ) } );
+			todo.project = e.to.getAttribute( 'project-id' );
+
+			this.$store.dispatch( 'updateTodo', todo );
+			this.$store.dispatch( 'addTodoToProject', todo );
 		}
 	},
 }

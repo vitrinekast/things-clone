@@ -25,6 +25,10 @@
         @include button--color(color(black, base), color(grey, light), darken(color(grey, light), 1));
     }
 
+    &--blue {
+        @include button--color(color(black, base), color(blue, dark), darken(color(grey, light), 1));
+    }
+
     // Sizes
     &--sm {
         @include button--size($gutter--sm/2, $gutter--sm, $font-size--sm, $line-height--base, 0);
