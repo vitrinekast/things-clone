@@ -26,7 +26,7 @@ export const actions = {
 };
 export const mutations = {
 	setTags( state, tags ) {
-
+		console.log('setTags mutation', tags)
 		state.tags = tags;
 	}
 };

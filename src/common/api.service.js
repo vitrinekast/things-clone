@@ -23,7 +23,7 @@ export const ApiService = {
 
 	async get( resource ) {
 		const uid = store.state.user.user.uid;
-		console.log('get re', resource, uid)
+
 		return db.collection( resource ).where( "userId", "==", uid ).orderBy("order").get()
 			.then( function ( querySnapshot ) {
 				return getDataFromSnapshot( querySnapshot )
@@ -33,7 +33,7 @@ export const ApiService = {
 			} );
 	},
 	post( resource, params ) {
-		console.log('post')
+
 		db.collection( resource ).doc( params.id ).set( params )
 			.then( ( data ) => {
 				return data
@@ -43,7 +43,7 @@ export const ApiService = {
 			} );
 	},
 	async update( resource, params ) {
-		console.log('update')
+
         return db.collection( resource ).doc( params.id ).update( params )
 			.then( ( data ) => {
 				return data
@@ -53,7 +53,7 @@ export const ApiService = {
 			} );
 	},
 	delete( resource, params ) {
-		console.log('delete', resource, params)
+
 		db.collection( resource ).doc( params.id ).delete()
 			.then( ( data ) => {
 				return data

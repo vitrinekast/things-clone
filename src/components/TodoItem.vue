@@ -1,21 +1,13 @@
 <template>
-<div class="card card--todo flex" v-bind:class="{ 'card--active': isActive(todo.id) }" @click="setActiveTodo">
+<div class="card card--todo flex" v-bind:class="{ 'card--active': isActive() }" @click="setActiveTodo">
 
 	<div class="col">
-		<input type="checkbox" name="" v-model="todo.done" class='card__checkbox' @change="submit">
+		<input type="checkbox" name="" v-model="todo.done" class='card__checkbox' @change="update">
+	</div>
+	<div class="col col--12" v-if="isActive()">
+		<todo-item-form :todo="todo"></todo-item-form>
 	</div>
 
-	<div class="col col--12" v-if="isActive(todo.id)">
-
-		<form class="" @submit.prevent="submit" v-if="isActive(todo.id)">
-			<input type="text" v-model="todo.text" name="" value="" placeholder="This is a new todo">
-			<textarea name="notes" v-model="todo.notes" placeholder="notes..."></textarea>
-			<todo-item-tag :todo="todo" v-if="isActive(todo.id)" :isInActiveItem="true"></todo-item-tag>
-			<div class="" v-if='todo.planned'>
-				{{todo.planned | getPrettyDate}}
-			</div>
-		</form>
-	</div>
 	<div class="col col--12" v-else>
 		<div class="fl--left">
 			<p class='t--ellipsis' v-if="todo.text">{{todo.text}}</p>
@@ -25,26 +17,32 @@
 			<i class="ic ic--sm ic__attatchment"></i>
 		</div>
 
-		<todo-item-tag :todo="todo" v-if="!isActive(todo.id)" :isInActiveItem="false" class='fl--left'></todo-item-tag>
+		<todo-item-tag :todo="todo" v-if="!isActive()" :isInActiveItem="false" class='fl--left'></todo-item-tag>
 
 	</div>
 
-	<todo-item-nav v-if="isActive(todo.id)" :projectMenu="projectMenu"></todo-item-nav>
+	<todo-item-nav v-if="isActive()" :projectMenu="projectMenu"></todo-item-nav>
 </div>
 </template>
 <script>
 // @ is an alias to /src
 import TodoItemTag from '@/components/TodoItemTag';
 import TodoItemNav from '@/components/TodoItemNav';
-import moment from 'moment'
+import TodoItemForm from '@/components/TodoItemForm';
+
+import { TodoMixin } from '@/common/todo.service'
+
 import { mapGetters } from 'vuex'
+
 export default {
 	name: 'TodoItem',
 	props: [
 		'todo', 'active'
 	],
+	mixins: [TodoMixin],
 	components: {
 		TodoItemTag,
+		TodoItemForm,
 		TodoItemNav
 	},
 	data: function () {
@@ -58,31 +56,12 @@ export default {
 			'projects'
 		] )
 	},
-	filters: {
-		getPrettyDate: function ( date ) {
-			return moment( date ).calendar( null, {
-				lastDay: '[Yesterday]',
-				sameDay: '[Today]',
-				nextDay: '[Tomorrow]',
-				lastWeek: '[last] dddd',
-				nextWeek: 'dddd',
-				sameElse: 'L'
-			} )
-		},
-	},
+
 	methods: {
-		submit: function () {
-			this.$store.dispatch( 'updateTodo', this.todo );
-		},
 		onKeyUp: function ( e ) {
 			this.todo.text = e.target.innerText;
 		},
-		isActive: function ( id ) {
-			return id === this.activeTodoId
-		},
-		setActiveTodo: function () {
-			this.$store.dispatch( 'setActiveTodo', this.todo );
-		}
+
 	}
 }
 </script>

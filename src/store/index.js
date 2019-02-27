@@ -24,5 +24,10 @@ export default new Vuex.Store( {
 		project,
 		todos,
 		general
+	},
+	mutations: {
+		resetState (state) {
+		    Object.assign(state, getDefaultState())
+		  }
 	}
 } );

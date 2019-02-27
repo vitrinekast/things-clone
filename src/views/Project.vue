@@ -34,7 +34,8 @@ export default {
     },
     computed: {
         ...mapGetters( [
-			'projects'
+			'projects',
+			'filters'
 		] ),
         project: {
             get() {
@@ -42,15 +43,13 @@ export default {
                     return project.id === this.$route.params.projectId;
                 })
             },
-            set() {
-                this.$store.dispatch( 'updateProject', this.project );
+            set(newValue) {
+                this.$store.dispatch( 'updateProject', newValue );
             }
         }
     },
     mounted: function () {
-        this.$store.dispatch('updateFilters', {
-            project: this.project.id
-        });
+        this.$store.dispatch('updateFilters', {project : this.project.id});
 	},
 	methods: {
 		updateProject() {

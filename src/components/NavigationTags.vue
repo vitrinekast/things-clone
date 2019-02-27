@@ -1,11 +1,12 @@
 <template>
 <nav class='nav nav_tags' v-if="tags.length > 0">
+
     <ul>
 
-        <li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': !filters.tag}" @click="clearActiveTag">
+        <li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === false}" @click="onTagClick(false)">
             all
         </li>
-        <li :id="tag.id" v-for="tag in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.text }" @click="onTagClick(tag)">
+        <li :id="tag.id" v-for="tag in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.id }" @click="onTagClick(tag.text)">
             #{{ tag.text }}
         </li>
     </ul>
@@ -23,21 +24,12 @@ export default {
             'filters'
         ])
     },
+    mounted: function() {
+        this.$store.dispatch('updateFilters', {tag: false});
+    },
     methods: {
-        onTagClick: function(tag) {
-            if (this.filters) {
-                this.$store.dispatch('updateFilters', {
-                    tag: tag.text
-                });
-            }
-        },
-        clearActiveTag: function() {
-            this.$store.dispatch('updateFilters', {
-                tag: false
-            });
-            // this.$store.dispatch('getFilteredTodos', {
-            //     tag: false
-            // });
+        onTagClick: function(value) {
+            this.$store.dispatch('updateFilters', {tag: value});
         }
     }
 }

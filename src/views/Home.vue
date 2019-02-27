@@ -4,6 +4,7 @@
         <h2>Log</h2>
     </header>
     <Calendar />
+
     <Navigation-tags />
 
     <Notification />
@@ -20,6 +21,7 @@ import Calendar from '@/components/Calendar';
 import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'home',
@@ -30,9 +32,7 @@ export default {
         TodoList
     },
     mounted: function () {
-        this.$store.dispatch('updateFilters', {
-            project: false
-        });
+        this.$store.dispatch('updateFilters', {project : false, tag: false});
     }
 }
 </script>

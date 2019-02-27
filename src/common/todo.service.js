@@ -2,7 +2,7 @@ import { ApiService } from "@/common/api.service";
 import { TagService } from "@/common/tag.service";
 import store from "../store/index.js";
 import firebase from "firebase"
-
+import moment from 'moment'
 import chrono from 'chrono-node'
 
 const ID = () => {
@@ -11,8 +11,7 @@ const ID = () => {
 
 const baseTodo = () => {
 	const userId = store.state.user.user.uid;
-	const filters = store.state.todos.filters;
-
+	console.log(store.state.todos.filters.project)
 	return {
 		userId: userId,
 		id: ID(),
@@ -20,8 +19,8 @@ const baseTodo = () => {
 		done: false,
 		notes: "",
 		order: -1,
-		project: filters.project ? filters.project : false,
-		tags: filters.tag ? [ filters.tag ] : [],
+		project: store.state.todos.filters.project,
+		tags: [store.state.todos.filters.tag],
 		deadline: false,
 		anytime: false,
 		planned: false,
@@ -84,3 +83,29 @@ export const TodoService = {
 		return ApiService.delete( "todos", payload )
 	}
 };
+
+export const TodoMixin = {
+	filters: {
+		getPrettyDate: function ( date ) {
+			return moment( date ).calendar( null, {
+				lastDay: '[Yesterday]',
+				sameDay: '[Today]',
+				nextDay: '[Tomorrow]',
+				lastWeek: '[last] dddd',
+				nextWeek: 'dddd',
+				sameElse: 'L'
+			} )
+		},
+	},
+	methods: {
+		isActive( ) {
+			return this.todo.id === this.$store.state.todos.activeTodoId
+		},
+		setActiveTodo() {
+			this.$store.dispatch( 'setActiveTodo', this.todo.id );
+		},
+		update() {
+			this.$store.dispatch( 'updateTodo', this.todo );
+		}
+	}
+}

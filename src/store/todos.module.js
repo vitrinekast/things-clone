@@ -4,13 +4,17 @@ const initialState = {
 	todos: [],
 	activeTodoId: false,
 	filteredTodos: [],
-	filters: []
+	filters: {
+		project: 'false',
+		tag: 'false'
+	}
 };
 export const state = { ...initialState };
 export const actions = {
 	async getAllTodos( { commit } ) {
 		if( !store.state.user.user ) { return false }
 		const data = await TodoService.get();
+		console.log('commit', commit)
 		commit( 'setTodos', data );
 	},
 	async createTodo() {
@@ -24,8 +28,13 @@ export const actions = {
 		TodoService.updateOrder( payload.changes ).then( (data) => {
 		} )
 	},
-	updateFilters( { commit }, payload ) {
-		commit( "setFilters", payload );
+	updateFilters( { commit, state }, payload ) {
+		console.log('updateFilters')
+		let filters = state.filters;
+		filters.tag  = payload.tag !== undefined ? payload.tag : filters.tag;
+		filters.project  = payload.project !== undefined ? payload.project : filters.project;
+
+		commit( "setFilters", filters );
 	},
 	updateTodo( { state }, payload ) {
 		TodoService.update( payload ).then( () => {
@@ -46,15 +55,12 @@ export const actions = {
 		this.dispatch( "getAllTodos" );
 	},
 	setActiveTodo( { commit }, payload ) {
-		commit( "setActiveTodo", payload.id );
+		commit( "setActiveTodo", payload );
 	}
 };
 export const mutations = {
 	setTodos( state, payload ) {
 		state.todos = payload;
-	},
-	createTodo( state, payload ) {
-		state.todos.push( payload );
 	},
 	setActiveTodo( state, payload ) {
 		state.activeTodoId = payload;
@@ -73,6 +79,7 @@ export const getters = {
 		} );
 	},
 	filters( state ) {
+
 		return state.filters;
 	},
 	activeTodoId( state ) {
