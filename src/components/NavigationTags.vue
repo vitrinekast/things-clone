@@ -1,12 +1,9 @@
 <template>
-<nav class='nav nav_tags' v-if="tags.length > 0">
+<nav class='nav nav_tags' v-if="tags && tags.length > 0">
 
     <ul>
-
-        <li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === false}" @click="onTagClick(false)">
-            all
-        </li>
-        <li :id="tag.id" v-for="tag in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.id }" @click="onTagClick(tag.text)">
+        <li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === false}" @click="onTagClick({tag: false})">#all</li>
+        <li :id="tag.id" v-for="tag in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.text }" @click="onTagClick({tag: tag.text})">
             #{{ tag.text }}
         </li>
     </ul>
@@ -15,7 +12,7 @@
 
 <script>
 // @ is an alias to /src
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
     name: 'Tags',
     computed: {
@@ -24,13 +21,8 @@ export default {
             'filters'
         ])
     },
-    mounted: function() {
-        this.$store.dispatch('updateFilters', {tag: false});
-    },
     methods: {
-        onTagClick: function(value) {
-            this.$store.dispatch('updateFilters', {tag: value});
-        }
+        ...mapActions( { onTagClick: 'updateFilters' } ),
     }
 }
 </script>
