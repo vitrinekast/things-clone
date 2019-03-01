@@ -5,8 +5,8 @@ const initialState = {
 	activeTodoId: false,
 	filteredTodos: [],
 	filters: {
-		project: 'false',
-		tag: 'false'
+		project: false,
+		tag: false
 	}
 };
 export const state = { ...initialState };

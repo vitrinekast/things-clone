@@ -11,7 +11,8 @@ const ID = () => {
 
 const baseTodo = () => {
 	const userId = store.state.user.user.uid;
-	console.log(store.state.todos.filters.project)
+	const tag = store.state.todos.filters.tag;
+	const project = store.state.todos.filters.project
 	return {
 		userId: userId,
 		id: ID(),
@@ -19,8 +20,8 @@ const baseTodo = () => {
 		done: false,
 		notes: "",
 		order: -1,
-		project: store.state.todos.filters.project,
-		tags: [store.state.todos.filters.tag],
+		project: project,
+		tags: tag ? [tag] : false,
 		deadline: false,
 		anytime: false,
 		planned: false,

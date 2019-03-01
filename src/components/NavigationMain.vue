@@ -29,7 +29,6 @@
 			<router-link :to="{ name: 'project', params: { projectId: project.id }}">
 				<span v-if="project.title">{{project.title}}</span>
 				<span v-else class='t--grey'>New project</span>
-				<span>{{project.todos.length}}</span>
 				<draggable  :options="dragOptions" :project-id="project.id" class='nav__item--drag-target'></draggable>
 			</router-link>
 		</li>
