@@ -1,7 +1,12 @@
 'use strict'
+const path = require('path');
 
 import { app, protocol, BrowserWindow, Tray, ipcMain, nativeImage, dialog } from 'electron'
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib'
+const resolve = file => path.resolve(__dirname, file);
+
+const rootPath = resolve('..');
+
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -24,12 +29,10 @@ app.on( 'window-all-closed', () => {
 const createTray = () => {
 	let icon = nativeImage.createFromDataURL( base64Icon )
 	tray = new Tray( icon )
-	tray.on( 'right-click', toggleWindow )
-	tray.on( 'double-click', toggleWindow )
+	tray.on( 'right-click', toggleTrayWindow )
+	tray.on( 'double-click', toggleTrayWindow )
 	tray.on( 'click', function ( event ) {
-		toggleWindow();
-		win.openDevTools( { mode: 'detach' } )
-
+		toggleTrayWindow();
 	} )
 }
 
@@ -49,11 +52,12 @@ const getWindowPosition = () => {
 
 const createWindow = () => {
 	win = new BrowserWindow( {
-		width: 300,
-		height: 450,
-		show: false,
-		frame: false,
+		width: 800,
+		height: 600,
+		show: true,
+		frame: false
 	} )
+
 
 	if( process.env.WEBPACK_DEV_SERVER_URL ) {
 
@@ -65,28 +69,23 @@ const createWindow = () => {
 	}
 }
 
-const base64Icon = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw
-7AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AkZCg87wZW7ewA
-AAp1JREFUOMuV1U2IVlUcx/HPnbc0MWwEF40hRWRQmWhEUi4KorlTQ0zQKgqSxKinRYuWrdq0iIp8DAy
-CFmYUUVTYY0Qw0SsYVDQRlFlQU4o4VDMUY9NzWtz/45znzo3yv7n/l3O+53fOPS+F/7R9G0l34Vlap/x
-PG+gPby76471jpJdxI4p/x5QrakPVZ3yI4lLSLH4LpetIT5N24AWKpZXAW4boXogFnGxQXEzhdQYHl0v
-pbtJkBIOkBqXpVhzAWIPi8hocxCyH5qp0e10oHY6BNy3P7szULyc9hzkGTjat8WPRqctkD3QORrJ211J
-srPV7CKP4i7S6CXxF+GtY2lG5D5yg+D6bckHaRXs463dV+OtJVzeBj4Q/inuy2uf4NYPvyVR38Vn4GzD
-ZAC5ezHbITsqtEU8HvGcjpFblDncpDma16yhvqit+c3mLuQj3Vm7rJ4r3kW+z+6sD80aKQWcivwm318B
-pHk9mA11PuSXil/B1thyrSA9HMI8nMtYNlDszcKdbHVcLkduCO0L1VxTv1VTv5plR3lrCuzga+c2YqB2
-QNEfqjV7EWl8c8X78kKleTTfWeuA49maDjlNuz8CHFykOYDEabKvg0Jqh+AB/Z4D7qs+h03gbxyK/FVf
-WL6FfsC/8tdGoZ0/hRKZ6A+2pUP1jdZecse01cGcBr2YNzqdcG6q/oDgS+7e3XLeF6j/wTvzM6Lfi2nQ
-KP8e0P6Ezn9X2488MvLnW75vwP2wCr8J5eD4upsxaHZzOwNNZcU2c3FfwWg1cDuISfIxH6fzedE8G90s
-8nuXH8B0eoXNc/6tQjsQfXaQz0/BEXUD3W4oF0hQPflTlJwZIl+FcOp86e2vvoj1Le6I/P974ZA2dBXk
-97qQ13Z8+3PS0+AdjKa1R95YOZgAAAABJRU5ErkJggg==`
+const base64Icon = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAADNklEQVQ4EXWTS2wbVRSGv5mxPY4fE8eOkzhpEluGlC5aSNQUVY3UBEShsEONQAiBWFGWrKhAIKQKIcQGdVWxAdRKkaALEGITFlVCUEjaqrQh7iOlOA8npo5f8SP2jO3LjA0RVOIsrq7OOf9/zv3vORL/Z+OiExtBhC6hO1L8JKUeThWgSg87eUMfOdSuvHWkX56I9tKpyBBPicy1VWlmIbl7nguuhX9j/kPQ9Xbh9FiP++NXRiXfY/3gcbVSyxX4IwmXroni9Hrlg8SnbZ+BZDZgnv+wRd5Zf3W4y/fliwecilOpYbMJ7LZW1KiDYUjUhMJ0vCYWE5nTy2f3fb5HMPbhjwM+tXvuWNjf38hvIRk7eLQgHo/WrFHYyVAqZsDuQw10s7CRe5Asbo7Nvn9ipVnjoHPlVKir0i/v3GZ0fw/RcJj5q0uUKjKiIejzKRyeOMDynTjL8d8Z7vR2bTU2Xp6Fs4rVxutPD5zp9WT3D4RCPHviOXy+DuyygV78AY9jk+EnnmEwHCUaGSS1fh1v9TfchXjjyLHnL9omJyeVR+o3Ov2KF1fouMVHUx3jLqORqzSETKk6YXqjyLJMpMcDlV9I1gv++oJmV2KxmDhzvPzUUE/6UFVxsOscYnvrCmr6HCuX75BbS+P3r5Kt7jOfZGBPXiBSn0fObM6/cH5pqqVzNjcVm1Um6+oXjt78FUKDcHNxjeXvkwjznzpcdiKH3yN7C9Jzy6TKpbrHK6asZs0xgYtf1edwG/FgKEdq/gZqQTffD5pfQuswB7Ek4drVefDzEr5ABptXX//uG33GwjYJPsmS17rF4uCTEk5/kT9j6yhKhUYbNJygiArbtxLYvXnCRyU83eLXd++xvUdgXTQ/GzavIDgEmWSOvkADtd2OK+Cgx6eTTmQJPgo2TaC1s2lCmlr/PWvgdNCHA7wBQXxXT2slyT3+uN0pmxoYubJeKFV3+oN0WjmqSq9V1LI9grXbrOoNirUaqmGIc1v39ctujZeEqVM5b1wyHI2RbFx8VEhQS93jfgve2ghrJavjJtmbJzkonLhrJa6/Nk3J7NIMWSaJr4/SJoKM1GQqM99y01wEw4r8BWmYRwV29lBWAAAAAElFTkSuQmCC`
 
 
-const toggleWindow = () => {
+const toggleTrayWindow = () => {
 	if( win.isVisible() ) {
 		win.hide()
 	} else {
-		showWindow()
+		showTrayWindow()
 	}
+}
+
+const showTrayWindow = () => {
+	const position = getWindowPosition()
+	win.setPosition( position.x, position.y, false )
+	win.setSize(350, 550)
+	win.show()
+	win.focus()
 }
 
 const showWindow = () => {
@@ -98,15 +97,4 @@ const showWindow = () => {
 
 ipcMain.on( 'show-window', () => {
 	showWindow()
-} )
-
-ipcMain.on( 'weather-updated', ( event, weather ) => {
-	// Show "feels like" temperature in tray
-	tray.setTitle( `${Math.round(weather.currently.apparentTemperature)}°` )
-
-	// Show summary and last refresh time as hover tooltip
-	const time = new Date( weather.currently.time ).toLocaleTimeString()
-	tray.setToolTip( `${weather.currently.summary} at ${time}` )
-
-
 } )
