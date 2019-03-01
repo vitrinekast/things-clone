@@ -32,6 +32,11 @@ export default {
         TodoList
     },
     mounted: function () {
+        const info = {
+            title: 'mounted!',
+            body: 'you mounted'
+        }
+        // var noti = new window.Notification(info.title, info)
         this.$store.dispatch('updateFilters', {project : false, tag: false});
     }
 }
