@@ -21,7 +21,6 @@ import Calendar from '@/components/Calendar';
 import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
-import { mapGetters } from 'vuex'
 
 export default {
     name: 'home',
@@ -32,11 +31,6 @@ export default {
         TodoList
     },
     mounted: function () {
-        const info = {
-            title: 'mounted!',
-            body: 'you mounted'
-        }
-        // var noti = new window.Notification(info.title, info)
         this.$store.dispatch('updateFilters', {project : false, tag: false});
     }
 }

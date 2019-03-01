@@ -23,7 +23,6 @@
 import TodoItem from '@/components/TodoItem';
 import draggable from 'vuedraggable'
 import { mapGetters } from 'vuex'
-let idGlobal = 8;
 
 export default {
 	name: 'TodoList',
@@ -80,7 +79,7 @@ export default {
 		},
 		onEnd: function ( e ) {
 			const projectId = e.to.getAttribute( 'project-id' );
-			if( !projectId ) { return false };
+			if( !projectId ) { return false }
 
 			let todo = this.todos.find( ( todo ) => { return todo.id === e.item.getAttribute( 'todo-id' ) } );
 			todo.project = e.to.getAttribute( 'project-id' );

@@ -14,7 +14,8 @@ export const actions = {
 		const data = await ProjectService.get();
 		commit( 'setProject', data );
 	},
-	updateProject( { state }, payload ) {
+	updateProject( context, payload ) {
+		console.log(context)
 		ProjectService.update( payload ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
@@ -27,7 +28,7 @@ export const actions = {
 		} )
 		this.dispatch( "getAllProjects" );
 	},
-	async createProject( ) {
+	async createProject() {
 		if( !store.state.user.user ) { return false }
 		await ProjectService.create();
 		this.dispatch( "getAllProjects" );
@@ -38,9 +39,9 @@ export const actions = {
 		const project = state.projects.find( ( project ) => {
 			return project.id === todo.project
 		} )
-		if (project.todos.filter(t => t.id === todo.id).length === 0) {
-			  project.todos.push(todo.id)
-	  } 
+		if( project.todos.filter( t => t.id === todo.id ).length === 0 ) {
+			project.todos.push( todo.id )
+		}
 		ProjectService.update( project ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );

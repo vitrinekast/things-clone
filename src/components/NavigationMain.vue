@@ -24,7 +24,7 @@
 	<h5 class='nav__title' v-if="projects.length > 0">Projects</h5>
 
 	<ul v-if="projects.length > 0">
-		<li class='nav__item' v-for="(project, index) in projects" :key="project.id">
+		<li class='nav__item' v-for="project in projects" :key="project.id">
 
 			<router-link :to="{ name: 'project', params: { projectId: project.id }}">
 				<span v-if="project.title">{{project.title}}</span>
@@ -52,7 +52,7 @@ export default {
 	components: {
 		draggable
 	},
-	
+
 	computed: {
 		...mapGetters( [
 			'user',

@@ -1,4 +1,4 @@
-import store from "@/store/index.js";
+	import store from "@/store/index.js";
 import { TodoService } from "@/common/todo.service";
 const initialState = {
 	todos: [],
@@ -14,7 +14,7 @@ export const actions = {
 	async getAllTodos( { commit } ) {
 		if( !store.state.user.user ) { return false }
 		const data = await TodoService.get();
-		console.log('commit', commit)
+		console.log( 'commit', commit )
 		commit( 'setTodos', data );
 	},
 	async createTodo() {
@@ -22,21 +22,20 @@ export const actions = {
 		await TodoService.create();
 		this.dispatch( "getAllTodos" );
 	},
-	updateAllTodos( { commit }, payload, allTodos ) {
+	updateAllTodos( { commit }, payload ) {
 		commit( 'setTodos', payload.allData );
 
-		TodoService.updateOrder( payload.changes ).then( (data) => {
-		} )
+		TodoService.updateOrder( payload.changes ).then( ( ) => {} )
 	},
 	updateFilters( { commit, state }, payload ) {
-		console.log('updateFilters')
+		console.log( 'updateFilters' )
 		let filters = state.filters;
-		filters.tag  = payload.tag !== undefined ? payload.tag : filters.tag;
-		filters.project  = payload.project !== undefined ? payload.project : filters.project;
+		filters.tag = payload.tag !== undefined ? payload.tag : filters.tag;
+		filters.project = payload.project !== undefined ? payload.project : filters.project;
 
 		commit( "setFilters", filters );
 	},
-	updateTodo( { state }, payload ) {
+	updateTodo( context, payload ) {
 		TodoService.update( payload ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
