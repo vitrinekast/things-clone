@@ -76,6 +76,17 @@ export const getters = {
 			return todo.id === state.activeTodoId;
 		} );
 	},
+	filteredTodos(state) {
+		console.log(state)
+		let array = state.todos;
+		if( state.filters.tag ) {
+			array = state.todos.filter( todo => todo.tags.includes( state.filters.tag ) );
+		}
+		if( state.filters.project ) {
+			array = state.todos.filter( todo => todo.project === state.filters.project );
+		}
+		return array
+	},
 	filters( state ) {
 
 		return state.filters;

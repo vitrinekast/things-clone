@@ -23,7 +23,7 @@
 </template>
 <script>
 // @ is an alias to /src
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 export default {
 	name: 'TodoItemNav',
 	props: [
@@ -33,9 +33,9 @@ export default {
 
 	},
 	computed: {
-		...mapGetters( [
-			'projects'
-		] )
+		...mapState( {
+			projects: state => state.project.projects
+		}),
 	},
 
 	methods: {

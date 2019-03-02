@@ -10,7 +10,7 @@
 
 <script>
 // @ is an alias to /src
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import Choices from 'choices.js'
 export default {
 	name: 'TodoItemTag',
@@ -47,9 +47,9 @@ export default {
 
 	},
 	computed: {
-		...mapGetters( [
-			'tags'
-		] ),
+		...mapState( {
+			tags: state => state.tags.tags
+		}),
 
 		todoTagsChoiceValue: function () {
 			let string = this.todo.tags.toString();

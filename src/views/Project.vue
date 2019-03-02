@@ -21,7 +21,7 @@ import Calendar from '@/components/Calendar';
 import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	name: 'home',

@@ -22,7 +22,7 @@
 // @ is an alias to /src
 import TodoItem from '@/components/TodoItem';
 import draggable from 'vuedraggable'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 
 export default {
 	name: 'TodoList',
@@ -30,31 +30,24 @@ export default {
 		TodoItem,
 		draggable
 	},
-	computed: {
-		...mapGetters( [
-			'todos',
-			'activeTodoId',
-			'filters'
-		] ),
-		dragOptions() {
-			return {
-
+	data() {
+		return {
+			dragOptions: {
 				group: { name: 'todo', pull: 'clone', put: false },
 				ghostClass: "list_draggable--ghost",
-				dragClass: 'list_draggable--dragging',
-
-			};
-		},
+				dragClass: 'list_draggable--dragging'
+			}
+		}
+	},
+	computed: {
+		...mapState( {
+			todos: state => state.todos.todos,
+			activeTodoId: state => state.todos.activeTodoId,
+			filters: state => state.todos.filters
+		} ),
 		filteredTodos: {
 			get() {
-				let array = this.todos;
-				if( this.filters.tag ) {
-					array = this.todos.filter( todo => todo.tags.includes( this.filters.tag ) );
-				}
-				if( this.filters.project ) {
-					array = this.todos.filter( todo => todo.project === this.filters.project );
-				}
-				return array
+				return this.$store.getters.filteredTodos
 			},
 			set( value ) {
 				let array = [];
