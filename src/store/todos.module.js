@@ -15,6 +15,7 @@ export const actions = {
 		if( !store.state.user.user ) { return false }
 		const data = await TodoService.get();
 		commit( 'setTodos', data );
+		console.log(data)
 	},
 	async createTodo() {
 		if( !store.state.user.user ) { return false }

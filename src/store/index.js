@@ -18,6 +18,9 @@ Vue.use( Vuex );
 
 export default new Vuex.Store( {
 	plugins: [ vuexPersist.plugin ],
+	state: {
+		menuOpen: true
+	},
 	modules: {
 		tags,
 		user,

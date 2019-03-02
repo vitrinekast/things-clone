@@ -1,4 +1,4 @@
-import { db } from '../main'
+import { db } from '../db'
 import store from "../store/index.js";
 
 export const getDataFromSnapshot = ( querySnapshot ) => {

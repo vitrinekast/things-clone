@@ -42,6 +42,7 @@ export default {
 	},
 	methods: {
 		fetchTodos() {
+			console.log('fetchting todos')
 			this.$store.dispatch( 'getAllTodos' );
 		},
 		fetchProjects() {
