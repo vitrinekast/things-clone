@@ -1,5 +1,4 @@
 import store from "@/store/index.js";
-import { GETALL, GET, UPDATE, DELETE, CREATE, ADD_TODO_TO_PROJECT } from "@/common/config"
 import { ProjectService } from "@/common/project.service";
 import router from '@/router'
 
@@ -7,6 +6,7 @@ const initialState = {
 	projects: []
 };
 const state = { ...initialState };
+
 const actions = {
 	async getAllProjects( { commit } ) {
 		if( !store.state.user.user ) { return false }
@@ -19,11 +19,9 @@ const actions = {
 	},
 	updateProject( { state } ) {
 		ProjectService.update( state.project ).then( ( ) => {
-
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
 			this.dispatch( "getProject", state.project.project.id );
-
 		} )
 	},
 	deleteAllProjects( { state } ) {

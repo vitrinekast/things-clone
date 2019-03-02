@@ -10,7 +10,6 @@ const actions = {
 };
 const mutations = {
 	setMenuOpen( state, payload ) {
-
 		state.menuOpen = payload;
 	}
 };

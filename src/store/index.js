@@ -14,14 +14,10 @@ const vuexPersist = new VuexPersist( {
 	storage: localStorage
 } );
 
-
 Vue.use( Vuex );
 
 export default new Vuex.Store( {
 	plugins: [ vuexPersist.plugin, createLogger() ],
-	state: {
-		menuOpen: true
-	},
 	modules: {
 		tags,
 		user,
