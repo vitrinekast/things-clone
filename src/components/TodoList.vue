@@ -47,12 +47,9 @@ export default {
 		},
 		filteredTodos: {
 			get() {
-				console.log( 'getting ilfets', this.filters )
 				let array = this.todos;
-				console.log(this.todos)
 				if( this.filters.tag ) {
 					array = this.todos.filter( todo => todo.tags.includes( this.filters.tag ) );
-					console.log(array)
 				}
 				if( this.filters.project ) {
 					array = this.todos.filter( todo => todo.project === this.filters.project );

@@ -15,7 +15,6 @@ export const actions = {
 		commit( 'setProject', data );
 	},
 	updateProject( context, payload ) {
-		console.log(context)
 		ProjectService.update( payload ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );

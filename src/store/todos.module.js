@@ -14,7 +14,6 @@ export const actions = {
 	async getAllTodos( { commit } ) {
 		if( !store.state.user.user ) { return false }
 		const data = await TodoService.get();
-		console.log( 'commit', commit )
 		commit( 'setTodos', data );
 	},
 	async createTodo() {
@@ -28,7 +27,6 @@ export const actions = {
 		TodoService.updateOrder( payload.changes ).then( ( ) => {} )
 	},
 	updateFilters( { commit, state }, payload ) {
-		console.log( 'updateFilters' )
 		let filters = state.filters;
 		filters.tag = payload.tag !== undefined ? payload.tag : filters.tag;
 		filters.project = payload.project !== undefined ? payload.project : filters.project;
