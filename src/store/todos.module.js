@@ -47,6 +47,17 @@ const actions = {
 			this.dispatch( "getAllTags" );
 		} )
 	},
+	updateAfteraSorting({state}, payload) {
+		let array = [];
+		payload.forEach( ( val, index ) => {
+			val.order = index;
+			array.push( {
+				order: index,
+				id: val.id
+			} )
+		} )
+		this.dispatch( 'updateAllTodos', { changes: array, allData: state.todos } );
+	},
 	deleteAllTodos( { state } ) {
 		state.todos.forEach( ( todo ) => {
 			return TodoService.delete( todo );
