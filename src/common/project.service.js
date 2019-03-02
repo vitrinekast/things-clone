@@ -29,6 +29,7 @@ export const ProjectService = {
 		return ApiService.post( "projects", project );
 	},
 	async update( payload ) {
+		console.log('updating', payload)
 		return ApiService.update( "projects", payload )
 	},
 	async delete( payload ) {

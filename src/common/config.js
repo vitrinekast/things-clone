@@ -6,3 +6,10 @@ export const FIREBASE_CONFIG = {
 	storageBucket: "vue-todo-4b7a5.appspot.com",
 	messagingSenderId: "948394401509"
 };
+
+export const GETALLPROJECTS = "getAllProjects";
+export const GETPROJECT = "getProject";
+export const UPDATEPROJECT = "updateProject";
+export const DELETEPROJECT = "deleteProject";
+export const CREATEPROJECT = "createProject";
+export const ADD_TODO_TO_PROJECT = "addTodoToProject";

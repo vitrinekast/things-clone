@@ -22,6 +22,7 @@
 // @ is an alias to /src
 
 import { mixinDevice } from '@/mixins/device';
+import { mapActions } from 'vuex'
 
 import MainNavigation from '@/components/NavigationMain.vue'
 import MobileNavigation from '@/components/NavigationMobile.vue'
@@ -41,18 +42,12 @@ export default {
 		this.fetchProjects();
 	},
 	methods: {
-		fetchTodos() {
-			console.log('fetchting todos')
-			this.$store.dispatch( 'getAllTodos' );
-		},
-		fetchProjects() {
-			this.$store.dispatch( 'getAllTags' );
-		},
-		fetchTags() {
-			this.$store.dispatch( 'getAllProjects' );
-		}
+		...mapActions( {
+			fetchTodos: 'getAllTodos',
+			fetchProjects: 'getAllTags',
+			fetchTags: 'getAllProjects',
+		} )
 	}
-
 }
 </script>
 

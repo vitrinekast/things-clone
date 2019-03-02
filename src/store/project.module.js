@@ -1,5 +1,8 @@
 import store from "@/store/index.js";
+import { GETALL, GET, UPDATE, DELETE, CREATE, ADD_TODO_TO_PROJECT } from "@/common/config"
 import { ProjectService } from "@/common/project.service";
+import router from '@/router'
+
 const initialState = {
 	projects: []
 };
@@ -14,11 +17,14 @@ export const actions = {
 		const data = await ProjectService.get();
 		commit( 'setProject', data );
 	},
-	updateProject( context, payload ) {
-		ProjectService.update( payload ).then( () => {
-			this.dispatch( "getAllTodos" );
-			this.dispatch( "getAllTags" );
-			this.dispatch( "getProject", payload.id );
+	updateProject( { state }, payload ) {
+		console.log( 'updateProject', state.project )
+		ProjectService.update( state.project ).then( ( data ) => {
+			console.log( 'state', state, data )
+			// this.dispatch( "getAllTodos" );
+			// this.dispatch( "getAllTags" );
+			// this.dispatch( "getProject", state.project.project.id );
+
 		} )
 	},
 	deleteAllProjects( { state } ) {
@@ -31,6 +37,12 @@ export const actions = {
 		if( !store.state.user.user ) { return false }
 		await ProjectService.create();
 		this.dispatch( "getAllProjects" );
+	},
+
+	setProjectById( { state, commit }, payload ) {
+		commit( 'setProject', state.projects.find( ( project ) => {
+			return project.id === payload
+		} ) );
 	},
 
 	addTodoToProject( { state }, todo ) {
@@ -60,7 +72,9 @@ export const getters = {
 		return state.projects;
 	},
 	project( state ) {
-		return state.project;
+		return state.projects.find( ( project ) => {
+			return project.id === router.currentRoute.params.projectId
+		} )
 	}
 };
 export default {

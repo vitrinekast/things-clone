@@ -5,8 +5,8 @@
     </header>
     <input type="text" name="" v-model="email" value="" placeholder="Email">
     <input type="password" name="" v-model="password" value="" placeholder="Password">
-    <button type="button button--white button--md" @click="signUp" name="button">register</button>
-    <button type="button button--white button--md" @click="login" name="button">login</button>
+    <button type="button button--white button--md" @click="signUp({email, password})" name="button">register</button>
+    <button type="button button--white button--md" @click="login({email, password})" name="button">login</button>
     <p v-if="response">{{response}}</p>
 </div>
 </template>
@@ -14,6 +14,7 @@
 <script>
 // @ is an alias to /src
 
+import { mapActions } from 'vuex'
 
 export default {
     name: 'home',
@@ -26,18 +27,11 @@ export default {
         }
     },
     methods: {
-        signUp: function() {
-            this.$store.dispatch('signUp', {
-                email: this.email,
-                password: this.password
-            });
-        },
-        login: function() {
-            this.$store.dispatch('login', {
-                email: this.email,
-                password: this.password
-            });
-        }
+        ...mapActions( {
+			signUp: 'signUp',
+			login: 'login',
+			fetchTags: 'getAllProjects',
+		} )
     }
 }
 </script>

@@ -1,16 +1,15 @@
 <template>
 <div class="home">
-    <header>
-        <h2><input type="text" v-model="project.title" placeholder="New Project" name="" value="" @blur="updateProject"></h2>
+	<header>
+		<h2><input type="text" v-model="project.title" placeholder="New Project" name="" value="" @blur="updateProject"></h2>
+	</header>
+	<Calendar />
 
-    </header>
-    <Calendar />
+	<Navigation-tags />
 
-    <Navigation-tags />
+	<Notification />
 
-    <Notification />
-
-    <todo-list filter-type="unnassigned" />
+	<todo-list filter-type="unnassigned" />
 
 </div>
 </template>
@@ -22,39 +21,31 @@ import Calendar from '@/components/Calendar';
 import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 
 export default {
-    name: 'home',
-    components: {
-        Calendar,
-        NavigationTags,
-        Notification,
-        TodoList
-    },
-    computed: {
-        ...mapGetters( [
-			'projects',
-			'filters'
-		] ),
-        project: {
-            get() {
-                return this.projects.find((project) => {
-                    return project.id === this.$route.params.projectId;
-                })
-            },
-            set(newValue) {
-                this.$store.dispatch( 'updateProject', newValue );
-            }
-        }
-    },
-    mounted: function () {
-        this.$store.dispatch('updateFilters', {project : this.project.id});
+	name: 'home',
+	components: {
+		Calendar,
+		NavigationTags,
+		Notification,
+		TodoList
+	},
+	computed: {
+		...mapState( {
+			project: state => state.project.project
+		} )
+	},
+	created: function () {
+		this.setProject(this.$route.params.projectId);
+		this.updateFilters({project: this.project.id})
 	},
 	methods: {
-		updateProject() {
-			this.$store.dispatch( 'updateProject', this.project );
-		},
+		...mapActions( {
+			updateProject: 'updateProject',
+			'setProject': 'setProjectById',
+			'updateFilters': 'updateFilters'
+		} )
 	}
 }
 </script>

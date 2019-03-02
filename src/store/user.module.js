@@ -8,10 +8,10 @@ const initialState = {
 export const state = { ...initialState };
 
 export const actions = {
-	signUp( { commit }, { email, password } ) {
+	signUp( { commit }, payload ) {
 		firebase
 			.auth()
-			.createUserWithEmailAndPassword( email, password )
+			.createUserWithEmailAndPassword( payload.email, payload.password )
 			.then( user => {
 				commit( "setUser", user )
 				router.push( "/" )
@@ -22,10 +22,10 @@ export const actions = {
 				router.push( "/" );
 			} );
 	},
-	login( { commit }, { email, password } ) {
+	login( { commit }, payload ) {
 		firebase
 			.auth()
-			.signInWithEmailAndPassword( email, password )
+			.signInWithEmailAndPassword( payload.email, payload.password )
 			.then( user => {
 				commit( "setUser", user );
 				router.push( "/" );
