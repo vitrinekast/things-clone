@@ -22,6 +22,7 @@ import Calendar from '@/components/Calendar';
 import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
+import dateFilters from '@/dateFilters';
 
 export default {
     name: 'home',

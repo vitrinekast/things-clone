@@ -47,6 +47,20 @@ const actions = {
 			this.dispatch( "getAllTags" );
 		} )
 	},
+	updateTodoWithFilters(context, payload) {
+		console.log('updating', payload)
+		if(payload.filters.date === 'today') {
+			payload.todo.planned = new Date()
+		}
+		if(payload.filters.date === 'tomorrow') {
+			payload.todo.planned =  moment(new Date()).add(1,'days');
+		}
+		if(payload.filters.date === 'someday') {
+			payload.todo.planned =  'someday'
+		}
+		this.dispatch( "updateTodo", payload.todo );
+	},
+
 	deleteTodo( payload ) {
 		TodoService.delete( payload ).then( () => {
 			this.dispatch( "getAllTodos" );

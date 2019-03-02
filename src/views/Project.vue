@@ -22,6 +22,7 @@ import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
 import { mapState, mapActions } from 'vuex'
+import dateFilters from '@/dateFilters';
 
 export default {
 	name: 'home',
@@ -38,13 +39,7 @@ export default {
 	},
 	created: function () {
 		this.setProject(this.$route.params.projectId);
-		this.updateFilters({
-			project: this.project.id,
-			noProject: false,
-			noDate: false,
-			tag: false,
-			date: false,
-		})
+		this.updateFilters(dateFilters('Project', this.$route.params.projectId))
 	},
 	methods: {
 		...mapActions( {

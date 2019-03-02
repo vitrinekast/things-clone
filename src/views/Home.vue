@@ -21,6 +21,7 @@ import Calendar from '@/components/Calendar';
 import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
+import dateFilters from '@/dateFilters';
 
 export default {
 	name: 'home',
@@ -31,13 +32,7 @@ export default {
 		TodoList
 	},
 	mounted: function () {
-		this.$store.dispatch( 'updateFilters', {
-			project: false,
-			tag: false,
-			noProject: false,
-			date: false,
-			noDate: false
-		 } );
+		this.$store.dispatch( 'updateFilters', dateFilters('Log') );
 	}
 }
 </script>

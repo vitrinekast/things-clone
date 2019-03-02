@@ -2,19 +2,34 @@
 <nav class='nav nav_main'>
 	<ul>
 		<li class='nav__item'>
-			<router-link to="/">Log</router-link>
+			<router-link to="/">
+				<span>Log</span>
+				<draggable :options="dragOptions" :date-id="'Log'" class="nav__item--drag-target"></draggable>
+			</router-link>
 		</li>
 		<li class='nav__item'>
-			<router-link to="/inbox">Inbox</router-link>
+			<router-link to="/inbox">
+				<span>Inbox</span>
+				<draggable :options="dragOptions" :date-id="'Inbox'" class="nav__item--drag-target"></draggable>
+			</router-link>
 		</li>
 		<li class='nav__item'>
-			<router-link to="/today">Today</router-link>
+			<router-link to="/today">
+				<span>Today</span>
+				<draggable :options="dragOptions" :date-id="'Today'" class="nav__item--drag-target"></draggable>
+			</router-link>
 		</li>
 		<li class='nav__item'>
-			<router-link to="/tomorrow">Tomorrow</router-link>
+			<router-link to="/tomorrow">
+				<span>Tomorrow</span>
+				<draggable :options="dragOptions" :date-id="'Tomorrow'" class="nav__item--drag-target"></draggable>
+			</router-link>
 		</li>
 		<li class='nav__item'>
-			<router-link to="/someday">Someday</router-link>
+			<router-link to="/someday">
+				<span>Someday</span>
+				<draggable :options="dragOptions" :date-id="'Someday'" class="nav__item--drag-target"></draggable>
+			</router-link>
 		</li>
 		<li class='nav__item' v-if='!user'>
 			<router-link to="/login">Login</router-link>

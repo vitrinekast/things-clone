@@ -26,7 +26,7 @@ import { mapGetters, mapState, mapActions } from 'vuex'
 import TodoItem from '@/components/TodoItem';
 import draggable from 'vuedraggable'
 import { mixinDevice } from '@/mixins/device';
-
+import dateFilters from '@/dateFilters';
 export default {
 	name: 'TodoList',
 	components: {
@@ -70,14 +70,27 @@ export default {
 			setSelectedTodo: 'setSelectedTodo'
 		} ),
 		onEnd: function ( e ) {
+			console.log(e.to)
+
+
 			const projectId = e.to.getAttribute( 'project-id' );
-			if( !projectId ) { return false }
+			const dateId = e.to.getAttribute( 'date-id' );
+			console.log()
+			if( projectId ) {
+				let todo = this.todos.find( ( todo ) => { return todo.id === e.item.getAttribute( 'todo-id' ) } );
+				todo.project = e.to.getAttribute( 'project-id' );
+				this.$store.dispatch( 'updateTodo', todo );
+				this.$store.dispatch( 'addTodoToProject', todo );
 
-			let todo = this.todos.find( ( todo ) => { return todo.id === e.item.getAttribute( 'todo-id' ) } );
-			todo.project = e.to.getAttribute( 'project-id' );
+			} else if(dateId) {
+				let todo = this.todos.find( ( todo ) => { return todo.id === e.item.getAttribute( 'todo-id' ) } );
+				console.log(todo)
+				const filters = dateFilters(dateId)
+				this.$store.dispatch( 'updateTodoWithFilters', {todo: todo, filters: filters} );
+			} else {
+				return false;
+			}
 
-			this.$store.dispatch( 'updateTodo', todo );
-			this.$store.dispatch( 'addTodoToProject', todo );
 		}
 	},
 }

@@ -23,6 +23,7 @@ import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
 import { mapState, mapActions } from 'vuex'
+import dateFilters from '@/dateFilters';
 
 export default {
     name: 'home',
@@ -33,14 +34,7 @@ export default {
         TodoList
     },
     mounted: function () {
-        this.updateFilters({
-            noProject: true,
-            noDate: true,
-            project: false,
-    		tag: false,
-    		date: false,
-    		noDate: true
-         })
+        this.updateFilters(dateFilters('Inbox'))
     },
     methods: {
 		...mapActions( {
