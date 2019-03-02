@@ -21,7 +21,7 @@ const baseTodo = () => {
 		notes: "",
 		order: -1,
 		project: project,
-		tags: tag ? [tag] : false,
+		tags: tag ? [tag] : [],
 		deadline: false,
 		anytime: false,
 		planned: false,
@@ -84,29 +84,3 @@ export const TodoService = {
 		return ApiService.delete( "todos", payload )
 	}
 };
-
-export const TodoMixin = {
-	filters: {
-		getPrettyDate: function ( date ) {
-			return moment( date ).calendar( null, {
-				lastDay: '[Yesterday]',
-				sameDay: '[Today]',
-				nextDay: '[Tomorrow]',
-				lastWeek: '[last] dddd',
-				nextWeek: 'dddd',
-				sameElse: 'L'
-			} )
-		},
-	},
-	methods: {
-		isActive( ) {
-			return this.todo.id === this.$store.state.todos.activeTodoId
-		},
-		setActiveTodo() {
-			this.$store.dispatch( 'setActiveTodo', this.todo.id );
-		},
-		update() {
-			this.$store.dispatch( 'updateTodo', this.todo );
-		}
-	}
-}

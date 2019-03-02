@@ -2,7 +2,7 @@
 import { TodoService } from "@/common/todo.service";
 const initialState = {
 	todos: [],
-	activeTodoId: false,
+	selectedTodoId: false,
 	filteredTodos: [],
 	filters: {
 		project: false,
@@ -35,6 +35,7 @@ export const actions = {
 		commit( "setFilters", filters );
 	},
 	updateTodo( context, payload ) {
+		console.log(context, payload)
 		TodoService.update( payload ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
@@ -52,16 +53,19 @@ export const actions = {
 		} )
 		this.dispatch( "getAllTodos" );
 	},
-	setActiveTodo( { commit }, payload ) {
-		commit( "setActiveTodo", payload );
+	setSelectedTodo( { state, commit }, payload ) {
+		if(this.getters.todo) {
+			this.dispatch( "updateTodo", this.getters.todo );
+		}
+		commit( "setSelectedTodo", payload );
 	}
 };
 export const mutations = {
 	setTodos( state, payload ) {
 		state.todos = payload;
 	},
-	setActiveTodo( state, payload ) {
-		state.activeTodoId = payload;
+	setSelectedTodo( state, payload ) {
+		state.selectedTodoId = payload;
 	},
 	setFilters( state, payload ) {
 		state.filters = payload;
@@ -71,9 +75,10 @@ export const getters = {
 	todos( state ) {
 		return state.todos;
 	},
+
 	todo( state ) {
 		return state.todos.find( function ( todo ) {
-			return todo.id === state.activeTodoId;
+			return todo.id === state.selectedTodoId;
 		} );
 	},
 	filteredTodos(state) {
@@ -91,8 +96,8 @@ export const getters = {
 
 		return state.filters;
 	},
-	activeTodoId( state ) {
-		return state.activeTodoId;
+	selectedTodoId( state ) {
+		return state.selectedTodoId;
 	},
 };
 export default {

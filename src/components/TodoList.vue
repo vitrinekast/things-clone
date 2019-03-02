@@ -2,16 +2,39 @@
 <div class="">
 
 	<ol v-if="todos" class='list list--todos'>
+		<div class="p--fixed p--abs--100 card__backdrop" v-if='selectedTodoId' @click="setSelectedTodo(false)"></div>
 
-		<draggable class="list-group list_draggable" element="ul" v-model="filteredTodos" :options="dragOptions" @end="onEnd">
+		<li v-for="todo in todos" :key="todo.id">
 
-			<transition-group type="transition" :name="'flip-list'">
-				<li class="list-group-item" v-for="(todo, index) in filteredTodos" :todo-id="todo.id" :key="todo.id">
-					<div class="p--fixed p--abs--100 card__backdrop" v-if="todo.id === activeTodoId" @click="removeActiveTodo(todo)"></div>
-					<todo-item v-bind:todo="todo" v-bind:index="index" :active="todo.index === activeTodoId" />
-				</li>
-			</transition-group>
-		</draggable>
+			<div class="card card--todo flex card--active" v-if='todo.id === selectedTodoId'>
+                <div class="">
+            		<input type="checkbox" name="" v-model="todo.done" class='card__checkbox' @change="updateTodo(todo)">
+            	</div>
+                <div class="" >
+                    <form class="" action="index.html" method="post" @submit.prevent="updateTodo(todo)">
+                        <input type="text" v-model="todo.text" name="text" value="" placeholder="This is a new todo">
+                        <textarea name="notes" v-model="todo.notes" placeholder="notes..."></textarea>
+                        <todo-item-tag :todo="todo"></todo-item-tag>
+                    </form>
+                </div>
+			</div>
+			<section class="card card--todo flex" v-else>
+                <div class="">
+            		<input type="checkbox" name="" v-model="todo.done" class='card__checkbox' @change="updateTodo(todo)">
+            	</div>
+                <div class="" @click='setSelectedTodo(todo.id)'>
+                    <div class="d--inl-block fl--left">
+                        <p class='t--ellipsis' v-if="todo.text">{{todo.text}}</p>
+                    </div>
+
+                    <ul class='d--inl-block fl--left'>
+                        <li v-for='tag in todo.tags' :key="tag.id" class='label label--tag label--light'>{{tag}}</li>
+                    </ul>
+                </div>
+			</section>
+		</li>
+
+
 	</ol>
 
 	<p v-if="todos.length < 1">There are now todos available</p>
@@ -20,63 +43,45 @@
 
 <script>
 // @ is an alias to /src
-import TodoItem from '@/components/TodoItem';
-import draggable from 'vuedraggable'
 import { mapGetters, mapState, mapActions } from 'vuex'
+import TodoItemTag from '@/components/TodoItemTag';
 
 export default {
 	name: 'TodoList',
-	components: {
-		TodoItem,
-		draggable
-	},
-	data() {
-		return {
-			dragOptions: {
-				group: { name: 'todo', pull: 'clone', put: false },
-				ghostClass: "list_draggable--ghost",
-				dragClass: 'list_draggable--dragging'
-			}
-		}
-	},
+    filters : {
+        getPrettyDate: function ( date ) {
+			return moment( date ).calendar( null, {
+				lastDay: '[Yesterday]',
+				sameDay: '[Today]',
+				nextDay: '[Tomorrow]',
+				lastWeek: '[last] dddd',
+				nextWeek: 'dddd',
+				sameElse: 'L'
+			} )
+		},
+        stringify: function (array) {
+            return array.toString();
+        }
+    },
+    components: {
+        TodoItemTag
+    },
 	computed: {
-		...mapState( {
-			todos: state => state.todos.todos,
-			activeTodoId: state => state.todos.activeTodoId,
-			filters: state => state.todos.filters
+		...mapGetters( {
+			todos: 'filteredTodos',
 		} ),
-		filteredTodos: {
-			get() {
-				return this.$store.getters.filteredTodos
-			},
-			set( value ) {
-				let array = [];
-				value.forEach( ( val, index ) => {
-					val.order = index;
-					array.push( {
-						order: index,
-						id: val.id
-					} )
-				} )
-				this.$store.dispatch( 'updateAllTodos', { changes: array, allData: value } );
-			}
-		}
+		...mapState( {
+			selectedTodoId: state => state.todos.selectedTodoId,
+		} )
 	},
 	methods: {
-		removeActiveTodo: function ( todo ) {
-			this.$store.dispatch( 'setActiveTodo', false );
-			this.$store.dispatch( 'updateTodo', todo );
-		},
-		onEnd: function ( e ) {
-			const projectId = e.to.getAttribute( 'project-id' );
-			if( !projectId ) { return false }
-
-			let todo = this.todos.find( ( todo ) => { return todo.id === e.item.getAttribute( 'todo-id' ) } );
-			todo.project = e.to.getAttribute( 'project-id' );
-
-			this.$store.dispatch( 'updateTodo', todo );
-			this.$store.dispatch( 'addTodoToProject', todo );
-		}
+        stringTags: function (todo) {
+            return todo.tags.toString();
+        },
+		...mapActions( {
+			updateTodo: 'updateTodo',
+			setSelectedTodo: 'setSelectedTodo'
+		} )
 	},
 }
 </script>

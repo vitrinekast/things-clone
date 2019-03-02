@@ -17,3 +17,12 @@
         transition: $transition--bezier;
     }
 }
+
+.fade {
+    &-enter, &-leave-to {
+        opacity: 0;
+    }
+    &-enter-active, &-leave-active {
+        transition: $transition--bezier;
+    }
+}
