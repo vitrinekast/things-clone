@@ -48,8 +48,9 @@ const parseTodo = ( todo ) => {
 		todo.text = todo.text.replace( '#' + tag, '' );
 	} )
 	if( dateResult[ 0 ] ) {
+		todo.planned = chrono.parseDate( todo.text )
 		todo.text = todo.text.replace( dateResult[ 0 ].text, '' );
-		todo.planned = dateResult[ 0 ].ref
+
 	}
 	todo.text = todo.text.trim();
 
@@ -62,6 +63,7 @@ export const TodoService = {
 	},
 	async create() {
 		const todo = baseTodo();
+		console.log('creating a new one', todo)
 		return ApiService.post( "todos", todo );
 	},
 	async update( payload ) {

@@ -39,7 +39,7 @@ const router = new Router( {
 			path: '/tomorrow',
 			name: 'tomorrow',
 			component: () =>
-				import( './views/Overview.vue' ),
+				import( './views/Tomorrow.vue' ),
 			meta: {
 				requiresAuth: true
 			}
@@ -57,7 +57,7 @@ const router = new Router( {
 			path: '/someday',
 			name: 'someday',
 			component: () =>
-				import( './views/Overview.vue' ),
+				import( './views/Someday.vue' ),
 			meta: {
 				requiresAuth: true
 			}

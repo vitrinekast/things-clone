@@ -38,7 +38,13 @@ export default {
 	},
 	created: function () {
 		this.setProject(this.$route.params.projectId);
-		this.updateFilters({project: this.project.id})
+		this.updateFilters({
+			project: this.project.id,
+			noProject: false,
+			noDate: false,
+			tag: false,
+			date: false,
+		})
 	},
 	methods: {
 		...mapActions( {

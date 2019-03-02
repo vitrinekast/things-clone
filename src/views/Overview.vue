@@ -32,7 +32,6 @@ export default {
         TodoList
     },
     mounted: function () {
-        console.log('yes', this.$route.params)
     }
 }
 </script>

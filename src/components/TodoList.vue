@@ -50,7 +50,6 @@ export default {
 		} ),
 		filteredTodos: {
 			get() {
-				console.log(this.$store)
 				return this.$store.getters.filteredTodos
 			},
 			set( value ) {

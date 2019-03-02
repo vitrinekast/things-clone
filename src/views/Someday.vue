@@ -1,7 +1,7 @@
 <template>
 <div class="home">
     <header>
-        <h2>⭐️ Today</h2>
+        <h2>⭐️ Someday</h2>
     </header>
 
     <Calendar />
@@ -35,10 +35,10 @@ export default {
     mounted: function () {
         this.updateFilters({
             noProject: false,
-            date: 'today',
+            noDate: false,
+            date: 'someday',
             project: false,
             tag: false,
-            noDate: false
          })
     },
     methods: {

@@ -4,7 +4,7 @@
 		<h2>Log</h2>
 	</header>
 	<Calendar />
-	
+
 	<Navigation-tags />
 
 	<Notification />
@@ -31,7 +31,13 @@ export default {
 		TodoList
 	},
 	mounted: function () {
-		this.$store.dispatch( 'updateFilters', { project: false, tag: false } );
+		this.$store.dispatch( 'updateFilters', {
+			project: false,
+			tag: false,
+			noProject: false,
+			date: false,
+			noDate: false
+		 } );
 	}
 }
 </script>

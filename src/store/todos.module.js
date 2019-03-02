@@ -20,7 +20,6 @@ const actions = {
 		if( !store.state.user.user ) { return false }
 		const data = await TodoService.get();
 		commit( 'setTodos', data );
-		console.log(data)
 	},
 	async createTodo() {
 		if( !store.state.user.user ) { return false }
@@ -43,7 +42,6 @@ const actions = {
 		commit( "setFilters", filters );
 	},
 	updateTodo( context, payload ) {
-		console.log(context, payload)
 		TodoService.update( payload ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
@@ -101,7 +99,6 @@ const getters = {
 		} );
 	},
 	filteredTodos(state) {
-		console.log('filteredTodos', state.filters)
 		let array = state.todos;
 		if( state.filters.tag ) {
 			array = array.filter( todo => todo.tags.includes( state.filters.tag ) );
@@ -116,8 +113,27 @@ const getters = {
 			array = array.filter( todo => todo.planned === false );
 		}
 		if(state.filters.date) {
-			console.log('still have to implement filtering on date')
-			// array = array.filter( todo => todo.planned === false );
+			console.info('still have to implement filtering on date')
+			const today = new moment();
+
+			if(state.filters.date === 'today') {
+				array = array.filter((todo) => {
+					if(todo.planned) {
+						const disDate = new moment(todo.planned);
+						return todo.planned && (disDate.diff(today, 'days') < 0 || today.isSame(disDate, 'd'))
+					} else { return false}
+				})
+			} else if (state.filters.date === 'tomorrow') {
+				array = array.filter((todo) => {
+					if(todo.planned) {
+						const disDate = new moment(todo.planned);
+						return todo.planned && ((disDate.diff(today, 'days') === 0 || disDate.diff(today, 'days') === 1) && !today.isSame(disDate, 'd'))
+					} else { return false}
+				})
+			} else if (state.filters.date === 'someday') {
+				array = array.filter( todo => todo.planned === 'someday' );
+			}
+
 		}
 
 		return array

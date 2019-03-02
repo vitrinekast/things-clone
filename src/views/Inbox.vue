@@ -33,10 +33,13 @@ export default {
         TodoList
     },
     mounted: function () {
-        console.log('ja?')
         this.updateFilters({
             noProject: true,
-            noDate: true
+            noDate: true,
+            project: false,
+    		tag: false,
+    		date: false,
+    		noDate: true
          })
     },
     methods: {
