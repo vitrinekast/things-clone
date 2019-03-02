@@ -21,7 +21,7 @@ const router = new Router( {
 			path: '/inbox',
 			name: 'inbox',
 			component: () =>
-				import( './views/Overview.vue' ),
+				import( './views/Inbox.vue' ),
 			meta: {
 				requiresAuth: true
 			}
@@ -30,7 +30,7 @@ const router = new Router( {
 			path: '/today',
 			name: 'today',
 			component: () =>
-				import( './views/Overview.vue' ),
+				import( './views/Today.vue' ),
 			meta: {
 				requiresAuth: true
 			}

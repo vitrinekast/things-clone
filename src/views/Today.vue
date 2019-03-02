@@ -1,7 +1,7 @@
 <template>
 <div class="home">
     <header>
-        <h2>📥 Inbox</h2>
+        <h2>⭐️ Today</h2>
     </header>
 
     <Calendar />
@@ -22,6 +22,7 @@ import Calendar from '@/components/Calendar';
 import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
+import { mapState, mapActions } from 'vuex'
 
 export default {
     name: 'home',
@@ -32,7 +33,17 @@ export default {
         TodoList
     },
     mounted: function () {
-        console.log('yes', this.$route.params)
-    }
+        console.log('ja?')
+        this.updateFilters({
+            noProject: false,
+            noDate: false,
+            date: new Date()
+         })
+    },
+    methods: {
+		...mapActions( {
+			'updateFilters': 'updateFilters'
+		} )
+	}
 }
 </script>

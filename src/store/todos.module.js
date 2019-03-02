@@ -1,12 +1,17 @@
-	import store from "@/store/index.js";
+import store from "@/store/index.js";
 import { TodoService } from "@/common/todo.service";
+import moment from 'moment';
+
 const initialState = {
 	todos: [],
 	selectedTodoId: false,
 	filteredTodos: [],
 	filters: {
 		project: false,
-		tag: false
+		tag: false,
+		noProject: false,
+		date: false,
+		noDate: false
 	}
 };
 const state = { ...initialState };
@@ -31,6 +36,9 @@ const actions = {
 		let filters = state.filters;
 		filters.tag = payload.tag !== undefined ? payload.tag : filters.tag;
 		filters.project = payload.project !== undefined ? payload.project : filters.project;
+		filters.noProject = payload.noProject !== undefined ? payload.noProject : filters.noProject;
+		filters.noDate = payload.noDate !== undefined ? payload.noDate : filters.noDate;
+		filters.date = payload.date !== undefined ? payload.date : filters.date;
 
 		commit( "setFilters", filters );
 	},
@@ -93,14 +101,25 @@ const getters = {
 		} );
 	},
 	filteredTodos(state) {
-		console.log(state)
+		console.log('filteredTodos', state.filters)
 		let array = state.todos;
 		if( state.filters.tag ) {
-			array = state.todos.filter( todo => todo.tags.includes( state.filters.tag ) );
+			array = array.filter( todo => todo.tags.includes( state.filters.tag ) );
 		}
 		if( state.filters.project ) {
-			array = state.todos.filter( todo => todo.project === state.filters.project );
+			array = array.filter( todo => todo.project === state.filters.project );
 		}
+		if(state.filters.noProject) {
+			array = array.filter( todo => todo.project === false );
+		}
+		if(state.filters.noDate) {
+			array = array.filter( todo => todo.planned === false );
+		}
+		if(state.filters.date) {
+			console.log('still have to implement filtering on date')
+			// array = array.filter( todo => todo.planned === false );
+		}
+
 		return array
 	},
 	filters( state ) {

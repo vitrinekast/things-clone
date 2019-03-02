@@ -9,7 +9,7 @@
 
 	<Notification />
 
-	<todo-list filter-type="unnassigned" />
+	<todo-list />
 
 </div>
 </template>
