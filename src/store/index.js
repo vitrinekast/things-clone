@@ -7,6 +7,7 @@ import user from "./user.module";
 import todos from "./todos.module";
 import general from "./general.module";
 import project from "./project.module";
+import createLogger from 'vuex/dist/logger'
 
 const vuexPersist = new VuexPersist( {
 	key: "my-app",
@@ -17,7 +18,7 @@ const vuexPersist = new VuexPersist( {
 Vue.use( Vuex );
 
 export default new Vuex.Store( {
-	plugins: [ vuexPersist.plugin ],
+	plugins: [ vuexPersist.plugin, createLogger() ],
 	state: {
 		menuOpen: true
 	},
