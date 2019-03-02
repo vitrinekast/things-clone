@@ -5,9 +5,9 @@ const initialState = {
 	user: null
 };
 
-export const state = { ...initialState };
+const state = { ...initialState };
 
-export const actions = {
+const actions = {
 	signUp( { commit }, payload ) {
 		firebase
 			.auth()
@@ -37,12 +37,12 @@ export const actions = {
 			} );
 	}
 };
-export const mutations = {
+const mutations = {
 	setUser( state, payload ) {
 		state.user = payload.user
 	}
 };
-export const getters = {
+const getters = {
 	user( state ) {
 		return state.user;
 	},

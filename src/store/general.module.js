@@ -2,19 +2,19 @@ const initialState = {
 	menuOpen: false,
 	count: 0
 };
-export const state = { ...initialState };
-export const actions = {
+const state = { ...initialState };
+const actions = {
 	updateMenuOpen( { commit }, payload ) {
 		commit( 'setMenuOpen', payload );
 	}
 };
-export const mutations = {
+const mutations = {
 	setMenuOpen( state, payload ) {
 
 		state.menuOpen = payload;
 	}
 };
-export const getters = {
+const getters = {
 	menuOpen( state ) {
 		return state.menuOpen;
 	}

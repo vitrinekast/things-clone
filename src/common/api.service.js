@@ -1,7 +1,7 @@
 import { db } from '../db'
 import store from "../store/index.js";
 
-export const getDataFromSnapshot = ( querySnapshot ) => {
+const getDataFromSnapshot = ( querySnapshot ) => {
 	let array = [];
 	const dateItems = ['created', 'planned'];
 	querySnapshot.forEach( function ( doc ) {

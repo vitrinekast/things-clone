@@ -6,9 +6,9 @@ const initialState = {
 	tag: {}
 };
 
-export const state = { ...initialState };
+const state = { ...initialState };
 
-export const actions = {
+const actions = {
 	async getAllTags( { commit } ) {
 
 		if( !store.state.user.user ) { return false }
@@ -35,12 +35,12 @@ export const actions = {
 		this.dispatch( "getAllTags" );
 	}
 };
-export const mutations = {
+const mutations = {
 	setTags( state, tags ) {
 		state.tags = tags;
 	}
 };
-export const getters = {
+const getters = {
 	tags( state ) {
 
 		return state.tags;

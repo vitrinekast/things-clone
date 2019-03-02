@@ -9,8 +9,8 @@ const initialState = {
 		tag: false
 	}
 };
-export const state = { ...initialState };
-export const actions = {
+const state = { ...initialState };
+const actions = {
 	async getAllTodos( { commit } ) {
 		if( !store.state.user.user ) { return false }
 		const data = await TodoService.get();
@@ -60,7 +60,7 @@ export const actions = {
 		commit( "setSelectedTodo", payload );
 	}
 };
-export const mutations = {
+const mutations = {
 	setTodos( state, payload ) {
 		state.todos = payload;
 	},
@@ -71,7 +71,7 @@ export const mutations = {
 		state.filters = payload;
 	},
 };
-export const getters = {
+const getters = {
 	todos( state ) {
 		return state.todos;
 	},

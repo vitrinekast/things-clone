@@ -6,8 +6,8 @@ import router from '@/router'
 const initialState = {
 	projects: []
 };
-export const state = { ...initialState };
-export const actions = {
+const state = { ...initialState };
+const actions = {
 	async getAllProjects( { commit } ) {
 		if( !store.state.user.user ) { return false }
 		const data = await ProjectService.get();
@@ -58,7 +58,7 @@ export const actions = {
 		} )
 	}
 };
-export const mutations = {
+const mutations = {
 	setProjects( state, project ) {
 		state.projects = project;
 	},
@@ -66,7 +66,7 @@ export const mutations = {
 		state.project = project;
 	},
 };
-export const getters = {
+const getters = {
 	projects( state ) {
 		return state.projects;
 	},
