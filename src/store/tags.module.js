@@ -16,6 +16,17 @@ export const actions = {
 
 		commit( 'setTags', data );
 	},
+	addNewTagToTodo( context, payload ) {
+		payload.todo.tags.push( payload.text );
+		this.dispatch( "updateTodo", payload.todo );
+	},
+	removeTagFromTodo( context, payload ) {
+
+		payload.todo.tags = payload.todo.tags.filter( function ( value ) {
+			return value.text === payload.text
+		} );
+		this.dispatch( "updateTodo", payload.todo );
+	},
 	deleteAllTags( { state } ) {
 		state.tags.forEach( ( tag ) => {
 			return TagService.delete( tag );

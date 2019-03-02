@@ -53,7 +53,7 @@ export const actions = {
 		} )
 		this.dispatch( "getAllTodos" );
 	},
-	setSelectedTodo( { state, commit }, payload ) {
+	setSelectedTodo( { commit }, payload ) {
 		if(this.getters.todo) {
 			this.dispatch( "updateTodo", this.getters.todo );
 		}

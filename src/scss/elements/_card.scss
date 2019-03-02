@@ -1,14 +1,14 @@
 .card {
     box-shadow: 0 0 ;
     background: transparent;
-    transition: .1s ease-in;
+    transition: $transition--bezier;
     position: relative;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     padding: $gutter--sm/2 $gutter--sm;
     flex-wrap: nowrap;
-
+    box-shadow: 0 0 0 rgba(0,0,0,.2);
     &--ghost {
         background: rgba(color(blue, dark), .5 );
         border-radius: 8px;

@@ -1,67 +1,55 @@
 <template>
-<div class="card card--todo flex" v-bind:class="{ 'card--active': isActive() }" @click="setActiveTodo">
+	<section class="card card--todo flex" v-bind:class="{ 'card--active': todo.id === selectedTodoId }">
 
-	<div class="col">
-		<input type="checkbox" name="" v-model="todo.done" class='card__checkbox' @change="update">
-	</div>
-	<div class="col col--12" v-if="isActive()">
-		<todo-item-form :todo="todo"></todo-item-form>
-	</div>
-
-	<div class="col col--12" v-else>
-		<div class="fl--left">
-			<p class='t--ellipsis' v-if="todo.text">{{todo.text}}</p>
-			<p v-else class='t--grey'>This is a new todo</p>
-		</div>
-		<div v-if="todo.notes.length > 0" class="button btn--ic fl--left">
-			<i class="ic ic--sm ic__attatchment"></i>
+		<div class="">
+			<input type="checkbox" name="" v-model="todo.done" class='card__checkbox' @change="updateTodo(todo)">
 		</div>
 
-		<todo-item-tag :todo="todo" v-if="!isActive()" :isInActiveItem="false" class='fl--left'></todo-item-tag>
+		<div class="" v-if="todo.id === selectedTodoId" >
+			<form class="" action="index.html" method="post" @submit.prevent="updateTodo(todo)">
+				<input type="text" v-model="todo.text" name="text" value="" placeholder="This is a new todo">
+				<textarea name="notes" v-model="todo.notes" placeholder="notes..."></textarea>
+				<todo-item-tag :todo="todo"></todo-item-tag>
+			</form>
+		</div>
 
-	</div>
+		<div class="" v-else @click='setSelectedTodo(todo.id)'>
+			<div class="d--inl-block fl--left">
+				<p class='t--ellipsis' v-if="todo.text">{{todo.text}}</p>
+				<p class='t--ellipsis' v-else>A fresh new todo</p>
+			</div>
 
-	<todo-item-nav v-if="isActive()" :projectMenu="projectMenu"></todo-item-nav>
-</div>
+			<ul class='d--inl-block fl--left'>
+				<li v-for='tag in todo.tags' :key="tag.id" class='label label--tag label--light'>{{tag}}</li>
+			</ul>
+		</div>
+
+	</section>
+
 </template>
+
 <script>
 // @ is an alias to /src
+import { mapState, mapActions } from 'vuex'
 import TodoItemTag from '@/components/TodoItemTag';
-import TodoItemNav from '@/components/TodoItemNav';
-import TodoItemForm from '@/components/TodoItemForm';
-
-import { TodoMixin } from '@/common/todo.service'
-
-import { mapGetters } from 'vuex'
 
 export default {
 	name: 'TodoItem',
-	props: [
-		'todo', 'active'
-	],
-	mixins: [TodoMixin],
-	components: {
-		TodoItemTag,
-		TodoItemForm,
-		TodoItemNav
-	},
-	data: function () {
-		return {
-			projectMenu: false
-		}
-	},
+
+    components: {
+        TodoItemTag
+    },
 	computed: {
-		...mapGetters( [
-			'activeTodoId',
-			'projects'
-		] )
+		...mapState( {
+			selectedTodoId: state => state.todos.selectedTodoId,
+		} )
 	},
-
+	props: ['todo'],
 	methods: {
-		onKeyUp: function ( e ) {
-			this.todo.text = e.target.innerText;
-		},
-
+		...mapActions( {
+			updateTodo: 'updateTodo',
+			setSelectedTodo: 'setSelectedTodo'
+		} )
 	}
 }
 </script>

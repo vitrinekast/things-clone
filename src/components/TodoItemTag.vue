@@ -27,16 +27,11 @@ export default {
 		const textRemove = new Choices( document.querySelector(selector), options );
 
 		textRemove.passedElement.element.addEventListener( 'addItem', ( e ) => {
-			console.log('add?',this)
-			this.todo.tags.push( e.detail.value );
-			this.updateTodo(this.todo)
-		} );
+				this.addNewTagToTodo({todo: this.todo,text: e.detail.value})
+			} )
 		textRemove.passedElement.element.addEventListener( 'removeItem', ( e ) => {
-			this.todo.tags = this.todo.tags.filter(function(value){
-				return value.text  === e.detail.value
-			});
-			this.updateTodo(this.todo)
-		} );
+				this.removeTagFromTodo({todo: this.todo,text: e.detail.value})
+			} );
 
 	},
 	computed: {
@@ -49,7 +44,9 @@ export default {
 			return tags.toString()
 		},
 		...mapActions( {
-			updateTodo: 'updateTodo'
+			updateTodo: 'updateTodo',
+			addNewTagToTodo: 'addNewTagToTodo',
+			removeTagFromTodo: 'removeTagFromTodo'
 		} ),
 	}
 }

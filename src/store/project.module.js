@@ -17,13 +17,12 @@ export const actions = {
 		const data = await ProjectService.get();
 		commit( 'setProject', data );
 	},
-	updateProject( { state }, payload ) {
-		console.log( 'updateProject', state.project )
-		ProjectService.update( state.project ).then( ( data ) => {
-			console.log( 'state', state, data )
-			// this.dispatch( "getAllTodos" );
-			// this.dispatch( "getAllTags" );
-			// this.dispatch( "getProject", state.project.project.id );
+	updateProject( { state } ) {
+		ProjectService.update( state.project ).then( ( ) => {
+
+			this.dispatch( "getAllTodos" );
+			this.dispatch( "getAllTags" );
+			this.dispatch( "getProject", state.project.project.id );
 
 		} )
 	},

@@ -2,7 +2,6 @@ import { ApiService } from "@/common/api.service";
 import { TagService } from "@/common/tag.service";
 import store from "../store/index.js";
 import firebase from "firebase"
-import moment from 'moment'
 import chrono from 'chrono-node'
 
 const ID = () => {
