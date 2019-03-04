@@ -7,13 +7,15 @@ const dateFilters = ( type, attr ) => {
 			tag: false,
 			noProject: false,
 			date: false,
-			noDate: false
+			noDate: false,
+			unfinished: true,
 		};
 		break;
 	case 'Inbox':
 		return {
 			noProject: true,
 			noDate: true,
+			unfinished: true,
 			project: false,
 			tag: false,
 			date: false,
@@ -24,6 +26,7 @@ const dateFilters = ( type, attr ) => {
 			project: attr,
 			noProject: false,
 			noDate: false,
+			unfinished: true,
 			tag: false,
 			date: false,
 		};
@@ -32,6 +35,7 @@ const dateFilters = ( type, attr ) => {
 		return {
 			noProject: false,
 			noDate: false,
+			unfinished: true,
 			date: 'someday',
 			project: false,
 			tag: false,
@@ -43,13 +47,15 @@ const dateFilters = ( type, attr ) => {
 			date: 'today',
 			project: false,
 			tag: false,
-			noDate: false
+			noDate: false,
+			unfinished: true,
 		};
 		break;
 	case 'Tomorrow':
 		return {
 			noProject: false,
 			noDate: false,
+			unfinished: true,
 			date: 'tomorrow',
 			project: false,
 			tag: false

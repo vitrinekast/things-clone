@@ -1,7 +1,7 @@
 <template>
 <div class="home">
     <header>
-        <h2>📥 Inboxie</h2>
+        <h2>📥 Inbox</h2>
     </header>
 
     <Calendar />

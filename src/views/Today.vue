@@ -34,6 +34,7 @@ export default {
         TodoList
     },
     mounted: function () {
+        console.log(dateFilters('Today'))
         this.updateFilters(dateFilters('Today'))
     },
     methods: {

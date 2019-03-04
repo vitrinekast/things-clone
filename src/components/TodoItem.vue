@@ -9,15 +9,16 @@
 
 		<div class="" v-if="todo.id === selectedTodoId" >
 			<form class="" action="index.html" method="post" @submit.prevent="updateTodo(todo)">
-				<input type="text" v-model="todo.text" name="text" value="" placeholder="This is a new todo">{{todo.planned | prettyDate}}
+				<input type="text" v-model="todo.text" name="text" value="" placeholder="This is a new todo">
 				<textarea name="notes" v-model="todo.notes" placeholder="notes..."></textarea>
 				<todo-item-tag :todo="todo"></todo-item-tag>
+				<input type="date" v-model='todo.planend' name="" value="">
 			</form>
 		</div>
 
 		<div class="" v-else @click='setSelectedTodo(todo.id)'>
 			<div class="d--inl-block fl--left">
-				<p class='t--ellipsis' v-if="todo.text">{{todo.text}} | {{todo.planned }}</p>
+				<p class='t--ellipsis' v-if="todo.text">{{todo.text}}</p>
 				<p class='t--ellipsis' v-else>A fresh new todo</p>
 			</div>
 

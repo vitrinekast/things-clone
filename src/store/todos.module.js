@@ -38,6 +38,7 @@ const actions = {
 		filters.noProject = payload.noProject !== undefined ? payload.noProject : filters.noProject;
 		filters.noDate = payload.noDate !== undefined ? payload.noDate : filters.noDate;
 		filters.date = payload.date !== undefined ? payload.date : filters.date;
+		filters.unfinished = payload.unfinished !== undefined ? payload.unfinished : filters.unfinished;
 
 		commit( "setFilters", filters );
 	},
@@ -117,6 +118,9 @@ const getters = {
 		if( state.filters.tag ) {
 			array = array.filter( todo => todo.tags.includes( state.filters.tag ) );
 		}
+		if( state.filters.unfinished ) {
+			array = array.filter( todo => todo.done === false );
+		}
 		if( state.filters.project ) {
 			array = array.filter( todo => todo.project === state.filters.project );
 		}
@@ -127,7 +131,6 @@ const getters = {
 			array = array.filter( todo => todo.planned === false );
 		}
 		if(state.filters.date) {
-			console.info('still have to implement filtering on date')
 			const today = new moment();
 
 			if(state.filters.date === 'today') {
