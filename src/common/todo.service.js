@@ -3,6 +3,8 @@ import { TagService } from "@/common/tag.service";
 import store from "../store/index.js";
 import firebase from "firebase"
 import chrono from 'chrono-node'
+import _ from 'underscore';
+import moment from 'moment';
 
 const ID = () => {
 	return '_' + Math.random().toString( 36 ).substr( 2, 9 );
@@ -19,8 +21,8 @@ const baseTodo = () => {
 		done: false,
 		notes: "",
 		order: -1,
-		project: project,
-		tags: tag ? [tag] : [],
+		project: project === undefined || project === false ? false : project,
+		tags: project === undefined || project === false ? [] : [tag],
 		deadline: false,
 		anytime: false,
 		planned: false,
@@ -63,7 +65,7 @@ export const TodoService = {
 	},
 	async create() {
 		const todo = baseTodo();
-		console.log('creating a new one', todo)
+		console.log('create', todo)
 		return ApiService.post( "todos", todo );
 	},
 	async update( payload ) {
@@ -83,5 +85,77 @@ export const TodoService = {
 	},
 	async delete( payload ) {
 		return ApiService.delete( "todos", payload )
+	},
+	filter (filters, todos) {
+		console.log('filter them!')
+		const today = new moment();
+		if( filters.tag !== undefined ) {
+			todos = todos.filter( todo => todo.tags.includes( filters.tag ) );
+		}
+		if( filters.done !== undefined ) {
+			todos = todos.filter( todo => todo.done === filters.done );
+		}
+		if( filters.project !== undefined ) {
+			todos = todos.filter( todo => todo.project === filters.project );
+		}
+
+		if( filters.date  !== undefined) {
+console.log(filters.date)
+			if( filters.date === 'today' ) {
+				todos = todos.filter( ( todo ) => {
+					if( todo.planned ) {
+						const disDate = new moment( todo.planned );
+						return todo.planned && ( disDate.diff( today, 'days' ) < 0 || today.isSame( disDate, 'd' ) )
+					} else { return false }
+				} )
+			} else if( filters.date === 'tomorrow' ) {
+				todos = todos.filter( ( todo ) => {
+					if( todo.planned ) {
+						const disDate = new moment( todo.planned );
+						return todo.planned && ( ( disDate.diff( today, 'days' ) === 0 || disDate.diff( today, 'days' ) === 1 ) && !today.isSame( disDate, 'd' ) )
+					} else { return false }
+				} )
+			} else {
+				todos = todos.filter( todo => todo.planned === filters.date );
+			}
+
+		}
+
+		return todos
+	},
+	setDateFromDateType ( type ) {
+		if( type === 'today' ) {
+			return new Date()
+		} else if( type === 'tomorrow' ) {
+			return moment( new Date() ).add( 1, 'days' );
+		} else if( type === 'someday' ) {
+			return 'someday'
+		} else {
+			return false
+		}
+	},
+
+	groupByProject(todos) {
+		let result = _.groupBy( todos, 'project' );
+
+		for( var item in result ) {
+			let project = store.state.project.projects.find( project => project.id === item );
+
+			if( !project ) {
+				project = {};
+				project.title = false;
+			}
+
+			project.items = result[ item ];
+			result[ item ] = project
+		}
+
+		result = _.sortBy(result, 'title');
+
+
+		return result;
+
 	}
+
+
 };

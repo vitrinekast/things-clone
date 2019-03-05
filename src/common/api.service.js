@@ -16,7 +16,6 @@ const getDataFromSnapshot = ( querySnapshot ) => {
 
 		array.push( data )
 	} );
-	console.log(array)
 	return array
 };
 const getDataFromDoc = ( querySnapshot ) => {
@@ -58,7 +57,7 @@ export const ApiService = {
 			} );
 	},
 	post( resource, params ) {
-
+		console.log('post', resource, params)
 		db.collection( resource ).doc( params.id ).set( params )
 			.then( ( data ) => {
 				return data

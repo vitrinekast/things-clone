@@ -91,7 +91,6 @@ export default {
 		},
 		deleteAllData: function () {
 			this.$store.dispatch( 'updateMenuOpen', false )
-			this.$store.dispatch( 'deleteAllTodos' );
 			this.$store.dispatch( 'deleteAllTags' );
 		}
 	}

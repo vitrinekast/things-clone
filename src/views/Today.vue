@@ -10,7 +10,7 @@
 
     <Notification />
 
-    <todo-list filter-type="unnassigned" />
+    <todo-list  v-bind:grouped="true" />
 
 </div>
 </template>
@@ -34,7 +34,6 @@ export default {
         TodoList
     },
     mounted: function () {
-        console.log(dateFilters('Today'))
         this.updateFilters(dateFilters('Today'))
     },
     methods: {

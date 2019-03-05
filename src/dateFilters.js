@@ -1,66 +1,52 @@
 const dateFilters = ( type, attr ) => {
-	switch ( type ) {
+	console.log( 'dateFilters', type, attr )
 
-	case 'Log':
+	if( type === 'Log' ) {
 		return {
-			project: false,
-			tag: false,
-			noProject: false,
-			date: false,
-			noDate: false,
-			unfinished: true,
+			project: undefined,
+			tag: undefined,
+			date: undefined,
+			done: false
 		};
-		break;
-	case 'Inbox':
+	} else if( type === 'Inbox' ) {
 		return {
-			noProject: true,
-			noDate: true,
-			unfinished: true,
+			done: false,
 			project: false,
-			tag: false,
+			tag: undefined,
 			date: false,
 		};
-		break;
-	case 'Project':
+	} else if( type === 'Project' ) {
 		return {
 			project: attr,
-			noProject: false,
-			noDate: false,
-			unfinished: true,
-			tag: false,
-			date: false,
+			done: false,
+			tag: undefined,
+			date: undefined,
 		};
-		break;
-	case 'Someday':
+	} else if( type === 'Someday' ) {
 		return {
-			noProject: false,
-			noDate: false,
-			unfinished: true,
+			done: false,
 			date: 'someday',
-			project: false,
-			tag: false,
+			project: undefined,
+			tag: undefined,
 		};
-		break;
-	case 'Today':
+	} else if( type === 'Today' ) {
 		return {
-			noProject: false,
 			date: 'today',
-			project: false,
-			tag: false,
-			noDate: false,
-			unfinished: true,
+			project: undefined,
+			tag: undefined,
+			done: false,
 		};
-		break;
-	case 'Tomorrow':
+	} else if( type === 'Tomorrow' ) {
 		return {
-			noProject: false,
-			noDate: false,
-			unfinished: true,
+			done: false,
 			date: 'tomorrow',
-			project: false,
-			tag: false
+			project: undefined,
+			tag: undefined
 		}
+	} else {
+		return {}
 	}
+
 }
 
 

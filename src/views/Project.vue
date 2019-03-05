@@ -39,7 +39,10 @@ export default {
 	},
 	created: function () {
 		this.setProject(this.$route.params.projectId);
+		const test = dateFilters('Project', this.$route.params.projectId);
+		console.log(test)
 		this.updateFilters(dateFilters('Project', this.$route.params.projectId))
+
 	},
 	methods: {
 		...mapActions( {

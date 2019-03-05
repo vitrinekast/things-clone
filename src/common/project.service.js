@@ -1,9 +1,11 @@
 import { ApiService } from "@/common/api.service";
 import store from "../store/index.js";
 import firebase from "firebase"
+
 const ID = () => {
 	return '_' + Math.random().toString( 36 ).substr( 2, 9 );
 };
+
 const baseProject = () => {
 	const userId = store.state.user.user.uid
 	return {
@@ -28,8 +30,7 @@ export const ProjectService = {
 		return ApiService.getDoc( "projects", id );
 	},
 	async create() {
-		const project = baseProject();
-		return ApiService.post( "projects", project );
+		return ApiService.post( "projects", baseProject() );
 	},
 	async update( payload ) {
 		return ApiService.update( "projects", payload )

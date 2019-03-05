@@ -36,8 +36,8 @@
     }
 
     &--todos {
-        padding-top: $gutter--md;
-        padding-bottom: $gutter--md;
+        margin-top: $gutter--md;
+        margin-bottom: $gutter--md;
     }
 
     &__subtitle {
@@ -49,6 +49,8 @@
     &__title {
         border-bottom: 1px solid color(grey, light);
         padding-bottom: 4px;
+        padding-left: 1.5em;
+
         &:hover {
             color: color(blue, strong);
         }

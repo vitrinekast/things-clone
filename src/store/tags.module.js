@@ -42,7 +42,6 @@ const mutations = {
 };
 const getters = {
 	tags( state ) {
-
 		return state.tags;
 	}
 };

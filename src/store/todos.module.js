@@ -1,23 +1,20 @@
 import store from "@/store/index.js";
 import { TodoService } from "@/common/todo.service";
-import moment from 'moment';
-import _ from 'underscore';
 
 const initialState = {
 	todos: [],
 	selectedTodoId: false,
 	filteredTodos: [],
 	filters: {
-		project: false,
-		tag: false,
-		noProject: false,
-		date: false,
-		noDate: false
+		project: undefined,
+		tag: undefined,
+		date: undefined,
+		done: undefined
 	}
 };
+
 const state = { ...initialState };
 const actions = {
-	// fetchAll, create, getAll, get, update (filters moet een aparte module worden)
 	async getAllTodos( { commit } ) {
 		if( !store.state.user.user ) { return false }
 		const data = await TodoService.get();
@@ -31,17 +28,10 @@ const actions = {
 	updateAllTodos( { commit }, payload ) {
 		commit( 'setTodos', payload.allData );
 
-		TodoService.updateOrder( payload.changes ).then( ( ) => {} )
+		TodoService.updateOrder( payload.changes ).then( () => {} )
 	},
 	updateFilters( { commit, state }, payload ) {
-		let filters = state.filters;
-		filters.tag = payload.tag !== undefined ? payload.tag : filters.tag;
-		filters.project = payload.project !== undefined ? payload.project : filters.project;
-		filters.noProject = payload.noProject !== undefined ? payload.noProject : filters.noProject;
-		filters.noDate = payload.noDate !== undefined ? payload.noDate : filters.noDate;
-		filters.date = payload.date !== undefined ? payload.date : filters.date;
-		filters.unfinished = payload.unfinished !== undefined ? payload.unfinished : filters.unfinished;
-
+		let filters = Object.assign( state.filters, payload )
 		commit( "setFilters", filters );
 	},
 	updateTodo( context, payload ) {
@@ -50,17 +40,9 @@ const actions = {
 			this.dispatch( "getAllTags" );
 		} )
 	},
-	updateTodoWithFilters(context, payload) {
-		console.log('updating', payload)
-		if(payload.filters.date === 'today') {
-			payload.todo.planned = new Date()
-		}
-		if(payload.filters.date === 'tomorrow') {
-			payload.todo.planned =  moment(new Date()).add(1,'days');
-		}
-		if(payload.filters.date === 'someday') {
-			payload.todo.planned =  'someday'
-		}
+	updateTodoWithFilters( context, payload ) {
+
+		payload.todo.planned = TodoService.setDateFromDateType( payload.filters.date )
 		this.dispatch( "updateTodo", payload.todo );
 	},
 
@@ -70,7 +52,7 @@ const actions = {
 			this.dispatch( "getAllTags" );
 		} )
 	},
-	updateAfteraSorting({state}, payload) {
+	updateAfteraSorting( { state }, payload ) {
 		let array = [];
 		payload.forEach( ( val, index ) => {
 			val.order = index;
@@ -81,14 +63,8 @@ const actions = {
 		} )
 		this.dispatch( 'updateAllTodos', { changes: array, allData: state.todos } );
 	},
-	deleteAllTodos( { state } ) {
-		state.todos.forEach( ( todo ) => {
-			return TodoService.delete( todo );
-		} )
-		this.dispatch( "getAllTodos" );
-	},
 	setSelectedTodo( { commit }, payload ) {
-		if(this.getters.todo) {
+		if( this.getters.todo ) {
 			this.dispatch( "updateTodo", this.getters.todo );
 		}
 		commit( "setSelectedTodo", payload );
@@ -106,126 +82,18 @@ const mutations = {
 	},
 };
 const getters = {
-	todos( state ) {
-		return state.todos;
-	},
 
-	todo( state ) {
-		return state.todos.find( function ( todo ) {
-			return todo.id === state.selectedTodoId;
-		} );
-	},
-	filteredTodos(state) {
-		console.log(store);
+	filteredTodos( state ) {
 		let array = state.todos;
-		if( state.filters.tag ) {
-			array = array.filter( todo => todo.tags.includes( state.filters.tag ) );
-		}
-		if( state.filters.unfinished ) {
-			array = array.filter( todo => todo.done === false );
-		}
-		if( state.filters.project ) {
-			array = array.filter( todo => todo.project === state.filters.project );
-		}
-		if(state.filters.noProject) {
-			array = array.filter( todo => todo.project === false );
-		}
-		if(state.filters.noDate) {
-			array = array.filter( todo => todo.planned === false );
-		}
-		if(state.filters.date) {
-			const today = new moment();
-
-			if(state.filters.date === 'today') {
-				array = array.filter((todo) => {
-					if(todo.planned) {
-						const disDate = new moment(todo.planned);
-						return todo.planned && (disDate.diff(today, 'days') < 0 || today.isSame(disDate, 'd'))
-					} else { return false}
-				})
-			} else if (state.filters.date === 'tomorrow') {
-				array = array.filter((todo) => {
-					if(todo.planned) {
-						const disDate = new moment(todo.planned);
-						return todo.planned && ((disDate.diff(today, 'days') === 0 || disDate.diff(today, 'days') === 1) && !today.isSame(disDate, 'd'))
-					} else { return false}
-				})
-			} else if (state.filters.date === 'someday') {
-				array = array.filter( todo => todo.planned === 'someday' );
-			}
-
-		}
-
-		return array
+		return TodoService.filter(state.filters, state.todos);
 	},
-	filteredTodosByProject(state) {
-		console.log(store);
-		let array = state.todos;
-		if( state.filters.tag ) {
-			array = array.filter( todo => todo.tags.includes( state.filters.tag ) );
-		}
-		if( state.filters.unfinished ) {
-			array = array.filter( todo => todo.done === false );
-		}
-		if( state.filters.project ) {
-			array = array.filter( todo => todo.project === state.filters.project );
-		}
-		if(state.filters.noProject) {
-			array = array.filter( todo => todo.project === false );
-		}
-		if(state.filters.noDate) {
-			array = array.filter( todo => todo.planned === false );
-		}
-		if(state.filters.date) {
-			const today = new moment();
-
-			if(state.filters.date === 'today') {
-				array = array.filter((todo) => {
-					if(todo.planned) {
-						const disDate = new moment(todo.planned);
-						return todo.planned && (disDate.diff(today, 'days') < 0 || today.isSame(disDate, 'd'))
-					} else { return false}
-				})
-			} else if (state.filters.date === 'tomorrow') {
-				array = array.filter((todo) => {
-					if(todo.planned) {
-						const disDate = new moment(todo.planned);
-						return todo.planned && ((disDate.diff(today, 'days') === 0 || disDate.diff(today, 'days') === 1) && !today.isSame(disDate, 'd'))
-					} else { return false}
-				})
-			} else if (state.filters.date === 'someday') {
-				array = array.filter( todo => todo.planned === 'someday' );
-			}
-
-		}
-
-	   let result = _.groupBy(array, 'project');
-
-	   for(var item in result) {
-		   let project = store.state.project.projects.find(project => project.id === item);
-		   if(!project) {
-			   project = {};
-			   project.title = false;
-		   }
-
-		   project.items = result[item];
-
-		   result[item] = project
-	   }
-	   let sorted = {};
-	   Object.keys(result).sort().forEach(function(key) {
-		  sorted[key] = result[key];
-		});
-	   return sorted;
-
+	filteredTodosByProject( state ) {
+		let todos = TodoService.filter(state.filters, state.todos);
+		return TodoService.groupByProject(todos);
 	},
 	filters( state ) {
-
 		return state.filters;
-	},
-	selectedTodoId( state ) {
-		return state.selectedTodoId;
-	},
+	}
 };
 export default {
 	state,
