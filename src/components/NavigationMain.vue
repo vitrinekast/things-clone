@@ -1,5 +1,6 @@
 <template>
 <nav class='nav nav_main'>
+	<h4>{{user.email}}</h4>
 	<ul>
 		<li class='nav__item'>
 			<router-link to="/">

@@ -152,7 +152,7 @@ const getters = {
 			}
 
 		}
-
+	
 		return array
 	},
 	filters( state ) {

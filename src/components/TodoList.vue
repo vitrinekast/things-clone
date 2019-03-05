@@ -1,23 +1,29 @@
 <template>
 <div class="">
-	<ol v-if="filteredTodos" class='list list--todos' >
-		<div class="p--fixed p--abs--100 card__backdrop" v-if='selectedTodoId' @click="setSelectedTodo(false)"></div>
-		<draggable v-model="filteredTodos" :options="dragOptions" @end="onEnd" v-if="!isMobile()">
-			<transition-group name='fade'>
-				<li v-for="todo in filteredTodos" :key="todo.id" :todo-id="todo.id">
-					<todo-item :todo="todo"></todo-item>
-				</li>
-			</transition-group>
-		</draggable>
-		<div v-if="isMobile()">
-			<transition-group name='fade'>
-				<li v-for="todo in filteredTodos" :key="todo.id" :todo-id="todo.id">
-					<todo-item :todo="todo"></todo-item>
-				</li>
-			</transition-group>
-		</div>
-	</ol>
+	<div class="" v-for="project in todoByProject">
+		<router-link v-if="project.title" :to="{ name: 'project', params: { projectId: project.id }}">
+			<h4 class='list__title' >{{project.title}}</h4>
+		</router-link>
+		<ol v-if="project.items" class='list list--todos' >
+			<div class="p--fixed p--abs--100 card__backdrop" v-if='selectedTodoId' @click="setSelectedTodo(false)"></div>
+			<draggable v-model="project.items" :options="dragOptions" @end="onEnd" v-if="!isMobile()">
+				<transition-group name='fade'>
+					<li v-for="todo in project.items" :key="todo.id" :todo-id="todo.id">
+						<todo-item :todo="todo"></todo-item>
+					</li>
+				</transition-group>
+			</draggable>
+			<div v-if="isMobile()">
+				<transition-group name='fade'>
+					<li v-for="todo in project.items" :key="todo.id" :todo-id="todo.id">
+						<todo-item :todo="todo"></todo-item>
+					</li>
+				</transition-group>
+			</div>
+		</ol>
+	</div>
 	<p v-if="filteredTodos.length < 1">There are now todos available</p>
+
 </div>
 </template>
 <script>
@@ -47,6 +53,7 @@ export default {
 		...mapState( {
 			selectedTodoId: state => state.todos.selectedTodoId,
 			todos: state => state.todos.todos,
+			projects: state => state.project.projects,
 		} ),
 		filteredTodos: {
 			get() {
@@ -63,6 +70,36 @@ export default {
 				} )
 				this.$store.dispatch( 'updateAllTodos', { changes: array, allData: value } );
 			}
+		},
+		todoByProject:function() {
+			if(!this.filteredTodos) { return false }
+			let result = this.filteredTodos.reduce(function (r, a) {
+			   r[a.project] = r[a.project] || [];
+			   r[a.project].push(a);
+			   return r;
+		   }, Object.create(null));
+
+		   for(var item in result) {
+			   let obj = {};
+
+			  if(item !== 'false') {
+				  obj = this.projects.find((project) => {
+					  console.log(project.id, result, item)
+					  return project.id === item
+				  })
+				  console.log(result[item], obj)
+			  } else {
+				  obj = {};
+				  obj.title = false;
+			  }
+			   obj.items = result[item];
+			   result[item] = obj
+		   }
+		   let sorted = {};
+		   Object.keys(result).sort().forEach(function(key) {
+			  sorted[key] = result[key];
+			});
+		   return sorted;
 		}
 	},
 	methods: {

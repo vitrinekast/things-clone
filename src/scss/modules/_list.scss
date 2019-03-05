@@ -45,4 +45,15 @@
         padding: $gutter--md $gutter--sm $gutter--sm/2 $gutter--md*2;
         border-bottom: 1px solid $color--grey;
     }
+
+    &__title {
+        border-bottom: 1px solid color(grey, light);
+        padding-bottom: 4px;
+        &:hover {
+            color: color(blue, strong);
+        }
+        & + .list--todos {
+            padding-top: 0;
+        }
+    }
 }

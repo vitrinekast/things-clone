@@ -16,14 +16,14 @@
 			</form>
 		</div>
 
-		<div class="" v-else @click='setSelectedTodo(todo.id)'>
-			<div class="d--inl-block fl--left">
+		<div class="flex flex--start" v-else @click='setSelectedTodo(todo.id)'>
+			<div class="d--inl-block fl--left t--ellipsis--container">
 				<p class='t--ellipsis' v-if="todo.text">{{todo.text}}</p>
 				<p class='t--ellipsis' v-else>A fresh new todo</p>
 			</div>
 
 			<ul class='d--inl-block fl--left'>
-				<li v-for='tag in todo.tags' :key="tag.id" class='label label--tag label--light'>{{tag}}</li>
+				<li v-for='tag in todo.tags.slice(0, 2)' :key="tag.id" class='label label--tag label--light'>{{tag}}</li>
 			</ul>
 		</div>
 
