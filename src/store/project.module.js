@@ -9,45 +9,30 @@ const state = { ...initialState };
 
 const actions = {
 	async getAllProjects( { commit } ) {
-		if( !store.state.user.user ) { return false }
-		const data = await ProjectService.get();
+		const data = await ProjectService.getAll();
 		commit( 'setProjects', data );
 	},
-	async getProject( { commit } ) {
-		const data = await ProjectService.get();
+	async getProject( { commit, state }, id ) {
+		id = id ? id : state.project.id
+		const data = await ProjectService.get( id );
 		commit( 'setProject', data );
 	},
 	updateProject( { state } ) {
-		ProjectService.update( state.project ).then( ( ) => {
+		ProjectService.update( state.project ).then( () => {
 			this.dispatch( "getAllTodos" );
 			this.dispatch( "getAllTags" );
-			this.dispatch( "getProject", state.project.project.id );
+			this.dispatch( "getProject" );
 		} )
-	},
-	deleteAllProjects( { state } ) {
-		state.projects.forEach( ( project ) => {
-			return ProjectService.delete( project );
-		} )
-		this.dispatch( "getAllProjects" );
 	},
 	async createProject() {
-		if( !store.state.user.user ) { return false }
 		await ProjectService.create();
 		this.dispatch( "getAllProjects" );
 	},
 
-	setProjectById( { state, commit }, payload ) {
-		commit( 'setProject', state.projects.find( ( project ) => {
-			return project.id === payload
-		} ) );
-	},
-
 	addTodoToProject( { state }, todo ) {
+		const project = state.projects.find( project => project.id === todo.project );
 
-		const project = state.projects.find( ( project ) => {
-			return project.id === todo.project
-		} )
-		if( project.todos.filter( t => t.id === todo.id ).length === 0 ) {
+		if( project.todos.filter( projectTodo => projectTodo.id === todo.id ).length === 0 ) {
 			project.todos.push( todo.id )
 		}
 		ProjectService.update( project ).then( () => {
@@ -56,6 +41,7 @@ const actions = {
 		} )
 	}
 };
+
 const mutations = {
 	setProjects( state, project ) {
 		state.projects = project;
@@ -64,14 +50,10 @@ const mutations = {
 		state.project = project;
 	},
 };
+
 const getters = {
-	projects( state ) {
-		return state.projects;
-	},
-	project( state ) {
-		return state.projects.find( ( project ) => {
-			return project.id === router.currentRoute.params.projectId
-		} )
+	projects(state) {
+		return state.projects
 	}
 };
 export default {

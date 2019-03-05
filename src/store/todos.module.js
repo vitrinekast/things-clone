@@ -1,6 +1,7 @@
 import store from "@/store/index.js";
 import { TodoService } from "@/common/todo.service";
 import moment from 'moment';
+import _ from 'underscore';
 
 const initialState = {
 	todos: [],
@@ -16,6 +17,7 @@ const initialState = {
 };
 const state = { ...initialState };
 const actions = {
+	// fetchAll, create, getAll, get, update (filters moet een aparte module worden)
 	async getAllTodos( { commit } ) {
 		if( !store.state.user.user ) { return false }
 		const data = await TodoService.get();
@@ -114,6 +116,7 @@ const getters = {
 		} );
 	},
 	filteredTodos(state) {
+		console.log(store);
 		let array = state.todos;
 		if( state.filters.tag ) {
 			array = array.filter( todo => todo.tags.includes( state.filters.tag ) );
@@ -152,8 +155,69 @@ const getters = {
 			}
 
 		}
-	
+
 		return array
+	},
+	filteredTodosByProject(state) {
+		console.log(store);
+		let array = state.todos;
+		if( state.filters.tag ) {
+			array = array.filter( todo => todo.tags.includes( state.filters.tag ) );
+		}
+		if( state.filters.unfinished ) {
+			array = array.filter( todo => todo.done === false );
+		}
+		if( state.filters.project ) {
+			array = array.filter( todo => todo.project === state.filters.project );
+		}
+		if(state.filters.noProject) {
+			array = array.filter( todo => todo.project === false );
+		}
+		if(state.filters.noDate) {
+			array = array.filter( todo => todo.planned === false );
+		}
+		if(state.filters.date) {
+			const today = new moment();
+
+			if(state.filters.date === 'today') {
+				array = array.filter((todo) => {
+					if(todo.planned) {
+						const disDate = new moment(todo.planned);
+						return todo.planned && (disDate.diff(today, 'days') < 0 || today.isSame(disDate, 'd'))
+					} else { return false}
+				})
+			} else if (state.filters.date === 'tomorrow') {
+				array = array.filter((todo) => {
+					if(todo.planned) {
+						const disDate = new moment(todo.planned);
+						return todo.planned && ((disDate.diff(today, 'days') === 0 || disDate.diff(today, 'days') === 1) && !today.isSame(disDate, 'd'))
+					} else { return false}
+				})
+			} else if (state.filters.date === 'someday') {
+				array = array.filter( todo => todo.planned === 'someday' );
+			}
+
+		}
+
+	   let result = _.groupBy(array, 'project');
+
+	   for(var item in result) {
+		   let project = store.state.project.projects.find(project => project.id === item);
+		   if(!project) {
+			   project = {};
+			   project.title = false;
+		   }
+
+		   project.items = result[item];
+
+		   result[item] = project
+	   }
+	   let sorted = {};
+	   Object.keys(result).sort().forEach(function(key) {
+		  sorted[key] = result[key];
+		});
+	   return sorted;
+
 	},
 	filters( state ) {
 

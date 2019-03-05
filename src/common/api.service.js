@@ -16,7 +16,21 @@ const getDataFromSnapshot = ( querySnapshot ) => {
 
 		array.push( data )
 	} );
+	console.log(array)
 	return array
+};
+const getDataFromDoc = ( querySnapshot ) => {
+
+	const dateItems = ['created', 'planned'];
+	let data = querySnapshot.data();
+	dateItems.forEach((date)=> {
+		if(data[date]) {
+			if(data[date].toDate) {
+				data[date] = data[date].toDate()
+			}
+		}
+	})
+	return data
 };
 
 export const ApiService = {
@@ -27,6 +41,17 @@ export const ApiService = {
 		return db.collection( resource ).where( "userId", "==", uid ).orderBy("order").get()
 			.then( function ( querySnapshot ) {
 				return getDataFromSnapshot( querySnapshot )
+			} )
+			.catch( function ( error ) {
+				throw new Error( error );
+			} );
+	},
+	async getDoc( resource, name ) {
+		const uid = store.state.user.user.uid;
+
+		return db.collection( resource ).doc(name).get()
+			.then( function ( querySnapshot ) {
+				return getDataFromDoc( querySnapshot )
 			} )
 			.catch( function ( error ) {
 				throw new Error( error );

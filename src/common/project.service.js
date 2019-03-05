@@ -21,8 +21,11 @@ const baseProject = () => {
 	}
 };
 export const ProjectService = {
-	get() {
+	getAll() {
 		return ApiService.get( "projects" );
+	},
+	get(id) {
+		return ApiService.getDoc( "projects", id );
 	},
 	async create() {
 		const project = baseProject();

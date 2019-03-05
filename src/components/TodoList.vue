@@ -1,6 +1,6 @@
 <template>
 <div class="">
-	<div class="" v-for="project in todoByProject">
+	<div class="" v-for="project in filteredTodosByProject">
 		<router-link v-if="project.title" :to="{ name: 'project', params: { projectId: project.id }}">
 			<h4 class='list__title' >{{project.title}}</h4>
 		</router-link>
@@ -22,7 +22,7 @@
 			</div>
 		</ol>
 	</div>
-	<p v-if="filteredTodos.length < 1">There are now todos available</p>
+	<p v-if="filteredTodosByProject.length < 1">There are now todos available</p>
 
 </div>
 </template>
@@ -33,6 +33,7 @@ import TodoItem from '@/components/TodoItem';
 import draggable from 'vuedraggable'
 import { mixinDevice } from '@/mixins/device';
 import dateFilters from '@/dateFilters';
+import _ from 'underscore';
 export default {
 	name: 'TodoList',
 	components: {
@@ -55,9 +56,9 @@ export default {
 			todos: state => state.todos.todos,
 			projects: state => state.project.projects,
 		} ),
-		filteredTodos: {
+		filteredTodosByProject: {
 			get() {
-				return this.$store.getters.filteredTodos
+				return this.$store.getters.filteredTodosByProject
 			},
 			set( value ) {
 				let array = [];
@@ -70,36 +71,6 @@ export default {
 				} )
 				this.$store.dispatch( 'updateAllTodos', { changes: array, allData: value } );
 			}
-		},
-		todoByProject:function() {
-			if(!this.filteredTodos) { return false }
-			let result = this.filteredTodos.reduce(function (r, a) {
-			   r[a.project] = r[a.project] || [];
-			   r[a.project].push(a);
-			   return r;
-		   }, Object.create(null));
-
-		   for(var item in result) {
-			   let obj = {};
-
-			  if(item !== 'false') {
-				  obj = this.projects.find((project) => {
-					  console.log(project.id, result, item)
-					  return project.id === item
-				  })
-				  console.log(result[item], obj)
-			  } else {
-				  obj = {};
-				  obj.title = false;
-			  }
-			   obj.items = result[item];
-			   result[item] = obj
-		   }
-		   let sorted = {};
-		   Object.keys(result).sort().forEach(function(key) {
-			  sorted[key] = result[key];
-			});
-		   return sorted;
 		}
 	},
 	methods: {

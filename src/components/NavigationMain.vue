@@ -60,7 +60,7 @@
 </nav>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import draggable from 'vuedraggable'
 export default {
 	name: 'MainNavigation',
@@ -70,18 +70,14 @@ export default {
 
 	computed: {
 		...mapGetters( [
+			'projects'
+		] ),
+		...mapState( [
 			'user',
 			'tags',
 			'menuOpen'
 		] ),
-		projects: {
-			get() {
-				return this.$store.getters.projects
-			},
-			set() {
-				this.$store.dispatch( 'setProjects', this.projects );
-			}
-		},
+
 		dragOptions() {
 			return {
 				group: "todo"
@@ -97,7 +93,6 @@ export default {
 			this.$store.dispatch( 'updateMenuOpen', false )
 			this.$store.dispatch( 'deleteAllTodos' );
 			this.$store.dispatch( 'deleteAllTags' );
-			this.$store.dispatch( 'deleteAllProjects' );
 		}
 	}
 }

@@ -44,7 +44,7 @@ export default {
 	methods: {
 		...mapActions( {
 			updateProject: 'updateProject',
-			'setProject': 'setProjectById',
+			'setProject': 'getProject',
 			'updateFilters': 'updateFilters'
 		} )
 	}

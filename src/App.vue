@@ -44,8 +44,8 @@ export default {
 	methods: {
 		...mapActions( {
 			fetchTodos: 'getAllTodos',
-			fetchProjects: 'getAllTags',
-			fetchTags: 'getAllProjects',
+			fetchProjects: 'getAllProjects',
+			fetchTags: 'getAllTags',
 		} )
 	}
 }
