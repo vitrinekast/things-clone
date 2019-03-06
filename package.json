@@ -21,6 +21,8 @@
     "firebase": "^5.8.2",
     "moment": "^2.24.0",
     "register-service-worker": "^1.5.2",
+    "tiptap": "^1.14.0",
+    "tiptap-extensions": "^1.14.0",
     "underscore": "^1.9.1",
     "vue": "^2.5.22",
     "vue-axios": "^2.1.4",

@@ -10,7 +10,9 @@
 	</div>
 	<main class='col--9--lg col--9--md col--12--sm'>
 		<div class="container">
-			<router-view />
+			<transition name='fade'>
+				<router-view :key="$route.path" />
+			</transition>
 			<fab-navigation></fab-navigation>
 		</div>
 	</main>

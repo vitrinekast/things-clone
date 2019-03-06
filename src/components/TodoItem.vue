@@ -5,13 +5,7 @@
 	</div>
 
 	<div class="" v-if="todo.id === selectedTodoId">
-		<form class="" action="index.html" method="post" @submit.prevent="submit(todo)">
-			<input type="text" v-model="todo.text" name="text" value="" placeholder="This is a new todo">
-			<textarea name="notes" v-model="todo.notes" placeholder="notes..."></textarea>
-			<todo-item-tag :todo="todo"></todo-item-tag>
-			<input type="date" v-model='todo.planend' name="" value="">
-			<input type="submit" class='d--none' name="" value="">
-		</form>
+		<todo-item-form :todo="todo"></todo-item-form>
 	</div>
 
 	<div class="flex flex--start" v-else @click='setSelectedTodo(todo.id)'>
@@ -33,12 +27,21 @@
 import moment from 'moment';
 import { mapState, mapActions } from 'vuex'
 import TodoItemTag from '@/components/TodoItemTag';
+import TodoItemForm from '@/components/TodoItemForm';
+import { Editor, EditorContent } from 'tiptap'
 
 export default {
 	name: 'TodoItem',
 
 	components: {
-		TodoItemTag
+		EditorContent,
+		TodoItemTag,
+		TodoItemForm
+	},
+	data() {
+		return {
+			editor: null
+		}
 	},
 	filters: {
 		prettyDate: function ( date ) {

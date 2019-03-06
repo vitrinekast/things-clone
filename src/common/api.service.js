@@ -55,8 +55,6 @@ export const ApiService = {
 			} );
 	},
 	post( resource, params ) {
-		console.log('post', resource, params)
-		console.trace();
 		db.collection( resource ).doc( params.id ).set( params )
 			.then( ( data ) => {
 				return data

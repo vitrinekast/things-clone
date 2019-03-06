@@ -1,6 +1,8 @@
 <template>
 <div class="home">
 	<header>
+		<h1>{{ $route.path }}</h1>
+
 		<h2><input type="text" v-model="project.title" placeholder="New Project" name="" value="" @blur="updateProject"></h2>
 	</header>
 	<Calendar />
@@ -37,10 +39,8 @@ export default {
 			project: state => state.project.project
 		} )
 	},
-	created: function () {
+	mounted: function () {
 		this.setProject(this.$route.params.projectId);
-		const test = dateFilters('Project', this.$route.params.projectId);
-		console.log(test)
 		this.updateFilters(dateFilters('Project', this.$route.params.projectId))
 
 	},

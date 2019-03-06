@@ -21,6 +21,7 @@
 .fade {
     &-enter, &-leave-to {
         opacity: 0;
+        position: absolute;
         transform: translateY(-10%), scale(1, 0);
     }
     &-enter-active, &-leave-active {

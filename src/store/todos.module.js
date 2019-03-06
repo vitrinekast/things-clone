@@ -72,7 +72,6 @@ const actions = {
 };
 const mutations = {
 	setTodos( state, payload ) {
-		console.log('setting todos')
 		state.todos = payload;
 	},
 	setSelectedTodo( state, payload ) {

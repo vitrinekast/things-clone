@@ -19,7 +19,7 @@ const baseTodo = () => {
 		id: ID(),
 		text: "",
 		done: false,
-		notes: "",
+		notes: false,
 		order: -1,
 		project: project === undefined || project === false ? false : project,
 		tags: project === undefined || project === false ? [] : [ tag ],
