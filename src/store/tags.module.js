@@ -43,6 +43,13 @@ const mutations = {
 const getters = {
 	tags( state ) {
 		return state.tags;
+	},
+	FilteredTags(state) {
+		let todos = store.getters.filteredTodos;
+
+		return state.tags.filter((item ) => {
+			return todos.find(todo => todo.tags.includes(item.text))
+		})
 	}
 };
 export default {
