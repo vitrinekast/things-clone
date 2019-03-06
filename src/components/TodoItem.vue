@@ -1,6 +1,6 @@
 <template>
 	<section class="card card--todo flex" v-bind:class="{ 'card--active': todo.id === selectedTodoId }">
-		
+		{{todo.created|prettyDate}}
 		<div class="">
 			<input type="checkbox" name="" v-model="todo.done" class='card__checkbox' @change="updateTodo(todo)">
 		</div>

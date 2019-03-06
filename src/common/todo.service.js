@@ -22,7 +22,7 @@ const baseTodo = () => {
 		notes: "",
 		order: -1,
 		project: project === undefined || project === false ? false : project,
-		tags: project === undefined || project === false ? [] : [tag],
+		tags: project === undefined || project === false ? [] : [ tag ],
 		deadline: false,
 		anytime: false,
 		planned: false,
@@ -65,7 +65,7 @@ export const TodoService = {
 	},
 	async create() {
 		const todo = baseTodo();
-		console.log('create', todo)
+		console.log( 'create', todo )
 		return ApiService.post( "todos", todo );
 	},
 	async update( payload ) {
@@ -86,8 +86,8 @@ export const TodoService = {
 	async delete( payload ) {
 		return ApiService.delete( "todos", payload )
 	},
-	filter (filters, todos) {
-		console.log('filter them!')
+	filter( filters, todos ) {
+
 		const today = new moment();
 		if( filters.tag !== undefined ) {
 			todos = todos.filter( todo => todo.tags.includes( filters.tag ) );
@@ -99,31 +99,25 @@ export const TodoService = {
 			todos = todos.filter( todo => todo.project === filters.project );
 		}
 
-		if( filters.date  !== undefined) {
-console.log(filters.date)
-			if( filters.date === 'today' ) {
-				todos = todos.filter( ( todo ) => {
-					if( todo.planned ) {
-						const disDate = new moment( todo.planned );
-						return todo.planned && ( disDate.diff( today, 'days' ) < 0 || today.isSame( disDate, 'd' ) )
-					} else { return false }
-				} )
-			} else if( filters.date === 'tomorrow' ) {
-				todos = todos.filter( ( todo ) => {
-					if( todo.planned ) {
-						const disDate = new moment( todo.planned );
-						return todo.planned && ( ( disDate.diff( today, 'days' ) === 0 || disDate.diff( today, 'days' ) === 1 ) && !today.isSame( disDate, 'd' ) )
-					} else { return false }
-				} )
-			} else {
-				todos = todos.filter( todo => todo.planned === filters.date );
-			}
+		if( filters.date !== undefined ) {
+			todos = todos.filter( ( todo ) => {
 
+				if( filters.date === 'today' && todo.planned ) {
+					const disDate = new moment( todo.planned );
+					return todo.planned && ( disDate.diff( today, 'days' ) < 0 || today.isSame( disDate, 'd' ) )
+				} else if( filters.date === 'tomorrow' && todo.planned ) {
+					const disDate = new moment( todo.planned );
+					return todo.planned && ( ( disDate.diff( today, 'days' ) === 0 || disDate.diff( today, 'days' ) === 1 ) && !today.isSame( disDate, 'd' ) )
+				} else {
+					return todo.planned === filters.date
+				}
+			} )
 		}
+
 
 		return todos
 	},
-	setDateFromDateType ( type ) {
+	setDateFromDateType( type ) {
 		if( type === 'today' ) {
 			return new Date()
 		} else if( type === 'tomorrow' ) {
@@ -135,7 +129,8 @@ console.log(filters.date)
 		}
 	},
 
-	groupByProject(todos) {
+	groupByProject( todos ) {
+		todos = _.sortBy( todos, 'created' );
 		let result = _.groupBy( todos, 'project' );
 
 		for( var item in result ) {
@@ -150,7 +145,7 @@ console.log(filters.date)
 			result[ item ] = project
 		}
 
-		result = _.sortBy(result, 'title');
+		result = _.sortBy( result, 'title' );
 
 
 		return result;

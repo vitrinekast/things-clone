@@ -51,12 +51,6 @@
 						return this.$store.getters.filteredTodos
 					}
 				},
-				set(value) {}
-			},
-			filteredTodosByProject: {
-				get() {
-					return this.$store.getters.filteredTodosByProject
-				},
 				set(value) {
 					let array = [];
 					value.forEach((val, index) => {
