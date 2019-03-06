@@ -46,8 +46,6 @@ export const ApiService = {
 			} );
 	},
 	async getDoc( resource, name ) {
-		const uid = store.state.user.user.uid;
-
 		return db.collection( resource ).doc(name).get()
 			.then( function ( querySnapshot ) {
 				return getDataFromDoc( querySnapshot )
@@ -58,6 +56,7 @@ export const ApiService = {
 	},
 	post( resource, params ) {
 		console.log('post', resource, params)
+		console.trace();
 		db.collection( resource ).doc( params.id ).set( params )
 			.then( ( data ) => {
 				return data

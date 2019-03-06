@@ -1,6 +1,4 @@
-import store from "@/store/index.js";
 import { ProjectService } from "@/common/project.service";
-import router from '@/router'
 
 const initialState = {
 	projects: []

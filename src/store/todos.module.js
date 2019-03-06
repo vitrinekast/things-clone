@@ -85,7 +85,6 @@ const mutations = {
 const getters = {
 
 	filteredTodos( state ) {
-		let array = state.todos;
 		return TodoService.filter(state.filters, state.todos);
 	},
 	filteredTodosByProject( state ) {

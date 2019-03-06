@@ -10,7 +10,7 @@
 
     <Notification />
 
-    <todo-list filter-type="unnassigned" />
+    <todo-list v-bind:grouped="true" />
 
 </div>
 </template>
@@ -22,7 +22,7 @@ import Calendar from '@/components/Calendar';
 import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import dateFilters from '@/dateFilters';
 
 export default {

@@ -25,14 +25,14 @@ import TodoItem from '@/components/TodoItem';
 import draggable from 'vuedraggable'
 import { mixinDevice } from '@/mixins/device';
 import dateFilters from '@/dateFilters';
-import _ from 'underscore';
+
 export default {
 	name: 'TodoListList',
 	components: {
 		TodoItem,
 		draggable
 	},
-	props: [ 'list' ],
+	props: [ 'value' ],
 	mixins: [ mixinDevice ],
 	data: function () {
 		return {
@@ -50,39 +50,28 @@ export default {
 			projects: state => state.project.projects,
 			filters: state => state.todos.filters,
 		} ),
-		todos: {
-			get() {
-				if( this.grouped ) {
-					return this.$store.getters.filteredTodosByProject
-				} else {
-					return this.$store.getters.filteredTodos
-				}
-			},
-			set( value ) {
-
-			}
-		},
-		filteredTodosByProject: {
-			get() {
-				return this.$store.getters.filteredTodosByProject
-			},
-			set( value ) {
-				let array = [];
-				value.forEach( ( val, index ) => {
-					val.order = index;
-					array.push( {
-						order: index,
-						id: val.id
-					} )
-				} )
-				this.$store.dispatch( 'updateAllTodos', { changes: array, allData: value } );
-			}
-		}
+        list: {
+            get() {
+           return this.value
+           },
+           set(value) {
+               let array = [];
+               value.forEach((val, index) => {
+                   val.order = index;
+                   array.push({order: index, id: val.id})
+               })
+               this.$store.dispatch('updateAllTodos', {
+                   changes: array,
+                   allData: value
+               });
+           }
+        }
 	},
 	methods: {
 		...mapActions( {
 			setSelectedTodo: 'setSelectedTodo'
 		} ),
+
 		onEnd: function ( e ) {
 
 			const projectId = e.to.getAttribute( 'project-id' );
