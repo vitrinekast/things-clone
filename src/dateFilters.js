@@ -1,5 +1,4 @@
 const dateFilters = ( type, attr ) => {
-	console.log( 'dateFilters', type, attr )
 
 	if( type === 'Log' ) {
 		return {

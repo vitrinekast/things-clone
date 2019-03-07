@@ -26,16 +26,12 @@
 // @ is an alias to /src
 import moment from 'moment';
 import { mapState, mapActions } from 'vuex'
-import TodoItemTag from '@/components/TodoItemTag';
 import TodoItemForm from '@/components/TodoItemForm';
-import { Editor, EditorContent } from 'tiptap'
 
 export default {
 	name: 'TodoItem',
 
 	components: {
-		EditorContent,
-		TodoItemTag,
 		TodoItemForm
 	},
 	data() {

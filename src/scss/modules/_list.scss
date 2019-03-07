@@ -36,7 +36,7 @@
     }
 
     &--todos {
-        margin-top: $gutter--md;
+        margin-top: $gutter--sm/2;
         margin-bottom: $gutter--md;
     }
 
@@ -49,7 +49,8 @@
     &__title {
         border-bottom: 1px solid color(grey, light);
         padding-bottom: 4px;
-        padding-left: 1.5em;
+        // padding-left: 1.5em;
+        margin-top: 1.5rem;
 
         &:hover {
             color: color(blue, strong);

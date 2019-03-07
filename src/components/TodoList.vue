@@ -8,7 +8,7 @@
 
 			<div class="" v-for="project in todos.filter(todo => todo.title !== false)" :key="project.id">
 				<router-link v-if="project.title" :to="{ name: 'project', params: { projectId: project.id }}">
-					<h4 class='list__title'>{{project.title}}</h4>
+					<h4 class='list__title flex--center--vert'><i class="ic--material material-icons">folder</i>{{project.title}}</h4>
 				</router-link>
 
 				<todo-list-list v-bind:value="project.items"></todo-list-list>
@@ -45,6 +45,7 @@
 			todos: {
 				get() {
 					if (this.grouped) {
+						console.log('yes')
 						return this.$store.getters.filteredTodosByProject
 					} else {
 						return this.$store.getters.filteredTodos

@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store/index'
-
+import dateFilters from '@/dateFilters';
+import OverviewView from '@/views/Overview'
 
 Vue.use( Router )
 
@@ -11,37 +12,46 @@ const router = new Router( {
 	routes: [ {
 			path: '/',
 			name: 'home',
-			component: () =>
-				import( './views/Home.vue' ),
+			component: OverviewView,
 			meta: {
-				requiresAuth: true
+				requiresAuth: true,
+				title: '📥 Log',
+				grouped: false,
+				baseFilters: dateFilters('Log')
+
 			}
 		},
 		{
 			path: '/inbox',
 			name: 'inbox',
-			component: () =>
-				import( './views/Inbox.vue' ),
+			component: OverviewView,
 			meta: {
-				requiresAuth: true
+				requiresAuth: true,
+				title: '📥 Inbox',
+				grouped: false,
+				baseFilters: dateFilters('Inbox')
 			}
 		},
 		{
 			path: '/today',
 			name: 'today',
-			component: () =>
-				import( './views/Today.vue' ),
+			component: OverviewView,
 			meta: {
-				requiresAuth: true
-			}
+					requiresAuth: true,
+					title: '⭐️ Today',
+					grouped: true,
+					baseFilters: dateFilters('Today')
+				}
 		},
 		{
 			path: '/tomorrow',
 			name: 'tomorrow',
-			component: () =>
-				import( './views/Tomorrow.vue' ),
+			component: OverviewView,
 			meta: {
-				requiresAuth: true
+				requiresAuth: true,
+				title: '⭐️ Today',
+				grouped: true,
+				baseFilters: dateFilters('Tomorrow')
 			}
 		},
 		{
@@ -56,19 +66,23 @@ const router = new Router( {
 		{
 			path: '/someday',
 			name: 'someday',
-			component: () =>
-				import( './views/Someday.vue' ),
+			component: OverviewView,
 			meta: {
-				requiresAuth: true
+				requiresAuth: true,
+				title: '⭐️ Someday',
+				grouped: true,
+				baseFilters: dateFilters('Someday')
 			}
 		},
 		{
 			path: '/projects/:projectId',
 			name: 'project',
-			component: () =>
-				import( './views/Project.vue' ),
+			component: OverviewView,
 			meta: {
-				requiresAuth: true
+				requiresAuth: true,
+				title: false,
+				grouped: false,
+				baseFilters: dateFilters('Project')
 			}
 		},
 		{

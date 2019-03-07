@@ -1,7 +1,9 @@
 <template>
 <div class="home">
-    <header>
-        <h2>📥 Inbox</h2>
+    <header class='header_page'>
+        <h2 v-if="page.title">{{page.title}}</h2>
+        <h2 class='flex--center--vert' v-else><i class="ic--material material-icons">folder</i><input type="text" v-model="project.title" placeholder="New Project" name="" value="" @blur="updateProject"></h2>
+
     </header>
 
     <Calendar />
@@ -10,7 +12,7 @@
 
     <Notification />
 
-    <todo-list filter-type="unnassigned" />
+    <todo-list  v-bind:grouped="page.grouped" />
 
 </div>
 </template>
@@ -22,17 +24,35 @@ import Calendar from '@/components/Calendar';
 import Notification from '@/components/Notification';
 import TodoList from '@/components/TodoList';
 import NavigationTags from '@/components/NavigationTags';
-import dateFilters from '@/dateFilters';
+import {  mapState, mapActions } from 'vuex'
 
 export default {
-    name: 'home',
+    name: 'Overview',
     components: {
         Calendar,
         NavigationTags,
         Notification,
         TodoList
     },
+    computed: {
+        ...mapState( {
+			project: state => state.project.project
+		} )
+    },
     mounted: function () {
-    }
+        this.updateFilters(this.page.baseFilters)
+    },
+    data() {
+        return {
+            page: this.$route.meta
+        }
+    },
+    methods: {
+		...mapActions( {
+			'updateFilters': 'updateFilters',
+			'updateProject': 'updateProject',
+			'setProject': 'setProject'
+		} )
+	}
 }
 </script>

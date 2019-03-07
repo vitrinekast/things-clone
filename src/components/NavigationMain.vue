@@ -43,7 +43,7 @@
 		<li class='nav__item' v-for="project in projects" :key="project.id">
 
 			<router-link :to="{ name: 'project', params: { projectId: project.id }}">
-				<span v-if="project.title">{{project.title}}</span>
+				<span class='flex--center--vert' v-if="project.title"><i class="ic--material material-icons">folder</i>{{project.title}}</span>
 				<span v-else class='t--grey'>New project</span>
 				<draggable  :options="dragOptions" :project-id="project.id" class='nav__item--drag-target'></draggable>
 			</router-link>

@@ -1,7 +1,9 @@
 <template>
 <form class="" action="index.html" method="post" @submit.prevent="submit(todo)" @change="updateTodo(todo)">
 	<input type="text" v-model="todo.text" name="text" value="" placeholder="This is a new todo">
-	<div @dblclick="setEditable"><editor-content :editor="editor" /></div>
+	<div @dblclick="setEditable">
+		<editor-content :editor="editor" />
+	</div>
 	<div class="flex">
 		<div class="col col--8 flex--center--vert">
 			<todo-item-tag :todo="todo"></todo-item-tag>
@@ -12,33 +14,25 @@
 	</div>
 	<input type="submit" class='d--none' name="" value="">
 </form>
-
 </template>
 <script>
 // @ is an alias to /src
-import moment from 'moment';
 import { mapState, mapActions } from 'vuex'
 import TodoItemTag from '@/components/TodoItemTag';
 import { Editor, EditorContent } from 'tiptap'
 import {
-	Blockquote,
-	CodeBlock,
+	BulletList,
 	HardBreak,
 	Heading,
-	HorizontalRule,
-	OrderedList,
-	BulletList,
 	ListItem,
-	TodoItem,
-	TodoList,
-	Placeholder,
+	OrderedList,
 	Bold,
-	Code,
 	Italic,
 	Link,
 	Strike,
 	Underline,
 	History,
+	Placeholder
 } from 'tiptap-extensions'
 export default {
 	name: 'TodoItemForm',
@@ -49,22 +43,10 @@ export default {
 	props: [ 'todo' ],
 	data() {
 		return {
-			editor: null,
-			editable: false
+			editor: null
 		}
 	},
-	filters: {
-		prettyDate: function ( date ) {
-			return moment( date ).calendar( null, {
-				lastDay: '[Yesterday]',
-				sameDay: '[Today]',
-				nextDay: '[Tomorrow]',
-				lastWeek: '[last] dddd',
-				nextWeek: 'dddd',
-				sameElse: 'L'
-			} )
-		},
-	},
+
 	mounted() {
 		this.editor = new Editor( {
 			content: this.todo.notes,
@@ -87,17 +69,17 @@ export default {
 				} ),
 			],
 			placeholder: 'Some notes',
-			onUpdate: ( { getJSON, getHTML } ) => {
+			onUpdate: ( { getHTML } ) => {
 				this.todo.notes = getHTML()
 			},
 		} )
-		console.log(this.editor)
 	},
 	beforeDestroy() {
 		this.editor.destroy()
 	},
 	watch: {
 		placeholder( newValue ) {
+			console.log('newValue')
 			this.editor.extensions.options.placeholder.emptyNodeText = newValue
 		},
 	},
@@ -106,19 +88,18 @@ export default {
 			selectedTodoId: state => state.todos.selectedTodoId,
 		} )
 	},
-	props: [ 'todo' ],
+
 	methods: {
 		...mapActions( {
 			updateTodo: 'updateTodo',
 			setSelectedTodo: 'setSelectedTodo'
 		} ),
 		setEditable: function () {
-			this.editor.setOptions({
-	        editable: true,
-	      })
-	  },
+			this.editor.setOptions( {
+				editable: true,
+			} )
+		},
 		submit: function ( todo ) {
-			console.log( "updating", todo )
 			this.updateTodo( todo );
 			this.setSelectedTodo( false )
 		}
