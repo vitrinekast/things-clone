@@ -47,9 +47,17 @@ const getters = {
 	FilteredTags(state) {
 		let todos = store.getters.filteredTodos;
 
-		return state.tags.filter((item ) => {
+		let tags = state.tags.filter((item ) => {
 			return todos.find(todo => todo.tags.includes(item.text))
 		})
+
+		function removeDuplicates(myArr, prop) {
+return myArr.filter((obj, pos, arr) => {
+return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+});
+		}
+
+		return removeDuplicates(tags, 'text');
 	}
 };
 export default {

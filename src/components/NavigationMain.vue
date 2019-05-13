@@ -32,7 +32,7 @@
 				<draggable :options="dragOptions" :date-id="'Someday'" class="nav__item--drag-target"></draggable>
 			</router-link>
 		</li>
-		<li class='nav__item' v-if='!user'>
+		<li class='nav__item'>
 			<router-link to="/login">Login</router-link>
 		</li>
 	</ul>
