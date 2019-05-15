@@ -1,29 +1,27 @@
 <template>
 <nav class='nav nav_main'>
-	<h4>{{user.email}}</h4>
 	<ul>
 		<li class='nav__item'>
 			<router-link to="/">
 				<span>Log</span>
-				<draggable :options="dragOptions" :date-id="'Log'" class="nav__item--drag-target"></draggable>
 			</router-link>
 		</li>
 		<li class='nav__item'>
 			<router-link to="/inbox">
 				<span>Inbox</span>
-				<draggable :options="dragOptions" :date-id="'Inbox'" class="nav__item--drag-target"></draggable>
+				<draggable :options="dragOptions" :date="'inbox'" class="nav__item--drag-target"></draggable>
 			</router-link>
 		</li>
 		<li class='nav__item'>
 			<router-link to="/today">
 				<span>Today</span>
-				<draggable :options="dragOptions" :date-id="'Today'" class="nav__item--drag-target"></draggable>
+				<draggable :options="dragOptions" :date="'today'" class="nav__item--drag-target"></draggable>
 			</router-link>
 		</li>
 		<li class='nav__item'>
 			<router-link to="/tomorrow">
 				<span>Tomorrow</span>
-				<draggable :options="dragOptions" :date-id="'Tomorrow'" class="nav__item--drag-target"></draggable>
+				<draggable :options="dragOptions" :date-id="'tomorrow'" class="nav__item--drag-target"></draggable>
 			</router-link>
 		</li>
 		<li class='nav__item'>
@@ -39,10 +37,10 @@
 
 	<h5 class='nav__title' v-if="projects.length > 0">Projects</h5>
 
-	<ul v-if="projects.length > 0">
-		<li class='nav__item' v-for="project in projects" :key="project.id">
+	<ul v-if="projectCount > 0">
+		<li class='nav__item' v-for="project in projects" :key="project.id" >
 
-			<router-link :to="{ name: 'project', params: { projectId: project.id }}">
+			<router-link v-if="project['.key']" :to="{ name: 'project', params: { projectId: project.id }}">
 				<span class='flex--center--vert' v-if="project.title"><i class="ic--material material-icons">folder</i>{{project.title}}</span>
 				<span v-else class='t--grey'>New project</span>
 				<draggable  :options="dragOptions" :project-id="project.id" class='nav__item--drag-target'></draggable>
@@ -53,31 +51,35 @@
 		<div class="col button button--grey button--bordered button--sm flex--center" @click="createProject">
 			<span class='d--block'>new project</span>
 		</div>
-		<div class="col button button--grey button--bordered button--sm flex--center" @click="deleteAllData">
-			<span class='d--block'>delete all data</span>
-		</div>
 	</div>
 </nav>
 </template>
 <script>
-import { mapGetters, mapState } from 'vuex';
 import draggable from 'vuedraggable'
 export default {
 	name: 'MainNavigation',
+	props: {
+		projects: {
+			required: true
+		}
+	},
 	components: {
 		draggable
 	},
 
 	computed: {
-		...mapGetters( [
-			'projects'
-		] ),
-		...mapState( [
-			'user',
-			'tags',
-			'menuOpen'
-		] ),
-
+		projectCount() {
+			return this.projects? Object.keys(this.projects).length : 0
+		},
+		// ...mapGetters( [
+		// 	'projects'
+		// ] ),
+		// ...mapState( [
+		// 	'user',
+		// 	'tags',
+		// 	'menuOpen'
+		// ] ),
+		//
 		dragOptions() {
 			return {
 				group: "todo"
@@ -86,13 +88,10 @@ export default {
 	},
 	methods: {
 		createProject: function () {
-			this.$store.dispatch( 'updateMenuOpen', false )
-			this.$store.dispatch( 'createProject' );
+			console.log('TODO: create new project')
+			// this.$store.dispatch( 'updateMenuOpen', false )
+			// this.$store.dispatch( 'createProject' );
 		},
-		deleteAllData: function () {
-			this.$store.dispatch( 'updateMenuOpen', false )
-			this.$store.dispatch( 'deleteAllTags' );
-		}
 	}
 }
 </script>

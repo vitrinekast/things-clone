@@ -65,6 +65,10 @@
     }
 }
 
+textarea {
+  background-color: none;
+}
+
 #{$input__text}, textarea, input[type="file"] {
     resize: none;
     // Placeholder

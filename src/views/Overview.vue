@@ -52,9 +52,7 @@ export default {
         ]),
     },
     mounted: function () {
-console.log('update base')
       if(this.$route.params.projectId) {
-        console.log('update base')
         this.page.baseFilters =  dateFilters('Project', this.$route.params.projectId)
       }
         this.updateFilters(this.page.baseFilters)

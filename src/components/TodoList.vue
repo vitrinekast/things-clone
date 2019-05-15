@@ -1,6 +1,21 @@
 <template>
-	<div class="">
+<div class="" v-if="todos">
+
+	<ul v-if="todoItemCount > 0">
+		<DraggableTodoList :list='todos' @update="update">
+			<li v-for="todo in todos" :key="todo.id" :id="todo.id">
+				<TodoListItem :todo="todo" :opened='todo.id === openTodo' @update="update" @toggle="onTodoToggle" @remove="remove"></TodoListItem>
+			</li>
+		</DraggableTodoList>
+	</ul>
+	<p v-else>There are now todos available</p>
+	
+</div>
+
+
+<!-- <div class="">
 		<div class="p--fixed p--abs--100 card__backdrop" v-if='selectedTodoId' @click="setSelectedTodo(false)"></div>
+
 		<div class="" v-if="grouped">
 			<div class="" v-if="todos.find(todo => todo.title === false)">
 				<todo-list-list v-bind:value="todos.find(todo => todo.title === false).items"></todo-list-list>
@@ -20,44 +35,69 @@
 			<todo-list-list v-bind:value="todos"></todo-list-list>
 
 		</div>
-		<p v-if="todos.length < 1">There are now todos available</p>
 
-	</div>
+	</div> -->
 </template>
 <script>
-	// @ is an alias to /src
-	import {mapState, mapActions} from 'vuex'
-	import TodoListList from '@/components/TodoListList';
+import { mapActions } from 'vuex'
+import TodoListItem from '@/components/TodoListItem'
+import DraggableTodoList from '@/components/DraggableTodoList'
+// import TodoListList from '@/components/TodoListList';
 
-	export default {
-		name: 'TodoList',
-		components: {
-			TodoListList
+export default {
+	name: 'TodoList',
+	components: {
+		TodoListItem,
+		DraggableTodoList
+		// TodoListList
+	},
+	props: [ 'todos' ],
+	computed: {
+		todoItemCount() {
+			return this.todos ? Object.keys( this.todos ).length : 0
+		}
+		// ...mapState({
+		// 	selectedTodoId: state => state.todos.selectedTodoId,
+		// 	todos: state => state.todos.todos,
+		// 	projects: state => state.project.projects,
+		// 	filters: state => state.todos.filters
+		// }),
+		// todos: {
+		// 	get() {
+		// 		if (this.grouped) {
+		// 			return this.$store.getters.filteredTodosByProject
+		// 		} else {
+		// 			return this.$store.getters.filteredTodos
+		// 		}
+		// 	},
+		// 	set(value) {
+		// 		console.log('set', value)
+		// 	}
+		// }
+	},
+	data () {
+		return {
+			openTodo: false
+		}
+	},
+	
+	methods: {
+		...mapActions( 'todos', [ 'updateTodo', 'removeTodo' ] ),
+		...mapActions( 'projects', [ 'addTodoToProject' ] ),
+		onTodoToggle (payload) {
+			const todoId = payload.todo['.key'];
+			this.openTodo = this.openTodo === todoId ? false : todoId;			
 		},
-		props: ['grouped'],
-		computed: {
-			...mapState({
-				selectedTodoId: state => state.todos.selectedTodoId,
-				todos: state => state.todos.todos,
-				projects: state => state.project.projects,
-				filters: state => state.todos.filters
-			}),
-			todos: {
-				get() {
-					if (this.grouped) {
-						console.log('yes')
-						return this.$store.getters.filteredTodosByProject
-					} else {
-						return this.$store.getters.filteredTodos
-					}
-				},
-				set(value) {
-					console.log('set', value)
-				}
+		update( payload ) {
+			this.updateTodo( { item: payload.todo, itemId: payload.todo[ '.key' ] } )
+			if(payload.projectId) {
+					this.addTodoToProject( payload )
 			}
 		},
-		methods: {
-			...mapActions({setSelectedTodo: 'setSelectedTodo'})
-		}
+		remove( payload ) {
+			this.removeTodo( { item: payload.todo, itemId: payload.todo[ '.key' ] } )
+		},
+
 	}
+}
 </script>

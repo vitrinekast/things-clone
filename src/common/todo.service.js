@@ -65,7 +65,6 @@ export const TodoService = {
 	},
 	async create() {
 		const todo = baseTodo();
-		console.log( 'create', todo )
 		return ApiService.post( "todos", todo );
 	},
 	async update( payload ) {

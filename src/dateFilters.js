@@ -1,7 +1,4 @@
-import router from './router'
-
 const dateFilters = ( type, attr ) => {
-console.log('this', this, router)
 	if( type === 'Log' ) {
 		return {
 			project: undefined,
@@ -17,7 +14,6 @@ console.log('this', this, router)
 			date: false,
 		};
 	} else if( type === 'Project' ) {
-		console.log('type', attr)
 		return {
 			project: attr,
 			done: false,

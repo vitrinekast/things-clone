@@ -51,7 +51,6 @@ const mutations = {
 
 const getters = {
 	projects(state) {
-		console.log('state', state)
 		return state.projects
 	}
 };

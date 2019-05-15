@@ -2,7 +2,7 @@
 <div id="app" class='flex flex--start d--block--sm'>
 	<div class="col--2--lg col--3--md" v-if="!isMobile()">
 		<aside class="aside">
-			<main-navigation></main-navigation>
+			<main-navigation :projects="projects"></main-navigation>
 		</aside>
 	</div>
 	<div class="" v-if="isMobile()">
@@ -38,23 +38,28 @@ export default {
 		FabNavigation
 	},
 	mixins: [ mixinDevice ],
+	computed: {
+		projects() {
+			return this.$store.state.projects.items
+		},
+	},
 	mounted: function () {
-		this.fetchTodos();
-		this.fetchTags();
-		this.fetchProjects();
+		// this.fetchTodos();
+		// this.fetchTags();
+		// this.fetchProjects();
 	},
 	methods: {
-		...mapActions( {
-			fetchTodos: 'getAllTodos',
-			fetchProjects: 'getAllProjects',
-			fetchTags: 'getAllTags',
-		} )
+		...mapActions('projects', ['fetchAllProjects']),
+		// ...mapActions( {
+		// 	fetchTodos: 'getAllTodos',
+		// 	fetchProjects: 'getAllProjects',
+		// 	fetchTags: 'getAllTags',
+		// } )
+	},
+	created() {
+		this.fetchAllProjects()
 	}
 }
 </script>
-
-
-
-
 
 <style lang="scss" src='./scss/app.scss'>

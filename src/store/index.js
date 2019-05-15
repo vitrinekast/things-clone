@@ -1,28 +1,20 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import VuexPersist from "vuex-persist";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import actions from './actions'
+import mutations from './mutations'
+import getters from './getters'
+import todos from './modules/todos'
+import projects from './modules/projects'
 
-import tags from "./tags.module";
-import user from "./user.module";
-import todos from "./todos.module";
-import general from "./general.module";
-import project from "./project.module";
-import createLogger from 'vuex/dist/logger'
+Vue.use(Vuex)
 
-const vuexPersist = new VuexPersist( {
-	key: "my-app",
-	storage: localStorage
-} );
-
-Vue.use( Vuex );
-
-export default new Vuex.Store( {
-	plugins: [ vuexPersist.plugin, createLogger() ],
-	modules: {
-		tags,
-		user,
-		project,
-		todos,
-		general
-	}
-} );
+export default new Vuex.Store({
+  state: {},
+  getters,
+  actions,
+  mutations,
+  modules: {
+    todos,
+    projects
+  }
+})
