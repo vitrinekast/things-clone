@@ -1,15 +1,24 @@
-import firebase from 'firebase'
 import { db } from '@/db'
-import { filterByDate, generateID, parseTodo, baseTodo } from '@/helpers/utils'
+import { filterTodo, parseTodo, baseTodo, filterQuery, getTagsFromString } from '@/helpers'
+import { DBService } from '@/service/db'
 
-
+const resource = "todos"
+const getDefaultState = () => {
+  return {
+    items: []
+  }
+}
 export default {
     namespaced: true,
 
-    state: {
-        items: {}
+    state: getDefaultState(),
+    
+    mutations: {
+      resetState: (state) => {
+        Object.assign(state, getDefaultState())
+      }
     },
-
+    
     getters: {
         getTodoById: (state) => (id) => {
             return state.todos.find(todo => todo.id === id)
@@ -18,65 +27,46 @@ export default {
             return Object.values(state.items)
         },
         filteredTodos: (state) => (filters) => {
-            console.log('filtering on', filters)
-            return filterByDate({ filters, items: Object.values(state.items) });
+            return filterTodo({ filters, items: Object.values(state.items) });
         },
     },
 
     actions: {
-        createTodo({ state, commit }, { item }) {
+        createTodo({ dispatch, state, commit }, { item }) {
             item = baseTodo(state, item);
-
-            return new Promise((resolve, reject) => {
-                db.collection("todos").doc(item.id).set(item)
-                    .then((data) => {
-                        commit('setItem', { resource: 'todos', id: item.id, item }, { root: true })
-                        resolve(data)
-                    })
-                    .catch((error) => {
-                        console.error("🔥 | Error posting document: ", error);
-                    })
+            item = parseTodo(item);
+            item.tags.forEach((tag) => {
+                dispatch('tags/getOrCreateTag', { text: tag, todoId: item.id }, { root: true })
             })
+            return DBService.POST({ commit, resource: "todos", item })
         },
-        removeTodo({ state, commit }, { item }) {
-            return new Promise((resolve, reject) => {
-                db.collection("todos").doc(item.id).delete()
-                    .then((data) => {
-                        commit('deleteItem', { resource: 'todos', id: item.id, item }, { root: true })
-                        resolve(data)
-                    })
-                    .catch((error) => {
-                        console.error("🔥 | Error posting document: ", error);
-                    })
-            })
+        removeTodo({ commit }, { item }) {
+            return DBService.DELETE({ commit, resource: "todos", item })
         },
-        updateTodo({ state, commit, rootState }, { item, itemId }) {
-          item = parseTodo(item);
-          
-            return new Promise((resolve, reject) => {
-                delete item['.key']
-                db.collection("todos").doc(itemId).update(item)
-                    .then(() => {
-                        commit('setItem', { resource: 'todos', id: itemId, item }, { root: true })
-                        resolve(item)
-                    })
-                    .catch((error) => {
-                        console.error("🔥 | Error updating document: ", error);
-                    })
-            })
+        updateTodo({ commit }, { item, itemId }) {
+            item = parseTodo(item);
+            debugger
+            return DBService.UPDATE({ commit, resource: "todos", item })
         },
-        fetchAllTodos({ state, commit }) {
-            return new Promise((resolve, reject) => {
-                db.collection("todos")
-                    // .where("userId", "==", "OwXIWRvPbCaG6fjlSH43svi7EMf2")
-                    .get()
+        fetchAllTodos({ commit }) {
+            return DBService.GETALL({ commit, resource: "todos" })
+        },
+        fetchTodos({ commit }, filters) {
+          console.log('fetching todos with', filters)
+          commit('resetState')
+            return new Promise((resolve) => {
+                var todoRef = db.collection("todos")
+                var query = filterQuery(todoRef, filters)
+                query.get()
                     .then(function (querySnapshot) {
+                        console.log('TODO: implement setItems instead of steadItem', querySnapshot.docs)
                         querySnapshot.forEach(function (doc) {
-                            commit('setItem', { resource: 'todos', id: doc.id, item: doc.data() }, { root: true })
+                            commit('setItem', { resource: resource, id: doc.id, item: doc.data() }, { root: true })
                         });
+                        resolve(querySnapshot)
                     })
                     .catch(function (error) {
-                        console.error("Error getting documents: ", error);
+                        console.error("🔥 | Error getting document: ", error);
                     });
             })
         }

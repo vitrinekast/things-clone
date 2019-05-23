@@ -8,7 +8,7 @@
 				<h4 class='list__title flex--center--vert' v-if="project.title">
 					<i class="ic--material material-icons">folder</i>
 					<span v-if='project.title'>{{project.title}}</span>
-					<span v-else="v-else">Untitled project</span>
+					<span v-else>Untitled project</span>
 				</h4>
 				<TodoList :todos="todos.filter(todo => todo.project == project['.key'])"/>
 
@@ -20,30 +20,23 @@
 	</div>
 </template>
 <script>
-
-	import ProjectListItem from '@/components/ProjectListItem';
 	import TodoList from '@/components/TodoList';
 
 	export default {
 		props: ['todos'],
 		components: {
-			ProjectListItem,
 			TodoList
 		},
 		computed: {
-			projectTodos(projectId) {
-				console.log("a");
-				console.log({projectId})
-			},
 			todoProjects() {
-				console.log(this.todos)
 				if (this.todos) {
 					let ids = this.todos.map(todo => todo.project);
 					return this.$store.getters['projects/projectsWithTodoIds'](ids)
+				} else {
+					return []
 				}
 			},
 			projectItemCount() {
-				console.log(this.todoProjects, 'count')
 				return this.todoProjects
 					? Object.keys(this.todoProjects).length
 					: 0

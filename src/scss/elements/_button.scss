@@ -2,6 +2,8 @@
     text-decoration: none;
     border-radius: 4px;
     text-align: center;
+    display: inline-block;
+    transition: $transition--base;
 
     // Styles
     &--black {
@@ -29,6 +31,14 @@
         @include button--color(color(black, base), color(blue, dark), darken(color(grey, light), 1));
     }
 
+    &--red {
+        @include button--color(color(red, base), transparent, transparent);
+        
+        &:hover {
+          color: color(red, dark)
+        }
+    }
+
     // Sizes
     &--sm {
         @include button--size($gutter--sm/2, $gutter--sm, $font-size--sm, $line-height--base, 0);
@@ -45,6 +55,13 @@
     &--bordered {
         border-style: solid;
         border-width: 1px;
+    }
+    
+    &--clear {
+        padding-left: 0;
+        .ic {
+          margin-left: 0;
+        }
     }
 
     &--circle {

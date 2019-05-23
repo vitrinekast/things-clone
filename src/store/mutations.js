@@ -8,5 +8,5 @@ export default {
   deleteItem (state, {item, id, resource}) {
     item['.key'] = id
     Vue.delete(state[resource].items, id, item)
-  },
+  }
 }

@@ -11,7 +11,7 @@
 	<div class="flex flex--start" v-else @click='setSelectedTodo(todo.id)'>
 		<div class="d--inl-block fl--left t--ellipsis--container">
 			<p class='t--ellipsis' v-if="todo.text">{{todo.text}}</p>
-			<p class='t--ellipsis' v-else>A fresh new todo</p>
+			
 		</div>
 
 		<ul class='d--inl-block fl--left'>
@@ -56,7 +56,17 @@ export default {
 			selectedTodoId: state => state.todos.selectedTodoId,
 		} )
 	},
-	props: [ 'todo' ],
+	props: {
+		todo: {
+			required: true,
+			type: Object
+		},
+		new: {
+			required: false,
+			default: false,
+			type: Boolean
+		}
+	},
 	methods: {
 		...mapActions( {
 			updateTodo: 'updateTodo',

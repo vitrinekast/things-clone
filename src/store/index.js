@@ -5,6 +5,7 @@ import mutations from './mutations'
 import getters from './getters'
 import todos from './modules/todos'
 import projects from './modules/projects'
+import tags from './modules/tags'
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
   mutations,
   modules: {
     todos,
-    projects
+    projects,
+    tags
   }
 })

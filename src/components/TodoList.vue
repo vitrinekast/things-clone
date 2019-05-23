@@ -12,75 +12,35 @@
 	
 </div>
 
-
-<!-- <div class="">
-		<div class="p--fixed p--abs--100 card__backdrop" v-if='selectedTodoId' @click="setSelectedTodo(false)"></div>
-
-		<div class="" v-if="grouped">
-			<div class="" v-if="todos.find(todo => todo.title === false)">
-				<todo-list-list v-bind:value="todos.find(todo => todo.title === false).items"></todo-list-list>
-			</div>
-
-			<div class="" v-for="project in todos.filter(todo => todo.title !== false)" :key="project.id">
-				<router-link v-if="project.title" :to="{ name: 'project', params: { projectId: project.id }}">
-					<h4 class='list__title flex--center--vert'><i class="ic--material material-icons">folder</i>{{project.title}}</h4>
-				</router-link>
-
-				<todo-list-list v-bind:value="project.items"></todo-list-list>
-
-			</div>
-		</div>
-		<div class="" v-else>
-
-			<todo-list-list v-bind:value="todos"></todo-list-list>
-
-		</div>
-
-	</div> -->
 </template>
 <script>
 import { mapActions } from 'vuex'
 import TodoListItem from '@/components/TodoListItem'
 import DraggableTodoList from '@/components/DraggableTodoList'
-// import TodoListList from '@/components/TodoListList';
-
+import { isDescendant } from '@/helpers'
 export default {
 	name: 'TodoList',
 	components: {
 		TodoListItem,
 		DraggableTodoList
-		// TodoListList
 	},
 	props: [ 'todos' ],
 	computed: {
 		todoItemCount() {
 			return this.todos ? Object.keys( this.todos ).length : 0
 		}
-		// ...mapState({
-		// 	selectedTodoId: state => state.todos.selectedTodoId,
-		// 	todos: state => state.todos.todos,
-		// 	projects: state => state.project.projects,
-		// 	filters: state => state.todos.filters
-		// }),
-		// todos: {
-		// 	get() {
-		// 		if (this.grouped) {
-		// 			return this.$store.getters.filteredTodosByProject
-		// 		} else {
-		// 			return this.$store.getters.filteredTodos
-		// 		}
-		// 	},
-		// 	set(value) {
-		// 		console.log('set', value)
-		// 	}
-		// }
 	},
 	data () {
 		return {
 			openTodo: false
 		}
 	},
-	
+	created() {
+		// window.addEventListener('click', this.onWindowClick, true)
+	},
+	destroyed() {
+		// window.removeEventListener('click', this.onWindowClick)
+	},
 	methods: {
 		...mapActions( 'todos', [ 'updateTodo', 'removeTodo' ] ),
 		...mapActions( 'projects', [ 'addTodoToProject' ] ),
@@ -88,6 +48,15 @@ export default {
 			const todoId = payload.todo['.key'];
 			this.openTodo = this.openTodo === todoId ? false : todoId;			
 		},
+		onWindowClick(e) {
+			const activeElem = this.$el.querySelector('#' + this.openTodo);
+			
+			if(activeElem) {
+					if(!isDescendant({parent: activeElem, child: e.target})) {
+						this.openTodo = false
+					}
+			}
+    },
 		update( payload ) {
 			this.updateTodo( { item: payload.todo, itemId: payload.todo[ '.key' ] } )
 			if(payload.projectId) {

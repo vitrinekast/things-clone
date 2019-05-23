@@ -1,63 +1,30 @@
 <template>
-  <div class="home" v-if="todos">
-    <header class='header_page'>
-      <h2 >📥 Inbox</h2>
-    </header>
+<div class="home" v-if="todos">
+	<header class='header_page'>
+		<h2>{{title}}</h2>
+	</header>
 
-    <ProjectList :todos='todos' />
-  </div>
+	<NavigationTags :tags="tags" @filter="filterTodos" @clearFilter="clearFilter"/>
+	<ProjectList :todos='todos' />
+  
+</div>
 </template>
 
 <script>
-  // @ is an alias to /src
+import OverviewMixin from '@/views/OverviewMixin'
 
-  // import Calendar from '@/components/Calendar';
-  // import Notification from '@/components/Notification';
-  import TodoList from '@/components/TodoList';
-  import ProjectList from '@/components/ProjectList';
-  // import NavigationTags from '@/components/NavigationTags';
-  import {
-    mapActions
-  } from 'vuex'
-  // import dateFilters from '@/dateFilters';
-
-  export default {
-    components: {
-      // Calendar,
-      // NavigationTags,
-      // Notification,
-      TodoList,
-      ProjectList
-    },
-    computed: {
-      todos() {
-        return this.$store.getters['todos/filteredTodos']({
-          deadline: false,
-          project: false
-        })
-      },
-      projects() {
-        let ids = this.todos.map(todo => todo.project);
-        return this.$store.getters['projects/projectsWithTodoIds'](ids)
-      },
-    },
-    data() {
-      return {
-
-      }
-    },
-    methods: {
-      ...mapActions('todos', ['fetchAllTodos']),
-      ...mapActions('projects', ['fetchAllProjects'])
-    },
-    created() {
-      this.fetchAllProjects()
-      this.fetchAllTodos()
-        // .then((projects) => {
-        //   return Promise.all(projects.docs.map((project) => {
-        //     this.fetchTodosByDate({date: new Date(), projectId: project.id })
-        //   }))
-        // })
-    }
-  }
+export default {
+	mixins: [OverviewMixin],
+	data () {
+		return {
+			title: 'Inbox ',
+			filters: {
+				project: false,
+        deadline: false,
+        done: false
+			}
+		}
+	}
+	
+}
 </script>

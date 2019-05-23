@@ -17,7 +17,6 @@
 <script>
 // @ is an alias to /src
 import { mapState, mapActions } from 'vuex'
-import TodoItem from '@/components/TodoItem';
 import draggable from 'vuedraggable'
 import { mixinDevice } from '@/mixins/device';
 import dateFilters from '@/dateFilters';
@@ -37,7 +36,6 @@ const getDateFromStringType = (string) => {
 
 export default {
 	components: {
-		TodoItem,
 		draggable
 	},
 	props: [ 'list' ],

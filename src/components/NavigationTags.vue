@@ -1,8 +1,9 @@
 <template>
-<nav class='nav nav_tags' v-if="FilteredTags && FilteredTags.length > 0">
+<nav class='nav nav_tags' v-if="tags && tags.length > 0">
+	
 	<ul>
-		<li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === false}" @click="onTagClick({tag: undefined})">#all</li>
-		<li :id="tag.id" v-for="tag in FilteredTags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': filters.tag === tag.text }" @click="onTagClick({tag: tag.text})">
+		<li class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': active === false}" @click="onClick(tag)">#all</li>
+		<li :id="tag.id" v-for="tag in tags" :key="tag.id" class='nav__item label label--tag label--light' v-bind:class="{ 'label--dark': active === tag.id }" @click="onClick(tag)">
 			#{{ tag.text }}
 		</li>
 	</ul>
@@ -12,17 +13,31 @@
 
 <script>
 // @ is an alias to /src
-import { mapGetters, mapActions } from 'vuex'
+
 export default {
-	name: 'Tags',
-	computed: {
-		...mapGetters( [
-			'FilteredTags',
-			'filters'
-		] )
+	props: {
+		tags: {
+			type: Array,
+			required: true
+		}
+	},
+	data() {
+		return {
+			active: false
+		}
 	},
 	methods: {
-		...mapActions( { onTagClick: 'updateFilters' } ),
+		onClick(item) {
+			this.active = item ? item.id : false
+			
+			if(item) {
+				this.$emit( 'filter', { tag: item.text } )
+			} else {
+				this.$emit( 'clearFilter', { tag: false } )
+			}
+			
+			
+		}
 	}
 }
 </script>
