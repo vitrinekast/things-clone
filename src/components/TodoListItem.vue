@@ -4,6 +4,8 @@
       <input type="checkbox" name="" v-model="todo.done" class='card__checkbox' @change="update">
     </div>
     
+    {{todo.id}} {{todo['.key']}}
+    
     <div class="op" v-if="opened">
       <form class="" action="index.html" method="post" @submit.prevent="update" @blur="update">
         <input type="text" v-model="todo.text" name="text" value="" placeholder="A fresh new todo">
@@ -58,7 +60,7 @@ export default {
 		update(payload) {
       let todo = this.todo
       if(payload) {
-        this.todo.note = payload.note
+        this.todo.notes = payload.note
       }
 			this.$emit( 'update', { todo: todo } )
 		},

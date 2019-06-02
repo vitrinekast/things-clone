@@ -2,6 +2,7 @@
 
 .form {
 
+  margin-top: $gutter--lg*2;
     &__contact {
 
     }
@@ -12,6 +13,16 @@
 
     &.success {
       
+    }
+    
+    &__input {
+      padding: $gutter--md;
+      margin: $gutter--sm 0;
+    }
+    
+    &__button {
+      padding: $gutter--md;
+      margin: $gutter--sm 0;
     }
 
 }

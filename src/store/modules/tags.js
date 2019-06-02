@@ -27,29 +27,42 @@ export default {
     },
 
     actions: {
-        updateTag({ commit }, { item, itemId }) {
+        updateRemovedTags({rootState}, {todoId, tags}) {
+          const userId = rootState.users.user.uid
+          
+          db.collection("tags")
+            .where("userId", "==", userId)
+            .where("todos", "array-contains", todoId)
+            .get()
+            .then((querySnapshot) => {
+              console.log(querySnapshot)
+            });
+        },
+        updateTag({ commit }, { item }) {
             return DBService.UPDATE({ commit, resource, item })
         },
-        getOrCreateTag({ dispatch, commit }, { text, todoId }) {
-            db.collection("tags").where("text", "==", text).limit(1).get().then((querySnapshot) => {
+        getOrCreateTag({ dispatch, commit, rootState }, { text, todoId }) {
+          const userId = rootState.users.user.uid;
+          
+            db.collection("tags")
+            .where("userId", "==", userId)
+            .where("text", "==", text)
+            .limit(1).get().then((querySnapshot) => {
                 if(querySnapshot.docs.length > 0) {
                     let tag = querySnapshot.docs[0].data()
                     tag.todos = addItemToArray(tag.todos, todoId)
                     dispatch('updateTag', { item: tag, itemId: tag.id })
 
                 } else {
-                    let tag = baseTag(text, todoId)
+                    let tag = baseTag(text, todoId, userId)
                     DBService.POST({ commit, resource, item: tag })
+                    
                 }
             })
         },
 
-        removeTag({ commit }, { item, itemId }) {
+        removeTag({ commit }, { item }) {
             return DBService.DELETE({ commit, resource, item })
-        },
-        createTag({ state, commit }, { item }) {
-            item = baseTag(state, item);
-            return DBService.POST({ commit, resource, item })
         },
         fetchAllTags({ commit }) {
             return DBService.GETALL({ commit, resource }).then(() => {
@@ -57,13 +70,12 @@ export default {
             })
         },
         fetchTags({ commit }, todoIds) {
-            console.log(todoIds)
             if(todoIds.length === 0) {
                 return false
             }
 
             return new Promise((resolve) => {
-                var todoRef = db.collection("tags")
+                db.collection("tags")
                     .get()
                     .then(function (querySnapshot) {
 

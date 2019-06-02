@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import store from './store/index'
-import dateFilters from '@/dateFilters';
-import OverviewView from '@/views/Overview'
+import store from '@/store'
 import ViewHome from '@/views/ViewHome'
 import ViewToday from '@/views/ViewToday'
 import ViewTomorrow from '@/views/ViewTomorrow'
@@ -84,6 +82,33 @@ const router = new Router( {
 		}
 	]
 } )
+
+
+router.beforeEach((to, from, next) => {
+  console.log(`🚦 navigating to ${to.name} from ${from.name}`)
+
+  store.dispatch('users/initAuth')
+    .then(user => {
+      if (to.matched.some(route => route.meta.requiresAuth)) {
+        // protected route
+        if (user) {
+          next()
+        } else {
+          next({name: 'SignIn', query: {redirectTo: to.path}})
+        }
+      } else if (to.matched.some(route => route.meta.requiresGuest)) {
+        // protected route
+        if (!user) {
+          next()
+        } else {
+          next({name: 'Home'})
+        }
+      } else {
+        next()
+      }
+    })
+})
+
 
 // router.beforeEach( ( to, from, next ) => {
 	// store.dispatch( 'updateMenuOpen', false );

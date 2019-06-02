@@ -16,11 +16,8 @@
 </template>
 <script>
 // @ is an alias to /src
-import { mapState, mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import { mixinDevice } from '@/mixins/device';
-import dateFilters from '@/dateFilters';
-import moment from 'moment'
 
 const getDateFromStringType = (string) => {
   if(string === 'inbox') {

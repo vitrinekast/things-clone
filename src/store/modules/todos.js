@@ -1,5 +1,5 @@
 import { db } from '@/db'
-import { filterTodo, parseTodo, baseTodo, filterQuery, getTagsFromString } from '@/helpers'
+import { filterTodo, parseTodo, baseTodo, filterQuery } from '@/helpers'
 import { DBService } from '@/service/db'
 
 const resource = "todos"
@@ -32,34 +32,44 @@ export default {
     },
 
     actions: {
-        createTodo({ dispatch, state, commit }, { item }) {
+        createTodo({ dispatch, state, commit, rootState }, { item }) {
+            item.userId = rootState.users.user.uid;
             item = baseTodo(state, item);
             item = parseTodo(item);
+            
             item.tags.forEach((tag) => {
                 dispatch('tags/getOrCreateTag', { text: tag, todoId: item.id }, { root: true })
             })
+            
+            dispatch('tags/updateRemovedTags', { tags: item.tags, todoId: item.id }, { root: true })
             return DBService.POST({ commit, resource: "todos", item })
         },
         removeTodo({ commit }, { item }) {
             return DBService.DELETE({ commit, resource: "todos", item })
         },
-        updateTodo({ commit }, { item, itemId }) {
+        updateTodo({ commit,dispatch }, { item }) {
             item = parseTodo(item);
-            debugger
+            
+            item.tags.forEach((tag) => {
+                dispatch('tags/getOrCreateTag', { text: tag, todoId: item.id }, { root: true })
+            })
+            dispatch('tags/updateRemovedTags', { tags: item.tags, todoId: item.id }, { root: true })
             return DBService.UPDATE({ commit, resource: "todos", item })
         },
         fetchAllTodos({ commit }) {
             return DBService.GETALL({ commit, resource: "todos" })
         },
-        fetchTodos({ commit }, filters) {
+        fetchTodos({ commit, rootState }, filters) {
+          const userId = rootState.users.user.uid
           console.log('fetching todos with', filters)
-          commit('resetState')
+          
             return new Promise((resolve) => {
                 var todoRef = db.collection("todos")
                 var query = filterQuery(todoRef, filters)
+                query = query.where("userId", "==", userId)
                 query.get()
                     .then(function (querySnapshot) {
-                        console.log('TODO: implement setItems instead of steadItem', querySnapshot.docs)
+                        console.log('TODO: implement setItems instead of todo', querySnapshot)
                         querySnapshot.forEach(function (doc) {
                             commit('setItem', { resource: resource, id: doc.id, item: doc.data() }, { root: true })
                         });

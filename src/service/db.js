@@ -3,6 +3,7 @@ import { db } from '@/db'
 export const DBService = {
     POST: ({ commit, resource, item }) => {
         return new Promise((resolve) => {
+          
             db.collection(resource).doc(item.id).set(item)
                 .then((data) => {
                     commit('setItem', { resource, id: item.id, item }, { root: true })
@@ -36,6 +37,7 @@ export const DBService = {
             if(item['.key']) {
                 delete item['.key']
             }
+            
             db.collection(resource).doc(item.id).update(item)
                 .then(() => {
                     commit('setItem', { resource: resource, id: item.id, item }, { root: true })

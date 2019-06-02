@@ -6,6 +6,7 @@ import getters from './getters'
 import todos from './modules/todos'
 import projects from './modules/projects'
 import tags from './modules/tags'
+import users from './modules/users'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
   modules: {
     todos,
     projects,
-    tags
+    tags,
+    users
   }
 })

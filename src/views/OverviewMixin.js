@@ -32,7 +32,7 @@ export default {
 	},
 	methods: {
 		...mapActions( 'todos', [ 'fetchTodos', 'createTodo' ] ),
-		...mapActions( 'projects', [ 'fetchAllProjects' ] ),
+		...mapActions( 'projects', [ 'fetchProjects' ] ),
 		...mapActions( 'tags', [ 'fetchTags' ] ),
     
 		updateNewTodo( payload ) {
@@ -49,7 +49,7 @@ export default {
 		},
 	},
 	created() {
-		this.fetchAllProjects()
+		this.fetchProjects()
 		this.fetchTodos(this.filters).then(() => {
 			this.fetchTags(this.todos.map(a => a.id))
 		})

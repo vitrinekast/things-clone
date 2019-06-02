@@ -1,9 +1,8 @@
 import { db } from '@/db'
-import firebase from 'firebase'
 
 export default {
   fetchItem ({state, commit}, {id, resource}) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       db.collection(resource).doc(id).get().then((doc) => {
         commit('setItem', {resource, id: doc.id, item: doc.data()})
         resolve(state[resource].items[id])

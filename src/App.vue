@@ -49,7 +49,7 @@ export default {
 		// this.fetchProjects();
 	},
 	methods: {
-		...mapActions('projects', ['fetchAllProjects']),
+		// ...mapActions('projects', ['fetchAllProjects']),
 		// ...mapActions( {
 		// 	fetchTodos: 'getAllTodos',
 		// 	fetchProjects: 'getAllProjects',
@@ -57,7 +57,7 @@ export default {
 		// } )
 	},
 	created() {
-		this.fetchAllProjects()
+		// this.fetchAllProjects()
 	}
 }
 </script>

@@ -4,6 +4,7 @@
     text-align: center;
     display: inline-block;
     transition: $transition--base;
+    cursor: grab;
 
     // Styles
     &--black {
@@ -28,7 +29,7 @@
     }
 
     &--blue {
-        @include button--color(color(black, base), color(blue, dark), darken(color(grey, light), 1));
+        @include button--color(color(white, base), color(blue, dark), darken(color(grey, light), 1));
     }
 
     &--red {
@@ -41,7 +42,7 @@
 
     // Sizes
     &--sm {
-        @include button--size($gutter--sm/2, $gutter--sm, $font-size--sm, $line-height--base, 0);
+        @include button--size($gutter--sm/2, $gutter--sm, $font-size--md, $line-height--base, 0);
     }
 
     &--md {

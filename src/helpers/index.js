@@ -64,24 +64,25 @@ const parseTodo = (todo) => {
     const dateResult = chrono.parse(todo.text);
     todo.deadline = dateResult[0] ? chrono.parseDate(todo.text) : todo.deadline
     todo.tags = getTags(todo.text);
-
+    todo.notes = todo.notes ? todo.notes : false
     return todo
 }
 
-const baseTag = (text, todoId) => {
+const baseTag = (text, todoId, userId) => {
     return {
         id: generateID(),
+        created: new Date(),
+        userId: userId,
         text: text,
         todos: [todoId]
     }
 };
 
 const baseTodo = (state, payload) => {
-    const userId = '';
     // const tag = store.state.todos.filters.tag;
     // const project = store.state.todos.filters.project
     return {
-        userId: userId,
+        userId: payload.userId,
         id: generateID(),
         text: payload.text,
         done: false,
@@ -100,7 +101,7 @@ const baseProject = () => {
 
     return {
         userId: userId,
-        id: ID(),
+        id: generateID(),
         title: "",
         done: false,
         todos: [],
@@ -154,7 +155,7 @@ const filterQuery = (ref, filters) => {
             let today = new Date()
             ref = ref.where("deadline", ">", today)
         } else if(filter === "someday") {
-            ref = ref.where("deadline", "===", "someday")
+            ref = ref.where("deadline", "==", "someday")
         } else if(filter === "tag") {
             console.log('TODO: tagid', filter, filters[filter])
             ref = ref.where("tags", "array-contains", filters[filter])
@@ -166,4 +167,4 @@ const filterQuery = (ref, filters) => {
     return ref
 }
 
-export { getTagsFromString, baseTag, baseProject, filterQuery, emptyProject, addItemToArray, isDescendant, stripTags, getDateDiff, generateID, parseTodo, baseTodo, filterTodo }
+export { baseTag, baseProject, filterQuery, emptyProject, addItemToArray, isDescendant, stripTags, getDateDiff, generateID, parseTodo, baseTodo, filterTodo }

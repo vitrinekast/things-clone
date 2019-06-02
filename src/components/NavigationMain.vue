@@ -1,5 +1,6 @@
 <template>
 <nav class='nav nav_main'>
+	<h3 v-if="user">{{user.email}}</h3>
 	<ul>
 		<li class='nav__item'>
 			<router-link to="/">
@@ -36,14 +37,14 @@
 	</ul>
 
 	<h5 class='nav__title' v-if="projects.length > 0">Projects</h5>
-
+	
 	<ul v-if="projectCount > 0">
-		<li class='nav__item' v-for="project in projects" :key="project.id" >
-
+		<li class='nav__item' v-for="project in projects" :key="project.id">
+{{project.userId}}
 			<router-link v-if="project['.key']" :to="{ name: 'project', params: { projectId: project.id }}">
 				<span class='flex--center--vert' v-if="project.title"><i class="ic--material material-icons">folder</i>{{project.title}}</span>
 				<span v-else class='t--grey'>New project</span>
-				<draggable  :options="dragOptions" :project-id="project.id" class='nav__item--drag-target'></draggable>
+				<draggable :options="dragOptions" :project-id="project.id" class='nav__item--drag-target'></draggable>
 			</router-link>
 		</li>
 	</ul>
@@ -56,6 +57,9 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
+import { mapGetters, mapActions } from 'vuex'
+import firebase from 'firebase'
+
 export default {
 	name: 'MainNavigation',
 	props: {
@@ -66,29 +70,28 @@ export default {
 	components: {
 		draggable
 	},
-
+	
 	computed: {
-		projectCount() {
-			return this.projects? Object.keys(this.projects).length : 0
+		user() {
+			return this.$store.getters[ 'users/authUser' ]
 		},
-		// ...mapGetters( [
-		// 	'projects'
-		// ] ),
-		// ...mapState( [
-		// 	'user',
-		// 	'tags',
-		// 	'menuOpen'
-		// ] ),
-		//
+		projectCount() {
+			return this.projects ? Object.keys( this.projects ).length : 0
+		},
 		dragOptions() {
 			return {
 				group: "todo"
 			};
 		},
 	},
+	mounted () {		
+		// this.fetchUser()
+	},
 	methods: {
+		// ...mapActions( 'users', [ 'fetchUser' ] ),
+
 		createProject: function () {
-			console.log('TODO: create new project')
+			console.log( 'TODO: create new project' )
 			// this.$store.dispatch( 'updateMenuOpen', false )
 			// this.$store.dispatch( 'createProject' );
 		},
