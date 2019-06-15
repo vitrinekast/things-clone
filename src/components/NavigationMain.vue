@@ -40,9 +40,9 @@
 	
 	<ul v-if="projectCount > 0">
 		<li class='nav__item' v-for="project in projects" :key="project.id">
-{{project.userId}}
-			<router-link v-if="project['.key']" :to="{ name: 'project', params: { projectId: project.id }}">
-				<span class='flex--center--vert' v-if="project.title"><i class="ic--material material-icons">folder</i>{{project.title}}</span>
+
+			<router-link v-if="project.id" :to="{ name: 'project', params: { projectId: project.id }}">
+				<span class='flex--center--vert' v-if="project.text"><i class="ic--material material-icons">folder</i>{{project.text}}</span>
 				<span v-else class='t--grey'>New project</span>
 				<draggable :options="dragOptions" :project-id="project.id" class='nav__item--drag-target'></draggable>
 			</router-link>
@@ -57,8 +57,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import { mapGetters, mapActions } from 'vuex'
-import firebase from 'firebase'
+// import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	name: 'MainNavigation',
@@ -91,9 +90,11 @@ export default {
 		// ...mapActions( 'users', [ 'fetchUser' ] ),
 
 		createProject: function () {
-			console.log( 'TODO: create new project' )
+			
 			// this.$store.dispatch( 'updateMenuOpen', false )
-			// this.$store.dispatch( 'createProject' );
+			this.$store.dispatch( 'projects/createProject' ).then((item) => {
+				this.$router.push( {name: 'project', params: {projectId: item.id} } )
+			});
 		},
 	}
 }

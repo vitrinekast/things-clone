@@ -13,7 +13,6 @@
 			<transition name='fade'>
 				<router-view :key="$route.path" />
 			</transition>
-			<fab-navigation></fab-navigation>
 		</div>
 	</main>
 
@@ -24,40 +23,21 @@
 // @ is an alias to /src
 
 import { mixinDevice } from '@/mixins/device';
-import { mapActions } from 'vuex'
 
 import MainNavigation from '@/components/NavigationMain.vue'
 import MobileNavigation from '@/components/NavigationMobile.vue'
-import FabNavigation from '@/components/FabNavigation.vue'
 
 export default {
 	name: 'app',
 	components: {
 		MainNavigation,
-		MobileNavigation,
-		FabNavigation
+		MobileNavigation
 	},
 	mixins: [ mixinDevice ],
 	computed: {
 		projects() {
-			return this.$store.state.projects.items
+			return this.$store.getters[ 'projects/projects' ]
 		},
-	},
-	mounted: function () {
-		// this.fetchTodos();
-		// this.fetchTags();
-		// this.fetchProjects();
-	},
-	methods: {
-		// ...mapActions('projects', ['fetchAllProjects']),
-		// ...mapActions( {
-		// 	fetchTodos: 'getAllTodos',
-		// 	fetchProjects: 'getAllProjects',
-		// 	fetchTags: 'getAllTags',
-		// } )
-	},
-	created() {
-		// this.fetchAllProjects()
 	}
 }
 </script>

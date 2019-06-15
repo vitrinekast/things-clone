@@ -3,9 +3,7 @@
     <div class="">
       <input type="checkbox" name="" v-model="todo.done" class='card__checkbox' @change="update">
     </div>
-    
-    {{todo.id}} {{todo['.key']}}
-    
+
     <div class="op" v-if="opened">
       <form class="" action="index.html" method="post" @submit.prevent="update" @blur="update">
         <input type="text" v-model="todo.text" name="text" value="" placeholder="A fresh new todo">
@@ -23,9 +21,10 @@
         <p class='t--ellipsis' v-if="todo.text">{{todo.text | stripTags}}</p>
         <p class='t--ellipsis' v-else>A fresh new todo</p>
       </div>
+      
 
-      <ul class='d--inl-block fl--left' v-if="todo.tags">
-        <li v-for='tag in todo.tags.slice(0, 2)' :key="tag.id" class='label label--tag label--light'>{{tag}}</li>
+      <ul class='d--inl-block fl--left' v-if="tags">
+        <li v-for='tag in tags' :key="tag.id" class='label label--tag label--light'>{{tag.text}}</li>
       </ul>
     </div>
 
@@ -71,6 +70,15 @@ export default {
 			this.$emit( 'toggle', { todo: this.todo } )
 		}
 	},
+  computed: {
+    tags() {
+      if(this.todo.tags) {
+        return this.$store.getters[ 'tags/tagsByIds' ](this.todo.tags)
+      } else {
+        return []
+      }
+    }
+  },
 	filters: {
 		stripTags: function ( value ) {
 			return stripTags( value )

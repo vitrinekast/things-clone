@@ -1,12 +1,14 @@
 <template>
-<div class="home" v-if="todos">
+<div class="home">
+
 	<header class='header_page'>
 		<h2>{{title}}</h2>
 	</header>
-
 	<NavigationTags :tags="tags" @filter="filterTodos" @clearFilter="clearFilter"/>
-	<ProjectList :todos='todos' />
-  
+	
+	<TodoListByProject :todos='todosByProject' />
+
+
 </div>
 </template>
 
@@ -14,14 +16,13 @@
 import OverviewMixin from '@/views/OverviewMixin'
 
 export default {
-	mixins: [OverviewMixin],
-	data () {
+	mixins: [ OverviewMixin ],
+	data() {
 		return {
 			title: 'Log ',
-			filters: {
-			}
+			filters: {}
 		}
 	}
-	
+
 }
 </script>

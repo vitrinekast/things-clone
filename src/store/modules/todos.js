@@ -1,24 +1,25 @@
-import { db } from '@/db'
-import { filterTodo, parseTodo, baseTodo, filterQuery } from '@/helpers'
+import { filterTodo, parseTodo, generateID } from '@/helpers'
 import { DBService } from '@/service/db'
 
 const resource = "todos"
 const getDefaultState = () => {
-  return {
-    items: []
-  }
+    return {
+        items: []
+    }
 }
+
+
 export default {
     namespaced: true,
 
     state: getDefaultState(),
-    
+
     mutations: {
-      resetState: (state) => {
-        Object.assign(state, getDefaultState())
-      }
+        resetState: (state) => {
+            Object.assign(state, getDefaultState())
+        }
     },
-    
+
     getters: {
         getTodoById: (state) => (id) => {
             return state.todos.find(todo => todo.id === id)
@@ -27,58 +28,52 @@ export default {
             return Object.values(state.items)
         },
         filteredTodos: (state) => (filters) => {
-            return filterTodo({ filters, items: Object.values(state.items) });
-        },
+            return filterTodo(Object.values(state.items), filters)
+        }
     },
 
     actions: {
-        createTodo({ dispatch, state, commit, rootState }, { item }) {
-            item.userId = rootState.users.user.uid;
-            item = baseTodo(state, item);
-            item = parseTodo(item);
+      fetchAllTodos({ commit }) {
+        return DBService.FETCHALL({commit, resource})
+      },
+      removeTodo({commit, dispatch}, {item} ) {
+        return DBService.REMOVE({commit, resource, item}).then(() => {
+          dispatch('fetchAllTodos')
+        })
+      },
+      updateTodo({commit, dispatch}, {item}) {
+        
+        return DBService.UPDATE({commit, resource, item}).then(() => {
+          dispatch('fetchAllTodos')
+        })
+      },
+      createTodo({commit, dispatch, rootState}, {item}) {
+        item = parseTodo(item)
+        const todoId = generateID();
+        
+        item.tags.forEach((tagString, index) => {
+          if(tagString.indexOf('#') === 0) {
+            let tag = Object.values(rootState.tags.items).find(item => item.text === tagString.replace('#', ''))
             
-            item.tags.forEach((tag) => {
-                dispatch('tags/getOrCreateTag', { text: tag, todoId: item.id }, { root: true })
-            })
-            
-            dispatch('tags/updateRemovedTags', { tags: item.tags, todoId: item.id }, { root: true })
-            return DBService.POST({ commit, resource: "todos", item })
-        },
-        removeTodo({ commit }, { item }) {
-            return DBService.DELETE({ commit, resource: "todos", item })
-        },
-        updateTodo({ commit,dispatch }, { item }) {
-            item = parseTodo(item);
-            
-            item.tags.forEach((tag) => {
-                dispatch('tags/getOrCreateTag', { text: tag, todoId: item.id }, { root: true })
-            })
-            dispatch('tags/updateRemovedTags', { tags: item.tags, todoId: item.id }, { root: true })
-            return DBService.UPDATE({ commit, resource: "todos", item })
-        },
-        fetchAllTodos({ commit }) {
-            return DBService.GETALL({ commit, resource: "todos" })
-        },
-        fetchTodos({ commit, rootState }, filters) {
-          const userId = rootState.users.user.uid
-          console.log('fetching todos with', filters)
-          
-            return new Promise((resolve) => {
-                var todoRef = db.collection("todos")
-                var query = filterQuery(todoRef, filters)
-                query = query.where("userId", "==", userId)
-                query.get()
-                    .then(function (querySnapshot) {
-                        console.log('TODO: implement setItems instead of todo', querySnapshot)
-                        querySnapshot.forEach(function (doc) {
-                            commit('setItem', { resource: resource, id: doc.id, item: doc.data() }, { root: true })
-                        });
-                        resolve(querySnapshot)
-                    })
-                    .catch(function (error) {
-                        console.error("🔥 | Error getting document: ", error);
-                    });
-            })
-        }
+            if(tag) {
+              tag.todos.push(todoId);
+              item.tags[index] = tag.id
+              dispatch('tags/update', {item: tag}, {root: true})
+            } else {
+              let newTag = {
+                id: generateID(),
+                text: tagString.replace('#', ''),
+                todos: [todoId]
+              }
+              dispatch('tags/create', {item: newTag}, {root: true})
+              item.tags[index] = newTag.id
+            }
+          }
+        })
+        console.log('creating this todo', item)
+        return DBService.CREATE({commit, resource, item}).then(() => {
+          dispatch('fetchAllTodos')
+        })
+      }
     }
 }

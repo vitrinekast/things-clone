@@ -1,5 +1,3 @@
-import { db } from '@/db'
-import { DBService } from '@/service/db'
 import firebase from 'firebase';
 
 const resource = "users"
@@ -37,12 +35,12 @@ export default {
 
     actions: {
 
-        initAuth({ commit, dispatch, state }) {
-            return new Promise((resolve, reject) => {
+        initAuth({ commit }) {
+            return new Promise((resolve) => {
                 // unsubscribe observer if already listening
 
                 firebase.auth().onAuthStateChanged(user => {
-                    console.log('👣 the user has changed', user)
+                    console.info('👣 the user has changed', user)
                     if(user) {
                         commit('setUser', user)
                         resolve(user)

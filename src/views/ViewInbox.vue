@@ -3,9 +3,9 @@
 	<header class='header_page'>
 		<h2>{{title}}</h2>
 	</header>
-
 	<NavigationTags :tags="tags" @filter="filterTodos" @clearFilter="clearFilter"/>
-	<ProjectList :todos='todos' />
+	
+	<TodoListByProject :todos='todosByProject' />
   
 </div>
 </template>

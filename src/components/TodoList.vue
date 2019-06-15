@@ -44,13 +44,12 @@ export default {
 	methods: {
 		...mapActions( 'todos', [ 'updateTodo', 'removeTodo' ] ),
 		...mapActions( 'projects', [ 'addTodoToProject' ] ),
+		
 		onTodoToggle (payload) {
-			const todoId = payload.todo['.key'];
-			this.openTodo = this.openTodo === todoId ? false : todoId;			
+			this.openTodo = this.openTodo === payload.todo.id ? false : payload.todo.id;			
 		},
 		onWindowClick(e) {
 			const activeElem = this.$el.querySelector('#' + this.openTodo);
-			
 			if(activeElem) {
 					if(!isDescendant({parent: activeElem, child: e.target})) {
 						this.openTodo = false
@@ -58,13 +57,14 @@ export default {
 			}
     },
 		update( payload ) {
-			this.updateTodo( { item: payload.todo, itemId: payload.todo[ '.key' ] } )
-			if(payload.projectId) {
-					this.addTodoToProject( payload )
-			}
+			console.log(payload)
+			this.updateTodo( { item: payload.todo } )
+			// if(payload.projectId) {
+			// 		this.addTodoToProject( payload )
+			// }
 		},
 		remove( payload ) {
-			this.removeTodo( { item: payload.todo, itemId: payload.todo[ '.key' ] } )
+			this.removeTodo( { item: payload.todo } )
 		},
 
 	}

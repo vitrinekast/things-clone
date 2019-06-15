@@ -1,9 +1,20 @@
 import { db } from '@/db'
+import mockData from '@/mockData'
+import { generateID } from '@/helpers'
+import Vue from 'vue'
 
 export const DBService = {
+    FETCHALL: ({ commit, resource }) => {
+        const items = mockData[resource];
+
+        return new Promise((resolve) => {
+            commit('setItems', { resource, items }, { root: true })
+            resolve(items)
+        })
+    },
     POST: ({ commit, resource, item }) => {
         return new Promise((resolve) => {
-          
+
             db.collection(resource).doc(item.id).set(item)
                 .then((data) => {
                     commit('setItem', { resource, id: item.id, item }, { root: true })
@@ -33,32 +44,34 @@ export const DBService = {
     },
 
     UPDATE: ({ commit, resource, item }) => {
-        return new Promise((resolve) => {
-            if(item['.key']) {
-                delete item['.key']
-            }
-            
-            db.collection(resource).doc(item.id).update(item)
-                .then(() => {
-                    commit('setItem', { resource: resource, id: item.id, item }, { root: true })
-                    resolve(item)
-                })
-                .catch((error) => {
-                    console.error("🔥 | Error updating document: ", error);
-                })
-        })
+      mockData[resource][item.id] = item;
+      
+      return new Promise((resolve) => {
+          commit('setItem', { resource, item, id: item.id }, { root: true })
+          resolve(item)
+          
+      })
     },
 
-    DELETE: ({ commit, resource, item }) => {
+    REMOVE: ({ commit, resource, item }) => {
+        mockData[resource] = mockData[resource].filter(function (obj) {
+            return obj.id !== item.id;
+        });
+
         return new Promise((resolve) => {
-            db.collection(resource).doc(item.id).delete()
-                .then((data) => {
-                    commit('deleteItem', { resource: resource, id: item.id, item }, { root: true })
-                    resolve(data)
-                })
-                .catch((error) => {
-                    console.error("🔥 | Error posting document: ", error);
-                })
+            commit('deleteItem', { resource, item, id: item.id }, { root: true })
+            resolve(item)
+        })
+    },
+    CREATE: ({ commit, resource, item }) => {
+        item.id = item.id ? item.id : generateID();
+        
+        Vue.set(mockData[resource], item.id, item)
+        
+        return new Promise((resolve) => {
+            commit('setItem', { resource, item, id: item.id }, { root: true })
+            resolve(item)
+            
         })
     }
 

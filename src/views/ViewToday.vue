@@ -6,12 +6,14 @@
 
 	<TodoListItem :todo="newTodo" :newItem='true' :opened='true' @update="updateNewTodo"></TodoListItem>
 	<NavigationTags :tags="tags" @filter="filterTodos" @clearFilter="clearFilter"/>
-	<ProjectList :todos='todos' />
-  
+	
+	<TodoListByProject :todos='todosByProject' />
+
 </div>
 </template>
 
 <script>
+
 import OverviewMixin from '@/views/OverviewMixin'
 
 export default {

@@ -7,6 +7,43 @@ const getDateDiff = (date) => {
     return date ? currentDay.diff(moment.unix(date.seconds), 'days') : null
 }
 
+
+
+const filterTodo = (list, filters) => {
+    Object.keys(filters).forEach((filter) => {
+
+        if(filter === "done") {
+
+            list = list.filter(item => item.done === filters[filter])
+        } else if(filter === "project") {
+            list = list.filter(item => item.project === filters[filter])
+        } else if(filter === "deadline") {
+            console.info("filter not yet implemented")
+        } else if(filter === "today") {
+            let today = new Date().setHours(0, 0, 0, 0)
+
+            list = list.filter((item) => {
+                return new Date(item.deadline).setHours(0, 0, 0, 0) <= today
+            })
+
+        } else if(filter === "tomorrow") {
+            var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).setHours(0, 0, 0, 0)
+
+            list = list.filter((item) => {
+                return new Date(item.deadline).setHours(0, 0, 0, 0) == tomorrow
+            })
+        } else if(filter === "someday") {
+            console.info("filter not yet implemented")
+        } else if(filter === "tag") {
+            list = filters[filter] ? list.filter(item => item.tags.indexOf(filters[filter]) !== -1) : list
+        } else {
+            console.info('TODO: fallback')
+        }
+    })
+
+    return list
+}
+
 const addItemToArray = (array, newItem) => {
     if(array.indexOf(newItem) === -1) {
         array.push(newItem)
@@ -35,17 +72,17 @@ const isDescendant = ({ parent, child }) => {
 }
 
 const generateID = () => {
-    return '_' + Math.random().toString(36).substr(2, 9);
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0,
+            v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 };
 
 const getTags = (string) => {
     const regex = new RegExp(/(#[a-zA-Z]+\b)(?!;)/gm);
 
-    let matches = string.match(regex) ? string.match(regex) : [];
-    matches = matches.map(match => match.replace('#', '').trim());
-
-
-    return matches
+    return string.match(regex) ? string.match(regex) : [];
 }
 
 const stripTags = (string) => {
@@ -58,8 +95,6 @@ const stripTags = (string) => {
 }
 
 const parseTodo = (todo) => {
-    console.log('refafctor this')
-
     todo.text = todo.text.trim();
     const dateResult = chrono.parse(todo.text);
     todo.deadline = dateResult[0] ? chrono.parseDate(todo.text) : todo.deadline
@@ -68,14 +103,16 @@ const parseTodo = (todo) => {
     return todo
 }
 
-const baseTag = (text, todoId, userId) => {
-    return {
+const baseTag = (item) => {
+    let base = {
         id: generateID(),
         created: new Date(),
-        userId: userId,
-        text: text,
-        todos: [todoId]
+        userId: '2WpuEc3jqYdnJXZbb5RjyPUa5AI2',
+        text: '',
+        todos: []
     }
+    
+    return  { ...base, ...item };
 };
 
 const baseTodo = (state, payload) => {
@@ -97,7 +134,7 @@ const baseTodo = (state, payload) => {
 
 const baseProject = () => {
     // const userId = store.state.user.user.uid
-    const userId = '';
+    const userId = '2WpuEc3jqYdnJXZbb5RjyPUa5AI2';
 
     return {
         userId: userId,
@@ -111,32 +148,6 @@ const baseProject = () => {
     }
 };
 
-const filterTodo = ({ items, filters }) => {
-    let results = items;
-
-    Object.keys(filters).forEach((filter) => {
-        if(filter === "today") {
-            results = results.filter((result) => {
-                const diff = getDateDiff(result.deadline)
-                return diff !== null ? diff >= 0 : false
-            })
-        } else if(filter === "tomorrow") {
-            results = results.filter((result) => {
-                const diff = getDateDiff(result.deadline)
-                return diff !== null ? diff < 0 : false
-            })
-        } else if(filter === "tagId") {
-            results = results.filter((result) => {
-                return result.tags.includes(filters[filter])
-            })
-        } else {
-            results = results.filter((result) => {
-                return result[filter] === filters[filter]
-            })
-        }
-    })
-    return results
-}
 
 const filterQuery = (ref, filters) => {
 
@@ -157,10 +168,10 @@ const filterQuery = (ref, filters) => {
         } else if(filter === "someday") {
             ref = ref.where("deadline", "==", "someday")
         } else if(filter === "tag") {
-            console.log('TODO: tagid', filter, filters[filter])
+            console.info('TODO: tagid', filter, filters[filter])
             ref = ref.where("tags", "array-contains", filters[filter])
         } else {
-            console.log('TODO: fallback')
+            console.info('TODO: fallback')
         }
     })
 

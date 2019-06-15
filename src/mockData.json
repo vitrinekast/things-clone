@@ -1,0 +1,66 @@
+{
+  "todos": {
+    "ff4c37b8-5c10-5c7d-9de8-a8c4398371ec": {
+      "text": "Help ik moet wat doen",
+      "userId": "2WpuEc3jqYdnJXZbb5RjyPUa5AI2",
+      "tags": [],
+      "project": false,
+      "created": "18-05-2018",
+      "deadline": "Sat Jun 16 2019 01:14:09 GMT+0200 (Central European Summer Time)",
+      "notes": "",
+      "done": false,
+      "id":"ff4c37b8-5c10-5c7d-9de8-a8c4398371ec"
+    },
+    "c91ceccf-bce7-5c1c-8e95-4a0c5551f7b6": {
+      "text": "Ik heb een tag",
+      "userId": "2WpuEc3jqYdnJXZbb5RjyPUa5AI2",
+      "tags": [],
+      "project": false,
+      "created": "18-05-2018",
+      "deadline": "Sat Jun 16 2019 01:14:09 GMT+0200 (Central European Summer Time)",
+      "notes": "",
+      "done": false,
+      "id":"c91ceccf-bce7-5c1c-8e95-4a0c5551f7b6"
+    },
+    "c6367f82-c42f-544f-b856-cc2f133a3e07": {
+      "text": "Hv0Z*M#FHH",
+      "userId": "2WpuEc3jqYdnJXZbb5RjyPUa5AI2",
+      "tags": [],
+      "project": false,
+      "created": "Tue Dec 02 2059 12:03:35 GMT+0100 (CET)",
+      "deadline": "Mon Oct 27 1999 11:39:22 GMT+0100 (CET)",
+      "notes": "",
+      "done": false,
+      "id":"c6367f82-c42f-544f-b856-cc2f133a3e07"
+    },
+    "6ea2166f-7164-5046-ae10-f763528c707c": {
+      "text": "Ik hoor bij een project",
+      "userId": "2WpuEc3jqYdnJXZbb5RjyPUa5AI2",
+      "tags": ["b70559b2-b505-5750-a1e5-e8d615f01cd1"],
+      "project": "34a144b3-0b33-5407-9988-63698080cdba",
+      "created": "Tue Dec 02 2059 12:03:35 GMT+0100 (CET)",
+      "deadline": "Mon Oct 27 1999 11:39:22 GMT+0100 (CET)",
+      "notes": "",
+      "done": false,
+      "id":"6ea2166f-7164-5046-ae10-f763528c707c"
+    }
+  },
+  "projects": {
+    "34a144b3-0b33-5407-9988-63698080cdba": {
+      "id":"34a144b3-0b33-5407-9988-63698080cdba",
+      "todos": ["6ea2166f-7164-5046-ae10-f763528c707c"],
+      "text": "Weekly Nerd",
+      "created": "Sun Feb 14 2106 14:33:01 GMT+0100 (CET)",
+      "notes": ""
+    }
+  },
+  "tags": {
+    "b70559b2-b505-5750-a1e5-e8d615f01cd1": {
+      "text": "work",
+      "userId": "2WpuEc3jqYdnJXZbb5RjyPUa5AI2",
+      "todos": ["6ea2166f-7164-5046-ae10-f763528c707c"],
+      "created": "Tue Dec 02 2059 12:03:35 GMT+0100 (CET)",
+      "id":"b70559b2-b505-5750-a1e5-e8d615f01cd1"
+    }
+  }
+}

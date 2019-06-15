@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve && check-unused-comp .",
     "build": "vue-cli-service build && firebase deploy",
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
@@ -27,6 +27,7 @@
     "vue": "^2.5.22",
     "vue-axios": "^2.1.4",
     "vue-router": "^3.0.1",
+    "vue-unused-components-checker": "^1.0.1",
     "vuedraggable": "^2.17.0",
     "vuex": "^3.0.1",
     "vuex-persist": "^2.0.0"

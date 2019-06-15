@@ -85,7 +85,7 @@ const router = new Router( {
 
 
 router.beforeEach((to, from, next) => {
-  console.log(`🚦 navigating to ${to.name} from ${from.name}`)
+  console.info(`🚦 navigating to ${to.name} from ${from.name}`)
 
   store.dispatch('users/initAuth')
     .then(user => {

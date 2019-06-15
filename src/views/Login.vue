@@ -30,7 +30,7 @@ export default {
 	},
 	methods: {
 		...mapActions( 'users', [ 'signUp', 'login' ] ),
-		signUpUser( e ) {
+		signUpUser( ) {
 			this.signUp( { password: this.password, email: this.email } )
 				.then( () => {
 					this.$router.push( '/' )
@@ -40,7 +40,7 @@ export default {
 					this.response = err
 				} )
 		},
-		loginUser( e ) {
+		loginUser( ) {
 			this.login( { password: this.password, email: this.email } )
 				.then( () => {
 					this.$router.push( '/' )
