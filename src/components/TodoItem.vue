@@ -73,6 +73,7 @@ export default {
 			setSelectedTodo: 'setSelectedTodo'
 		} ),
 		submit: function (todo) {
+			 
 			this.updateTodo(todo);
 			this.setSelectedTodo(false)
 		}

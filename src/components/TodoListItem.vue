@@ -57,10 +57,12 @@ export default {
 	},
 	methods: {
 		update(payload) {
+       
       let todo = this.todo
-      if(payload) {
+      if(payload.note) {
         this.todo.notes = payload.note
       }
+      
 			this.$emit( 'update', { todo: todo } )
 		},
 		remove() {

@@ -1,10 +1,12 @@
-import { db } from '@/db'
+import firebase from 'firebase/app'
 
 export default {
   fetchItem ({state, commit}, {id, resource}) {
+    console.info('fetch', resource)
+    
     return new Promise((resolve) => {
-      db.collection(resource).doc(id).get().then((doc) => {
-        commit('setItem', {resource, id: doc.id, item: doc.data()})
+      firebase.database().ref(resource).child(id).once('value', snapshot => {
+        commit('setItem', {resource, id: snapshot.key, item: snapshot.val()})
         resolve(state[resource].items[id])
       })
     })

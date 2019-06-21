@@ -7,38 +7,52 @@ const getDateDiff = (date) => {
     return date ? currentDay.diff(moment.unix(date.seconds), 'days') : null
 }
 
+const filterActions = {
+  'done': ({list, value}) => {
+    return list.filter(item => item.done === value)
+  },
+  'project': ({list, value}) => {
+    return list.filter(item => item.project === value)
+  },
+  'deadline': ({list, value}) => {
+    console.info("filter not yet implemented")
+    return list
+  },
+  'today': ({list, value}) => {
+    let today = new Date().setHours(0, 0, 0, 0)
 
+    return list.filter((item) => {
+        return new Date(item.deadline).setHours(0, 0, 0, 0) <= today
+    })
+  },
+  'tomorrow': ({list, value}) => {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).setHours(0, 0, 0, 0)
+
+    return list.filter((item) => {
+        return new Date(item.deadline).setHours(0, 0, 0, 0) == tomorrow
+    })
+  },
+  'someday': ({list, value}) => {
+    console.info("filter not yet implemented")
+    return list
+  },
+  'tag': ({list, value}) => {
+    console.log('todo tag')
+    if(value) {
+      return list.filter((item) => {
+        if(item.tags) {
+          return item.tags.indexOf(value) !== -1
+        }
+      })
+    }
+    return list
+  }
+}
 
 const filterTodo = (list, filters) => {
+  ;
     Object.keys(filters).forEach((filter) => {
-
-        if(filter === "done") {
-
-            list = list.filter(item => item.done === filters[filter])
-        } else if(filter === "project") {
-            list = list.filter(item => item.project === filters[filter])
-        } else if(filter === "deadline") {
-            console.info("filter not yet implemented")
-        } else if(filter === "today") {
-            let today = new Date().setHours(0, 0, 0, 0)
-
-            list = list.filter((item) => {
-                return new Date(item.deadline).setHours(0, 0, 0, 0) <= today
-            })
-
-        } else if(filter === "tomorrow") {
-            var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).setHours(0, 0, 0, 0)
-
-            list = list.filter((item) => {
-                return new Date(item.deadline).setHours(0, 0, 0, 0) == tomorrow
-            })
-        } else if(filter === "someday") {
-            console.info("filter not yet implemented")
-        } else if(filter === "tag") {
-            list = filters[filter] ? list.filter(item => item.tags.indexOf(filters[filter]) !== -1) : list
-        } else {
-            console.info('TODO: fallback')
-        }
+      list = filterActions[filter]({list, value: filters[filter]});
     })
 
     return list
@@ -79,10 +93,16 @@ const generateID = () => {
     });
 };
 
-const getTags = (string) => {
+const getTags = (string, ogTags) => {
+  
     const regex = new RegExp(/(#[a-zA-Z]+\b)(?!;)/gm);
-
-    return string.match(regex) ? string.match(regex) : [];
+    const newTags = string.match(regex) ? string.match(regex) : [];
+    let oldTags = [];
+    
+    if(Array.isArray(ogTags ? ogTags : false)) {
+      oldTags = ogTags
+    }
+    return oldTags.concat(newTags)
 }
 
 const stripTags = (string) => {
@@ -98,7 +118,7 @@ const parseTodo = (todo) => {
     todo.text = todo.text.trim();
     const dateResult = chrono.parse(todo.text);
     todo.deadline = dateResult[0] ? chrono.parseDate(todo.text) : todo.deadline
-    todo.tags = getTags(todo.text);
+    todo.tags = getTags(todo.text, Object.values(todo.tags));
     todo.notes = todo.notes ? todo.notes : false
     return todo
 }

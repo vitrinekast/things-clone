@@ -42,37 +42,37 @@ export default {
         })
       },
       updateTodo({commit, dispatch}, {item}) {
-        
+         
         return DBService.UPDATE({commit, resource, item}).then(() => {
           dispatch('fetchAllTodos')
         })
       },
       createTodo({commit, dispatch, rootState}, {item}) {
-        item = parseTodo(item)
-        const todoId = generateID();
+        const updates = {}
         
-        item.tags.forEach((tagString, index) => {
-          if(tagString.indexOf('#') === 0) {
-            let tag = Object.values(rootState.tags.items).find(item => item.text === tagString.replace('#', ''))
-            
-            if(tag) {
-              tag.todos.push(todoId);
-              item.tags[index] = tag.id
-              dispatch('tags/update', {item: tag}, {root: true})
-            } else {
-              let newTag = {
-                id: generateID(),
-                text: tagString.replace('#', ''),
-                todos: [todoId]
-              }
-              dispatch('tags/create', {item: newTag}, {root: true})
-              item.tags[index] = newTag.id
-            }
+        let todo = parseTodo(item)
+        todo.id = DBService.getKey(resource)
+        console.log(todo)
+        debugger
+        item.tags.filter(tag => tag.indexOf('#') === 0).forEach((text, index) => {
+          text = text.replace('#', '');
+          let tag = Object.values(rootState.tags.items).find(item => item.text === text)
+          todo.tags[index] = tag ? tag.id  : DBService.getKey('tags');
+          
+          if(tag) {
+            updates[`tags/${tag.id}/todos/${todo.id}`] = todo.id;
+          } else {
+            updates[`tags/${todo.tags[index]}`] = { id: todo.tags[index], text, todos: [todo.id]  }
           }
         })
-        console.log('creating this todo', item)
-        return DBService.CREATE({commit, resource, item}).then(() => {
-          dispatch('fetchAllTodos')
+        
+        updates[`todos/${todo.id}`] = todo;
+        
+        return DBService.UPDATEBATCH({commit, updates }).then((data) => {
+          commit('setItem', { resource, item: todo, id: todo.id }, { root: true })
+          dispatch('tags/fetchAllTags', null, {root: true})
+          dispatch('projects/fetchAllProjects', null, {root: true})
+          
         })
       }
     }

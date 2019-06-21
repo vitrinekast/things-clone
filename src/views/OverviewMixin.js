@@ -5,6 +5,23 @@ import NavigationTags from '@/components/NavigationTags';
 import { mapActions } from 'vuex'
 import { groupBy } from 'underscore'
 
+
+const initialState = () => {
+    return {
+        newTodo: {
+            created: new Date(),
+            userId: '2WpuEc3jqYdnJXZbb5RjyPUa5AI2',
+            text: '',
+            tags: [],
+            project: false,
+            deadline: false,
+            done: false,
+            notes: ''
+        }
+    }
+}
+
+
 export default {
     components: {
         TodoListItem,
@@ -32,18 +49,8 @@ export default {
     },
 
     data() {
-        return {
-            newTodo: {
-                created: new Date(),
-                userId: '2WpuEc3jqYdnJXZbb5RjyPUa5AI2',
-                text: '',
-                tags: [],
-                project: false,
-                deadline: false,
-                done: false,
-                notes: ''
-            }
-        }
+        return initialState()
+
     },
     methods: {
         ...mapActions('todos', ['fetchTodos', 'fetchAllTodos', 'createTodo']),
@@ -52,10 +59,11 @@ export default {
         ...mapActions('filters', ['updateFilters']),
 
         updateNewTodo(payload) {
+            debugger
             this.createTodo({ item: payload.todo }).then(() => {
-              // this.newTodo.text = ''
+                Object.assign(this.$data, initialState());
             })
-            
+
         },
         projectById(id) {
 
@@ -63,11 +71,14 @@ export default {
 
         },
         filterTodos(payload) {
-
+          
             this.filters = {
                 ...this.filters,
                 tag: payload['tag']
             };
+            this.$data.newTodo.today = this.filters.today
+            this.$data.newTodo.tags = [this.filters.tag]
+            this.$data.newTodo.done = this.filters.done
 
         },
         clearFilter(payload) {
